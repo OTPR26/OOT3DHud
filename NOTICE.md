@@ -14,12 +14,15 @@ Some OoT3D structure definitions and hook conventions were cross-checked against
 `licenses/OOT3D_RANDOMIZER.md`.
 
 The HUD design is inspired by Project Restoration's HD HUD. The release texture and generated legacy
-framebuffer header are adapted from third-party and game-derived art. Preserve Project Restoration
-attribution and confirm the relevant asset terms before redistributing them.
+framebuffer header are adapted from third-party and game-derived art. They are not licensed under
+this repository's GPL grant. Preserve Project Restoration attribution and confirm the relevant asset
+terms before redistributing them.
 
 Do not publish Nintendo game binaries, unrelated exheaders, extracted UI archives, private texture
 packs, game dumps, or patched game executables from this working directory. `artifacts/`,
 `derived-assets/`, and `game-dumps/` are excluded from source snapshots for that reason.
 
-The combined OTPR26 repository is distributed under GPLv3. Third-party names, trademarks, game data,
-and artwork remain subject to their respective owners and terms.
+Unless a file says otherwise, original source contributions authored specifically for this repository
+by OTPR26 contributors are offered under GPL-3.0-or-later. This statement does not relicense
+third-party code. Third-party names, trademarks, game data, exheaders, textures, and artwork remain
+subject to their respective owners and terms. See `LICENSE_SCOPE.md` for the complete scope statement.
