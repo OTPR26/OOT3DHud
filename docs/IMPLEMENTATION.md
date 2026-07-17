@@ -36,24 +36,26 @@ The board contains live quads for:
 - the action A prompt and its changing text;
 - B, X, and Y items;
 - Navi, Ocarina, I, and II around the D-pad;
-- hearts, including missing-health state;
+- all 20 possible hearts, including partial and missing-health states;
 - the current magic amount;
 - the rupee icon and value.
 
 I and II resolve from the active equipment state and remain blank when unassigned. HUD reads are
 read-only; the renderer does not write SaveContext fields.
 
-The reliable low-index allocation currently reserves 12 quads for hearts and the remaining quads for
-rupees and magic. Consequently, the HUD displays at most 12 hearts even though OoT3D supports 20.
+Only the board's low-index quads proved reliable, so the heart renderer combines adjacent hearts into
+ten pair quads. A 15-state atlas bank represents every valid sequential fill state for a pair, allowing
+the full 20-heart maximum while retaining reliable low-index quads for rupees and magic.
 
 ## Validated configuration
 
 - USA retail 1.0
-- Azahar Plus on Android/AYN hardware
+- Azahar Plus on Android/AYN hardware and Azahar on macOS
 - normal gameplay with live items, action text, health, magic, and rupees
 - all D-pad press/release routes
 - standalone free camera and its L+R settings chord
 - concurrent 4K custom texture pack
+- 20-heart save at full health
 
 Not yet validated: EUR, JP, other game revisions, Master Quest, original 3DS hardware, stereoscopic
 3D, and every context-specific item restriction or minigame.

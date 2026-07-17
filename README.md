@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/OTPR26/OOT3DHud?display_name=tag)](https://github.com/OTPR26/OOT3DHud/releases/latest)
 [![License](https://img.shields.io/github/license/OTPR26/OOT3DHud)](LICENSE)
 ![Game](https://img.shields.io/badge/OoT3D-USA%201.0-4b8bbe)
-![Tested](https://img.shields.io/badge/tested-Azahar%20Plus-5aaa46)
+![Tested](https://img.shields.io/badge/tested-Azahar%20%2B%20Azahar%20Plus-5aaa46)
 
 A modern, high-resolution top-screen HUD and C-stick free camera for the USA 1.0 release of
 *The Legend of Zelda: Ocarina of Time 3D*.
@@ -24,14 +24,14 @@ save format unchanged.
 - Original live A action prompt, repositioned without replacing its changing text
 - Live B, X, Y, I, and II item icons
 - D-pad shortcuts for I, II, Navi/View, and the Ocarina
-- Live hearts, magic meter, rupee icon, and rupee total
+- Live hearts up to the full 20-heart maximum, magic meter, rupee icon, and rupee total
 - Standalone C-stick free camera with sensitivity and inversion controls
 - Compatible with an existing 4K OoT3D texture pack
 - No intentional gameplay, balance, progression, inventory, or save-data changes
 
 ## Download and install
 
-Download the latest **USA Azahar Plus** ZIP from
+Download the latest **USA Azahar / Azahar Plus** ZIP from
 [Releases](https://github.com/OTPR26/OOT3DHud/releases/latest), then merge its `load` folder into
 your Azahar user-data directory.
 
@@ -71,16 +71,12 @@ D-pad actions.
 | Environment | Status |
 | --- | --- |
 | USA OoT3D 1.0 — Azahar Plus on Android | Tested |
-| USA OoT3D 1.0 — Azahar on macOS | HUD and save loading tested |
+| USA OoT3D 1.0 — Azahar on macOS | Tested |
 | Existing 4K custom-texture pack | Tested |
+| Full 20-heart save | Tested; two rows of ten |
 | EUR / JP / other game revisions | Not yet validated |
 | Master Quest | Not yet validated |
 | Original 3DS hardware | Not yet validated |
-
-### Current limitation
-
-The reliable native-board allocation currently displays up to **12 hearts**. Saves with more heart
-containers remain valid, but this HUD draws only the first 12.
 
 ## Building from source
 
@@ -106,7 +102,7 @@ make host-test
 The tested `code.ips` SHA-256 is:
 
 ```text
-820e1cda6d4744c91d033aaef6ad4965c400543800586d393b59098f452051f5
+28ae0db0ed8b3668d1603f04aab7d1579e734868d80cd97a59b37b74fbee3073
 ```
 
 ## How it works
