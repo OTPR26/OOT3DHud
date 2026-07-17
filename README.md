@@ -9,47 +9,26 @@ A modern, high-resolution top-screen HUD and C-stick free camera for the USA 1.0
 *The Legend of Zelda: Ocarina of Time 3D*.
 
 The HUD brings the Project Restoration style to OoT3D: ABXY in a diamond, live item assignments,
-the changing action prompt, D-pad shortcuts, hearts, magic, and rupees—all rendered through the
-game's native GPU interface. The patch leaves OoT3D's gameplay, progression, inventory rules, and
+the changing action prompt, D-pad shortcuts, hearts, magic, and rupees, all rendered through the
+game's native interface. The patch leaves OoT3D's gameplay, progression, inventory rules, and
 save format unchanged.
 
 > [!IMPORTANT]
 > This first release supports **USA OoT3D 1.0** (`0004000000033500`). EUR, JP, Master Quest, other
-> revisions, and original 3DS hardware have not yet been validated.
+> revisions, are still in progress.
 
 ## Features
 
-- Native high-resolution HUD compatible with Azahar custom-texture scaling
+- Native HUD compatible with Azahar custom-texture scaling
 - Modern Nintendo-style ABXY diamond in the upper-right
 - Original live A action prompt, repositioned without replacing its changing text
 - Live B, X, Y, I, and II item icons
 - D-pad shortcuts for I, II, Navi/View, and the Ocarina
-- Live hearts up to the full 20-heart maximum, magic meter, rupee icon, and rupee total
-- Standalone C-stick free camera with sensitivity and inversion controls
-- Compatible with an existing 4K OoT3D texture pack
-- No intentional gameplay, balance, progression, inventory, or save-data changes
+- Live hearts, magic meter,and rupees
+- C-stick free camera using [Roberto-Nessy/OoT3D_Standalone_Free_Cam](https://github.com/Roberto-Nessy/OoT3D_Standalone_Free_Cam)
+- Compatible with Henriko's 4K texture pack(https://www.henrikomagnifico.com).
 
-## Download and install
 
-Download the latest **USA Azahar / Azahar Plus** ZIP from
-[Releases](https://github.com/OTPR26/OOT3DHud/releases/latest), then merge its `load` folder into
-your Azahar user-data directory.
-
-The release installs these files:
-
-```text
-load/mods/0004000000033500/code.ips
-load/mods/0004000000033500/exheader.bin
-load/textures/0004000000033500/UI/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png
-```
-
-Enable **Custom Textures** in Azahar and restart the emulator after changing files. On the tested AYN
-setup, the Azahar Plus user-data directory is `/storage/emulated/0/ROMs/n3ds`.
-
-Do not combine this release with another `code.ips` for the same title. The HUD, input remapping, and
-free camera are already combined into the single included patch.
-
-See [INSTALL.md](INSTALL.md) for the full installation and troubleshooting notes.
 
 ## Controls
 
@@ -71,9 +50,8 @@ D-pad actions.
 | Environment | Status |
 | --- | --- |
 | USA OoT3D 1.0 — Azahar Plus on Android | Tested |
-| USA OoT3D 1.0 — Azahar on macOS | Tested |
-| Existing 4K custom-texture pack | Tested |
-| Full 20-heart save | Tested; two rows of ten |
+| USA OoT3D 1.0 — Azahar on macOS and Windows | Tested |
+| Henriko's 4K custom-texture pack | Tested |
 | EUR / JP / other game revisions | Not yet validated |
 | Master Quest | Not yet validated |
 | Original 3DS hardware | Not yet validated |
@@ -108,7 +86,7 @@ The tested `code.ips` SHA-256 is:
 ## How it works
 
 Physical D-pad input is translated into OoT3D's original touchscreen samples, so the game retains its
-normal item-usability checks and press/hold behavior. The HUD reuses a native stereoscopic top-screen
+normal item-usability checks and press/hold behavior. The HUD reuses a native top-screen
 board and updates its position and UV buffers from live, read-only game state.
 
 See [Implementation notes](docs/IMPLEMENTATION.md) and
