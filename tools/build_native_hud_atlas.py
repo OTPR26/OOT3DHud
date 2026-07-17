@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 PR_ATLAS = Path("/tmp/project-restoration-hd-hud-official.png")
 ITEM_ATLAS = ROOT / "derived-assets/oot3d-hd-pack/Items/tex1_512x512_AAC267B3D165E6FF_4_mip0.png"
 OUTPUT = ROOT / "derived-assets/project-restoration-oot-items-clean.png"
+HEART_PAIR_BANK_X = 1024
+HEART_PAIR_BANK_Y = 512
+HEART_PAIR_TILE_WIDTH = 128
+HEART_PAIR_TILE_HEIGHT = 64
 
 
 def remove_detached_item_artifacts(image: Image.Image) -> Image.Image:
@@ -76,6 +80,40 @@ def remove_detached_item_artifacts(image: Image.Image) -> Image.Image:
     return cleaned
 
 
+def add_heart_pair_bank(hud: Image.Image) -> None:
+    """Add every sequential two-heart state used by the 20-heart HUD."""
+    # PR's five heart states are 64x64 physical cells at logical x=480:
+    # full, 3/4, 1/2, 1/4, and dark-empty. Reorder them into the runtime's
+    # empty-to-full progression without resampling any source pixels.
+    source_by_progress = [
+        hud.crop((1920, 256, 1984, 320)),  # empty
+        hud.crop((1920, 192, 1984, 256)),  # quarter
+        hud.crop((1920, 128, 1984, 192)),  # half
+        hud.crop((1920, 64, 1984, 128)),   # three-quarter
+        hud.crop((1920, 0, 1984, 64)),     # full
+    ]
+
+    variants: list[tuple[int | None, int | None]] = [
+        (None, None),  # no heart containers in this pair
+        (0, None), (1, None), (2, None), (3, None), (4, None),
+        (0, 0), (1, 0), (2, 0), (3, 0), (4, 0),
+        (4, 1), (4, 2), (4, 3), (4, 4),
+    ]
+    bank_width = HEART_PAIR_TILE_WIDTH * 5
+    bank_height = HEART_PAIR_TILE_HEIGHT * 3
+    hud.paste((0, 0, 0, 0),
+              (HEART_PAIR_BANK_X, HEART_PAIR_BANK_Y,
+               HEART_PAIR_BANK_X + bank_width,
+               HEART_PAIR_BANK_Y + bank_height))
+    for index, (left_state, right_state) in enumerate(variants):
+        x = HEART_PAIR_BANK_X + (index % 5) * HEART_PAIR_TILE_WIDTH
+        y = HEART_PAIR_BANK_Y + (index // 5) * HEART_PAIR_TILE_HEIGHT
+        if left_state is not None:
+            hud.alpha_composite(source_by_progress[left_state], (x, y))
+        if right_state is not None:
+            hud.alpha_composite(source_by_progress[right_state], (x + 64, y))
+
+
 def main() -> None:
     hud = Image.open(PR_ATLAS).convert("RGBA")
     items = remove_detached_item_artifacts(
@@ -96,6 +134,10 @@ def main() -> None:
     # original resolution; no resampling or lossy encoding is performed.
     hud.paste((0, 0, 0, 0), (512, 512, 1024, 1024))
     hud.alpha_composite(items, (512, 512))
+
+    # Ten native pair quads can display all twenty live hearts while keeping
+    # rupees and magic inside the board's proven low-index range.
+    add_heart_pair_bank(hud)
 
     # Solid native-renderer swatches in a confirmed transparent PR region.
     # Sampling their centers lets the GPU draw a perfectly crisp, scalable

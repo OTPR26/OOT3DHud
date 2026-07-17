@@ -1,16 +1,55 @@
 # OoT3D Modern HUD + Free Camera
 
-A presentation and controller-usability patch for the USA 1.0 release of *The Legend of Zelda:
-Ocarina of Time 3D*.
+[![Release](https://img.shields.io/github/v/release/OTPR26/OOT3DHud?display_name=tag)](https://github.com/OTPR26/OOT3DHud/releases/latest)
+[![License](https://img.shields.io/github/license/OTPR26/OOT3DHud)](LICENSE)
+![Game](https://img.shields.io/badge/OoT3D-USA%201.0-4b8bbe)
+![Tested](https://img.shields.io/badge/tested-Azahar%20%2B%20Azahar%20Plus-5aaa46)
 
-The patch keeps the original gameplay rules while adding:
+A modern, high-resolution top-screen HUD and C-stick free camera for the USA 1.0 release of
+*The Legend of Zelda: Ocarina of Time 3D*.
 
-- a native, high-resolution top-screen HUD inspired by Project Restoration;
-- ABXY in a modern diamond layout, including the game's live action prompt;
-- live B/X/Y and D-pad item icons;
-- D-pad access to touchscreen I, touchscreen II, Navi, and the Ocarina;
-- live hearts, magic, and rupees on the top screen;
-- the standalone C-stick free camera.
+The HUD brings the Project Restoration style to OoT3D: ABXY in a diamond, live item assignments,
+the changing action prompt, D-pad shortcuts, hearts, magic, and rupees—all rendered through the
+game's native GPU interface. The patch leaves OoT3D's gameplay, progression, inventory rules, and
+save format unchanged.
+
+> [!IMPORTANT]
+> This first release supports **USA OoT3D 1.0** (`0004000000033500`). EUR, JP, Master Quest, other
+> revisions, and original 3DS hardware have not yet been validated.
+
+## Features
+
+- Native high-resolution HUD compatible with Azahar custom-texture scaling
+- Modern Nintendo-style ABXY diamond in the upper-right
+- Original live A action prompt, repositioned without replacing its changing text
+- Live B, X, Y, I, and II item icons
+- D-pad shortcuts for I, II, Navi/View, and the Ocarina
+- Live hearts up to the full 20-heart maximum, magic meter, rupee icon, and rupee total
+- Standalone C-stick free camera with sensitivity and inversion controls
+- Compatible with an existing 4K OoT3D texture pack
+- No intentional gameplay, balance, progression, inventory, or save-data changes
+
+## Download and install
+
+Download the latest **USA Azahar / Azahar Plus** ZIP from
+[Releases](https://github.com/OTPR26/OOT3DHud/releases/latest), then merge its `load` folder into
+your Azahar user-data directory.
+
+The release installs these files:
+
+```text
+load/mods/0004000000033500/code.ips
+load/mods/0004000000033500/exheader.bin
+load/textures/0004000000033500/UI/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png
+```
+
+Enable **Custom Textures** in Azahar and restart the emulator after changing files. On the tested AYN
+setup, the Azahar Plus user-data directory is `/storage/emulated/0/ROMs/n3ds`.
+
+Do not combine this release with another `code.ips` for the same title. The HUD, input remapping, and
+free camera are already combined into the single included patch.
+
+See [INSTALL.md](INSTALL.md) for the full installation and troubleshooting notes.
 
 ## Controls
 
@@ -21,31 +60,30 @@ The patch keeps the original gameplay rules while adding:
 | D-pad Up | Navi / View |
 | D-pad Right | Ocarina |
 | C-stick | Free camera |
-| L + R + D-pad Up/Down | Free-camera sensitivity |
-| L + R + D-pad Left/Right | Free-camera inversion |
+| L + R + D-pad Up/Down | Adjust camera sensitivity |
+| L + R + D-pad Left/Right | Change camera inversion |
 
-Unassigned I or II slots remain blank. The L+R camera-settings chord takes priority over the gameplay
-D-pad bindings.
+Unassigned I or II slots remain blank. The L+R camera-settings chord takes priority over gameplay
+D-pad actions.
 
-## Compatibility and status
+## Compatibility
 
-- Tested with USA OoT3D 1.0 in Azahar Plus.
-- Tested alongside a 4K custom-texture pack.
-- Free camera, all four D-pad actions, live item icons, action prompt, hearts, magic, and rupees have
-  been validated in normal gameplay.
-- EUR, JP, Master Quest, real 3DS hardware, and other game revisions are not yet validated.
-- The current native-board allocation displays up to 12 hearts. Saves with more than 12 heart
-  containers still work, but only the first 12 are drawn by this HUD.
+| Environment | Status |
+| --- | --- |
+| USA OoT3D 1.0 — Azahar Plus on Android | Tested |
+| USA OoT3D 1.0 — Azahar on macOS | Tested |
+| Existing 4K custom-texture pack | Tested |
+| Full 20-heart save | Tested; two rows of ten |
+| EUR / JP / other game revisions | Not yet validated |
+| Master Quest | Not yet validated |
+| Original 3DS hardware | Not yet validated |
 
-The patch does not intentionally change combat, movement, progression, balance, inventory rules, or
-save data.
-
-## Building
+## Building from source
 
 Requirements:
 
-- devkitARM / devkitPro with the 3DS rules installed;
-- Python 3.
+- devkitARM / devkitPro with the 3DS rules installed
+- Python 3
 
 Build the tested USA/Azahar configuration:
 
@@ -53,45 +91,38 @@ Build the tested USA/Azahar configuration:
 ./tools/build.sh
 ```
 
-The output is `artifacts/USA/code.ips`. The wrapper stages the source in a temporary directory so the
-inherited devkitARM Makefile works when the project path contains spaces. `REGION`, `CITRA`,
-`DEVKITPRO`, and `DEVKITARM` may be overridden through environment variables.
+The resulting patch is `artifacts/USA/code.ips`.
 
-Run the host-side input-routing tests without a 3DS toolchain:
+Run the host-side D-pad routing tests without a 3DS toolchain:
 
 ```sh
 make host-test
 ```
 
-## Installing a private test build in Azahar Plus
-
-For USA OoT3D (`0004000000033500`), the tested files use these paths beneath Azahar Plus's user data
-directory:
+The tested `code.ips` SHA-256 is:
 
 ```text
-load/mods/0004000000033500/code.ips
-load/mods/0004000000033500/exheader.bin
-load/textures/0004000000033500/UI/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png
+28ae0db0ed8b3668d1603f04aab7d1579e734868d80cd97a59b37b74fbee3073
 ```
 
-On the tested AYN setup, the user data directory is `/storage/emulated/0/ROMs/n3ds`.
+## How it works
 
-The exheader and full-resolution adapted texture are deliberately excluded from the source package.
-The generated legacy framebuffer header remains in the source snapshot because it affects the tested
-binary's link layout, although the release renderer does not display those embedded sprites. Do not
-distribute game dumps, extracted executables, or patched game binaries.
+Physical D-pad input is translated into OoT3D's original touchscreen samples, so the game retains its
+normal item-usability checks and press/hold behavior. The HUD reuses a native stereoscopic top-screen
+board and updates its position and UV buffers from live, read-only game state.
 
-## Attribution and redistribution
+See [Implementation notes](docs/IMPLEMENTATION.md) and
+[Native HD HUD notes](docs/NATIVE_HD_HUD.md) for technical details.
 
-The loader and free-camera base come from
-[Roberto-Nessy/OoT3D_Standalone_Free_Cam](https://github.com/Roberto-Nessy/OoT3D_Standalone_Free_Cam).
-OoT3D structures and hook conventions were cross-checked against
-[gamestabled/OoT3D_Randomizer](https://github.com/gamestabled/OoT3D_Randomizer).
-The HUD design and source art are inspired by Project Restoration's HD HUD.
+## Credits
 
-This combined project is distributed under GPLv3, as selected for the OTPR26 repository. Preserve all
-upstream attribution and file-level license notices. See [NOTICE.md](NOTICE.md) and
-[RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) for the third-party and game-asset boundaries.
+- [Roberto-Nessy/OoT3D_Standalone_Free_Cam](https://github.com/Roberto-Nessy/OoT3D_Standalone_Free_Cam)
+  — original standalone C-stick free camera and loader base
+- [Project Restoration](https://restoration.zora.re/hd-hud)
+  — HD HUD design and visual inspiration
+- [gamestabled/OoT3D_Randomizer](https://github.com/gamestabled/OoT3D_Randomizer)
+  — OoT3D structures and established hook conventions
 
-Implementation details are in [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md) and
-[docs/NATIVE_HD_HUD.md](docs/NATIVE_HD_HUD.md).
+This project is distributed under [GPLv3](LICENSE). Preserve all upstream attribution and file-level
+license notices. Nintendo game dumps, extracted executables, and patched game binaries are not
+included. See [NOTICE.md](NOTICE.md) for third-party and asset details.

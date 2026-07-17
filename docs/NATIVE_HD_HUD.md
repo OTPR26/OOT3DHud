@@ -26,17 +26,19 @@ pixel coordinates.
 - B/X/Y: reads current button items.
 - D-pad Left/Down: reads the active I/II assignments; an unassigned slot is transparent.
 - D-pad Up/Right: Navi/View and Ocarina.
-- Hearts: reads health capacity and current health, including empty-heart state.
+- Hearts: reads health capacity and current health, including partial and empty-heart states, for all
+  20 possible heart containers.
 - Magic: reads acquired state, capacity, and current amount.
 - Rupees: reads the current wallet value and draws native digits without a black panel.
 
 All HUD state access is read-only.
 
-## Current allocation limit
+## Heart allocation
 
 Only the low-index portion of the reused board proved reliable with the target game and emulator.
-Twelve quads are reserved for hearts, with the remaining reliable quads assigned to rupees and magic.
-The current release therefore displays at most 12 hearts, although OoT3D itself supports 20.
+The HUD therefore packs each adjacent pair of hearts into one quad. Ten pair quads display OoT3D's
+full 20-heart maximum, leaving the remaining reliable low-index quads available for rupees and magic.
+The replacement atlas contains every sequential two-heart fill state needed by the live health value.
 
 ## Asset policy
 

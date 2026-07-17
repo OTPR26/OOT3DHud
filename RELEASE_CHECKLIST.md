@@ -17,13 +17,13 @@
 
 ```text
 code.ips
-SHA-256 820e1cda6d4744c91d033aaef6ad4965c400543800586d393b59098f452051f5
+SHA-256 28ae0db0ed8b3668d1603f04aab7d1579e734868d80cd97a59b37b74fbee3073
 
 exheader.bin
 SHA-256 48c9fc32dd18df64eced1570e79ab634b189c9385bedc087126d7e3a3d827530
 
 tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png
-SHA-256 c0e2593bd23afdd29900191041229127d3a0cf7ea3d0b4b3185b3420bd18e966
+SHA-256 b1a065bf7bfdb058c9fb1bc1f9a0d438a7199356b4f350b2d72978c5c0670f22
 ```
 
 These hashes identify the exact files validated on the private test setup. Their presence here does
