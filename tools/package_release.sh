@@ -1,12 +1,12 @@
 #!/bin/sh
 set -eu
 
-version="${VERSION:-0.1.0}"
+version="${VERSION:-0.2.0}"
 project_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 dist_dir="$project_dir/dist"
 work_dir=$(mktemp -d "${TMPDIR:-/tmp}/oot3d-modern-hud-package.XXXXXX")
 source_name="OoT3D-Modern-HUD-Free-Cam-v${version}-source"
-release_name="OoT3D-Modern-HUD-Free-Cam-v${version}-USA-AzaharPlus"
+release_name="OoT3D-Modern-HUD-Free-Cam-v${version}-USA-Azahar"
 title_id="0004000000033500"
 
 cleanup() {
