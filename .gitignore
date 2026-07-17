@@ -1,0 +1,15 @@
+build/
+*.elf
+*.map
+code.ips
+*.bps
+artifacts/
+dist/
+exheader.bin
+.DS_Store
+
+# User-supplied copyrighted game data
+code.bin
+romfs/
+game-dumps/
+derived-assets/
