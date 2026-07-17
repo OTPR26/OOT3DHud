@@ -1,11 +1,11 @@
-# Installing the USA Azahar Plus release
+# Installing the USA Azahar / Azahar Plus release
 
 This release targets USA OoT3D 1.0, title ID `0004000000033500`.
 
 1. Close OoT3D.
-2. Open the Azahar Plus user-data directory.
+2. Open the Azahar or Azahar Plus user-data directory.
 3. Merge the release's `load` folder into that directory.
-4. Enable custom textures in Azahar Plus.
+4. Enable custom textures in Azahar.
 5. Start the game normally; do not resume an old emulator save state made before installing the mod.
 
 The resulting files should be:
@@ -20,7 +20,7 @@ For the tested AYN configuration, the Azahar Plus user-data directory is
 `/storage/emulated/0/ROMs/n3ds`.
 
 Do not combine this release with another code patch for the same title. Existing non-HUD custom
-textures may remain installed. If troubleshooting, fully close and restart Azahar Plus after changing
+textures may remain installed. If troubleshooting, fully close and restart Azahar after changing
 files.
 
 ## Expected controls
