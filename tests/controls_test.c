@@ -1,0 +1,38 @@
+#include <assert.h>
+#include <stdio.h>
+
+#include "controls.h"
+#include "hid.h"
+
+static void expect(uint32_t held, uint32_t pressed, ControlAction action) {
+    const ControlDecision decision = Controls_Resolve(held, pressed);
+    assert(decision.action == action);
+}
+
+int main(void) {
+    expect(BUTTON_LEFT, BUTTON_LEFT, CONTROL_ACTION_ITEM_I);
+    expect(BUTTON_DOWN, BUTTON_DOWN, CONTROL_ACTION_ITEM_II);
+    expect(BUTTON_UP, BUTTON_UP, CONTROL_ACTION_NAVI);
+    expect(BUTTON_RIGHT, BUTTON_RIGHT, CONTROL_ACTION_OCARINA);
+
+    // Gameplay actions stay active while held so bows, hookshot, bottles, and
+    // other hold-sensitive vanilla items receive a continuous virtual touch.
+    expect(BUTTON_LEFT, 0, CONTROL_ACTION_ITEM_I);
+    expect(BUTTON_DOWN, 0, CONTROL_ACTION_ITEM_II);
+
+    expect(BUTTON_L1 | BUTTON_R1 | BUTTON_UP, BUTTON_UP,
+           CONTROL_ACTION_CAMERA_SENSITIVITY_UP);
+    expect(BUTTON_L1 | BUTTON_R1 | BUTTON_DOWN, BUTTON_DOWN,
+           CONTROL_ACTION_CAMERA_SENSITIVITY_DOWN);
+    expect(BUTTON_L1 | BUTTON_R1 | BUTTON_LEFT, BUTTON_LEFT,
+           CONTROL_ACTION_CAMERA_INVERT_PREVIOUS);
+    expect(BUTTON_L1 | BUTTON_R1 | BUTTON_RIGHT, BUTTON_RIGHT,
+           CONTROL_ACTION_CAMERA_INVERT_NEXT);
+
+    // A partial chord must not steal the gameplay binding.
+    expect(BUTTON_L1 | BUTTON_LEFT, BUTTON_LEFT, CONTROL_ACTION_ITEM_I);
+    expect(0, 0, CONTROL_ACTION_NONE);
+
+    puts("controls_test: all mappings passed");
+    return 0;
+}
