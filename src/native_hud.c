@@ -62,17 +62,22 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     50.0f, 85.0f, 0.0f, 64.0f, 85.0f, 0.0f,
     50.0f, 71.0f, 0.0f, 64.0f, 71.0f, 0.0f,
 #ifndef PLUS_MINIMAL_HUD
-    // Twenty native Project Restoration heart cells. Runtime UV updates select
-    // full, three-quarter, half, quarter, dark-empty, or transparent states.
-#define NATIVE_HEART_POS(x, y) \
-    (x), (y) + 11.0f, 0.0f, (x) + 11.0f, (y) + 11.0f, 0.0f, \
-    (x), (y), 0.0f, (x) + 11.0f, (y), 0.0f
-    NATIVE_HEART_POS(8.0f, 8.0f), NATIVE_HEART_POS(19.0f, 8.0f),
-    NATIVE_HEART_POS(30.0f, 8.0f), NATIVE_HEART_POS(41.0f, 8.0f),
-    NATIVE_HEART_POS(52.0f, 8.0f), NATIVE_HEART_POS(63.0f, 8.0f),
-    NATIVE_HEART_POS(74.0f, 8.0f), NATIVE_HEART_POS(85.0f, 8.0f),
-    NATIVE_HEART_POS(96.0f, 8.0f), NATIVE_HEART_POS(107.0f, 8.0f),
-    NATIVE_HEART_POS(8.0f, 19.0f), NATIVE_HEART_POS(19.0f, 19.0f),
+    // Ten native pair cells cover all twenty hearts while staying below the
+    // board's proven 33-quad upload boundary. Runtime UV updates select one
+    // of fifteen lossless two-heart states from the HD atlas.
+#define NATIVE_HEART_PAIR_POS(x, y) \
+    (x), (y) + 11.0f, 0.0f, (x) + 22.0f, (y) + 11.0f, 0.0f, \
+    (x), (y), 0.0f, (x) + 22.0f, (y), 0.0f
+    NATIVE_HEART_PAIR_POS(8.0f, 8.0f),
+    NATIVE_HEART_PAIR_POS(30.0f, 8.0f),
+    NATIVE_HEART_PAIR_POS(52.0f, 8.0f),
+    NATIVE_HEART_PAIR_POS(74.0f, 8.0f),
+    NATIVE_HEART_PAIR_POS(96.0f, 8.0f),
+    NATIVE_HEART_PAIR_POS(8.0f, 19.0f),
+    NATIVE_HEART_PAIR_POS(30.0f, 19.0f),
+    NATIVE_HEART_PAIR_POS(52.0f, 19.0f),
+    NATIVE_HEART_PAIR_POS(74.0f, 19.0f),
+    NATIVE_HEART_PAIR_POS(96.0f, 19.0f),
     // Native bottom-right rupee plus three live PR number glyphs.
     345.0f, 227.0f, 0.0f, 355.0f, 227.0f, 0.0f,
     345.0f, 215.0f, 0.0f, 355.0f, 215.0f, 0.0f,
@@ -92,7 +97,13 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     10.0f, 35.0f, 0.0f, 80.0f, 35.0f, 0.0f,
     10.0f, 40.0f, 0.0f, 80.0f, 40.0f, 0.0f,
     10.0f, 35.0f, 0.0f, 80.0f, 35.0f, 0.0f,
-#undef NATIVE_HEART_POS
+    // Two unused low-index cells retained so the high-index research layout
+    // continues to begin at quad 33.
+    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
+    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
+    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
+    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
+#undef NATIVE_HEART_PAIR_POS
 #ifndef PLUS_HEARTS_ONLY
     // Native magic meter: outer edge, light border, empty track, then seventy
     // one-pixel live fill segments. UV changes hide segments above the current
@@ -184,18 +195,28 @@ float gNativeHudUVs[NATIVE_HUD_VERTEX_COUNT * 2]
     0.4142252604f, 0.4583333333f, 0.4350585938f, 0.4583333333f,
     0.4142252604f, 0.5f,          0.4350585938f, 0.5f,
 #ifndef PLUS_MINIMAL_HUD
-    // Hearts default to PR's full heart at logical (480,0)-(496,16).
-#define NATIVE_FULL_HEART_UV \
-    0.9375f, 0.9375f, 0.96875f, 0.9375f, \
-    0.9375f, 1.0f,    0.96875f, 1.0f
-    NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV,
-    NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV,
-    NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV,
-    NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV,
-    NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV,
-    NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV,
-    NATIVE_FULL_HEART_UV, NATIVE_FULL_HEART_UV,
-#undef NATIVE_FULL_HEART_UV
+    // Default to atlas tile 14: two full hearts. Runtime replaces all ten
+    // pair cells from live capacity and health before the board is displayed.
+#define NATIVE_FULL_HEART_PAIR_UV \
+    0.75f, 0.3125f, 0.8125f, 0.3125f, \
+    0.75f, 0.375f,  0.8125f, 0.375f
+    NATIVE_FULL_HEART_PAIR_UV, NATIVE_FULL_HEART_PAIR_UV,
+    NATIVE_FULL_HEART_PAIR_UV, NATIVE_FULL_HEART_PAIR_UV,
+    NATIVE_FULL_HEART_PAIR_UV, NATIVE_FULL_HEART_PAIR_UV,
+    NATIVE_FULL_HEART_PAIR_UV, NATIVE_FULL_HEART_PAIR_UV,
+    NATIVE_FULL_HEART_PAIR_UV, NATIVE_FULL_HEART_PAIR_UV,
+#undef NATIVE_FULL_HEART_PAIR_UV
+    // Quads 23-32 are overwritten with live rupee/magic UVs. Initialize them
+    // transparently so no placeholder art can flash during startup.
+#define NATIVE_TRANSPARENT_UV \
+    0.802734375f, 0.953125f, 0.802734375f, 0.953125f, \
+    0.802734375f, 0.953125f, 0.802734375f, 0.953125f
+    NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
+    NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
+    NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
+    NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
+    NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
+#undef NATIVE_TRANSPARENT_UV
 #ifndef PLUS_HEARTS_ONLY
     // Solid swatch centers added by build_native_hud_atlas.py.
 #define NATIVE_SOLID_UV(px) \
@@ -443,26 +464,38 @@ static void NativeHud_WriteItemUV(float* uv, u32 quad, u8 item) {
     uv[6] = u1; uv[7] = v1;
 }
 
-static void NativeHud_WriteHeartUV(float* uv, u32 quad, s32 health) {
+static u32 NativeHud_HeartProgress(s32 health) {
+    if (health <= 0) return 0;
+    if (health <= 4) return 1;
+    if (health <= 8) return 2;
+    if (health < 16) return 3;
+    return 4;
+}
+
+static void NativeHud_WriteHeartPairUV(float* uv, u32 quad,
+                                       u32 capacity, s32 health) {
     uv += quad * 8;
-    if (health < 0) {
-        // Center of a confirmed transparent region in the PR atlas.
-        const float u = 1644.0f / 2048.0f;
-        const float v = 1.0f - 48.0f / 1024.0f;
-        for (u32 i = 0; i < 4; i++) {
-            uv[i * 2] = u;
-            uv[i * 2 + 1] = v;
-        }
-        return;
+    if (capacity > 2) capacity = 2;
+    s32 maxHealth = (s32)capacity * 16;
+    if (health < 0) health = 0;
+    if (health > maxHealth) health = maxHealth;
+
+    u32 tile = 0;
+    if (capacity == 1) {
+        tile = 1 + NativeHud_HeartProgress(health);
+    } else if (capacity == 2) {
+        tile = health <= 16 ? 6 + NativeHud_HeartProgress(health) :
+               10 + NativeHud_HeartProgress(health - 16);
     }
 
-    // PR stores full, 3/4, 1/2, 1/4 and dark-empty hearts in five
-    // consecutive 16-pixel rows beginning at logical x=480.
-    u32 state = health >= 16 ? 0 : health == 0 ? 4 : health <= 4 ? 3 : health <= 8 ? 2 : 1;
-    float u0 = 480.0f / 512.0f;
-    float u1 = 496.0f / 512.0f;
-    float v1 = 1.0f - (float)(state * 16) / 256.0f;
-    float v0 = v1 - 16.0f / 256.0f;
+    const u32 column = tile % 5;
+    const u32 row = tile / 5;
+    // Half-pixel insets prevent bilinear filtering from sampling an adjacent
+    // pair tile at the bank boundaries.
+    float u0 = (1024.5f + (float)column * 128.0f) / 2048.0f;
+    float u1 = u0 + 127.0f / 2048.0f;
+    float v1 = 1.0f - (512.5f + (float)row * 64.0f) / 1024.0f;
+    float v0 = v1 - 63.0f / 1024.0f;
     uv[0] = u0; uv[1] = v0;
     uv[2] = u1; uv[3] = v0;
     uv[4] = u0; uv[5] = v1;
@@ -533,37 +566,38 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
 
 #ifndef PLUS_MINIMAL_HUD
     s32 maxHearts = gSaveContext.healthCapacity > 0 ? gSaveContext.healthCapacity / 16 : 0;
-    if (maxHearts > 12) maxHearts = 12;
+    if (maxHearts > 20) maxHearts = 20;
     s32 health = gSaveContext.health > 0 ? gSaveContext.health : 0;
-    for (u32 i = 0; i < 12; i++) {
-        s32 cellHealth = health - (s32)i * 16;
-        if (cellHealth < 0) cellHealth = 0;
-        NativeHud_WriteHeartUV(gNativeHudUVs, 13 + i,
-                               (s32)i < maxHearts ? cellHealth : -1);
+    for (u32 i = 0; i < 10; i++) {
+        s32 remainingCapacity = maxHearts - (s32)i * 2;
+        u32 pairCapacity = remainingCapacity <= 0 ? 0 :
+                           remainingCapacity == 1 ? 1 : 2;
+        NativeHud_WriteHeartPairUV(gNativeHudUVs, 13 + i, pairCapacity,
+                                   health - (s32)i * 32);
     }
 
 #ifndef PLUS_HEARTS_ONLY
     u32 rupees = gSaveContext.rupees > 0 ? (u32)gSaveContext.rupees : 0;
     if (rupees > 999) rupees = 999;
-    NativeHud_WriteRupeeUV(gNativeHudUVs, 25);
+    NativeHud_WriteRupeeUV(gNativeHudUVs, 23);
     if (rupees >= 100) {
-        NativeHud_WriteDigitUV(gNativeHudUVs, 26, rupees / 100);
+        NativeHud_WriteDigitUV(gNativeHudUVs, 24, rupees / 100);
     } else {
-        NativeHud_WriteSolidUV(gNativeHudUVs, 26, 1644.0f, 48.0f);
+        NativeHud_WriteSolidUV(gNativeHudUVs, 24, 1644.0f, 48.0f);
     }
     if (rupees >= 10) {
-        NativeHud_WriteDigitUV(gNativeHudUVs, 27, (rupees / 10) % 10);
+        NativeHud_WriteDigitUV(gNativeHudUVs, 25, (rupees / 10) % 10);
     } else {
-        NativeHud_WriteSolidUV(gNativeHudUVs, 27, 1644.0f, 48.0f);
+        NativeHud_WriteSolidUV(gNativeHudUVs, 25, 1644.0f, 48.0f);
     }
-    NativeHud_WriteDigitUV(gNativeHudUVs, 28, rupees % 10);
+    NativeHud_WriteDigitUV(gNativeHudUVs, 26, rupees % 10);
 
     const bool hasMagic = gSaveContext.magicLevel > 0;
-    NativeHud_WriteSolidUV(gNativeHudUVs, 29, hasMagic ? 1462.0f : 1644.0f,
+    NativeHud_WriteSolidUV(gNativeHudUVs, 27, hasMagic ? 1462.0f : 1644.0f,
                            hasMagic ? 42.0f : 48.0f);
-    NativeHud_WriteSolidUV(gNativeHudUVs, 30, hasMagic ? 1482.0f : 1644.0f,
+    NativeHud_WriteSolidUV(gNativeHudUVs, 28, hasMagic ? 1482.0f : 1644.0f,
                            hasMagic ? 42.0f : 48.0f);
-    NativeHud_WriteSolidUV(gNativeHudUVs, 31, hasMagic ? 1502.0f : 1644.0f,
+    NativeHud_WriteSolidUV(gNativeHudUVs, 29, hasMagic ? 1502.0f : 1644.0f,
                            hasMagic ? 42.0f : 48.0f);
     u32 magicWidth = 0;
     if (hasMagic) {
@@ -572,10 +606,10 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
         if (magic > maxMagic) magic = maxMagic;
         magicWidth = (magic * 70) / maxMagic;
     }
-    NativeHud_WriteSolidUV(gNativeHudUVs, 32,
+    NativeHud_WriteSolidUV(gNativeHudUVs, 30,
                            hasMagic && magicWidth > 0 ? 1522.0f : 1644.0f,
                            hasMagic && magicWidth > 0 ? 42.0f : 48.0f);
-    NativeHud_WriteMappedRect(board, 32, 10.0f, 35.0f,
+    NativeHud_WriteMappedRect(board, 30, 10.0f, 35.0f,
                               10.0f + (float)magicWidth, 40.0f);
 #endif
 #endif
