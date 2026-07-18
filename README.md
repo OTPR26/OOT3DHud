@@ -27,7 +27,7 @@ save format unchanged.
 - ZL minimap hide/show control, preserving access after the D-pad remap
 - Live hearts, magic meter,and rupees
 - C-stick free camera using [Roberto-Nessy/OoT3D_Standalone_Free_Cam](https://github.com/Roberto-Nessy/OoT3D_Standalone_Free_Cam)
-- Compatible with Henriko's 4K texture pack(https://www.henrikomagnifico.com).
+- Compatible with [Henriko's 4K texture pack](https://www.henrikomagnifico.com).
 
 
 
