@@ -25,6 +25,7 @@ save format unchanged.
 - Live B, X, Y, I, and II item icons
 - D-pad shortcuts for I, II, Navi/View, and the Ocarina
 - ZL minimap hide/show control, preserving access after the D-pad remap
+- Select opens the native Items screen
 - Live hearts, magic meter,and rupees
 - C-stick free camera using [Roberto-Nessy/OoT3D_Standalone_Free_Cam](https://github.com/Roberto-Nessy/OoT3D_Standalone_Free_Cam)
 - Compatible with [Henriko's 4K texture pack](https://www.henrikomagnifico.com).
@@ -40,6 +41,7 @@ save format unchanged.
 | D-pad Up | Navi / View |
 | D-pad Right | Ocarina |
 | ZL | Hide/show the minimap |
+| Select | Open the Items screen |
 | C-stick | Free camera |
 | L + R + D-pad Up/Down | Adjust camera sensitivity |
 | L + R + D-pad Left/Right | Change camera inversion |
@@ -80,14 +82,15 @@ make host-test
 The tested `code.ips` SHA-256 is:
 
 ```text
-f2b489c6456f491c1d275a080c260d0723c3cf25225164f9125b1965d65b6a0a
+8dacc17763ccd6c167b8b1b65fabb8280c399f3e1b80c728fbab66a83682e3a8
 ```
 
 ## How it works
 
 Physical D-pad input is translated into OoT3D's original touchscreen samples, so the game retains its
 normal item-usability checks and press/hold behavior. ZL reproduces the original minimap hide/show
-gestures through OoT3D's sampled controller state. The HUD reuses a native top-screen
+gestures through OoT3D's sampled controller state. Select opens the native Items screen through its
+original touchscreen action. The HUD reuses a native top-screen
 board and updates its position and UV buffers from live, read-only game state.
 
 See [Implementation notes](docs/IMPLEMENTATION.md) and
