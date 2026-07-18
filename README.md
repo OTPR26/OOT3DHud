@@ -14,8 +14,8 @@ game's native interface. The patch leaves OoT3D's gameplay, progression, invento
 save format unchanged.
 
 > [!IMPORTANT]
-> This first release supports **USA OoT3D 1.0** (`0004000000033500`). EUR, JP, Master Quest, other
-> revisions, are still in progress.
+> This first release supports **USA OoT3D 1.0** (`0004000000033500`). EUR, JP, and other
+> revisions are still in progress.
 
 ## Features
 
@@ -55,7 +55,6 @@ D-pad actions.
 | USA OoT3D 1.0 — Azahar on macOS and Windows | Tested |
 | Henriko's 4K custom-texture pack | Tested |
 | EUR / JP / other game revisions | Not yet validated |
-| Master Quest | Not yet validated |
 | Original 3DS hardware | Not yet validated |
 
 ## Building from source
