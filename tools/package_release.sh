@@ -42,6 +42,8 @@ cp "$project_dir/artifacts/USA/exheader.bin" \
 cp "$project_dir/artifacts/USA/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png" \
     "$work_dir/$release_name/load/textures/$title_id/UI/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png"
 cp "$project_dir/INSTALL.md" "$work_dir/$release_name/README.md"
+cp "$project_dir/LICENSE" "$work_dir/$release_name/LICENSE"
+cp "$project_dir/LICENSE_SCOPE.md" "$work_dir/$release_name/LICENSE_SCOPE.md"
 cp "$project_dir/NOTICE.md" "$work_dir/$release_name/NOTICE.md"
 
 (

@@ -101,6 +101,7 @@ See [Implementation notes](docs/IMPLEMENTATION.md) and
 - [gamestabled/OoT3D_Randomizer](https://github.com/gamestabled/OoT3D_Randomizer)
   — OoT3D structures and established hook conventions
 
-This project is distributed under [GPLv3](LICENSE). Preserve all upstream attribution and file-level
-license notices. Nintendo game dumps, extracted executables, and patched game binaries are not
-included. See [NOTICE.md](NOTICE.md) for third-party and asset details.
+Original source contributions authored for this repository are licensed under
+[GPL-3.0-or-later](LICENSE), unless a file says otherwise. Third-party source retains its original
+notices and terms; artwork, game-derived data, trademarks, and other non-code assets are not covered
+by that GPL grant. See [LICENSE_SCOPE.md](LICENSE_SCOPE.md) and [NOTICE.md](NOTICE.md) for details.
