@@ -31,6 +31,7 @@ files.
 | D-pad Down | Touchscreen item II |
 | D-pad Up | Navi / View |
 | D-pad Right | Ocarina |
+| ZL | Hide/show the minimap |
 | C-stick | Free camera |
 | L + R + D-pad Up/Down | Free-camera sensitivity |
 | L + R + D-pad Left/Right | Free-camera inversion |
