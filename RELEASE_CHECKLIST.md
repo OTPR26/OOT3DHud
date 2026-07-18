@@ -23,7 +23,7 @@ exheader.bin
 SHA-256 48c9fc32dd18df64eced1570e79ab634b189c9385bedc087126d7e3a3d827530
 
 tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png
-SHA-256 b1a065bf7bfdb058c9fb1bc1f9a0d438a7199356b4f350b2d72978c5c0670f22
+SHA-256 a0f29f85f29f87a678c49bebc114f3b90557fd86f4d047020fa285403f1c55a7
 ```
 
 These hashes identify the exact files validated on the private test setup. Their presence here does
