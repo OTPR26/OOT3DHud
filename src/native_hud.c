@@ -88,15 +88,17 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     373.0f, 226.0f, 0.0f, 379.0f, 226.0f, 0.0f,
     373.0f, 216.0f, 0.0f, 379.0f, 216.0f, 0.0f,
     // The board only uploads its first 33 quads reliably in Azahar Plus.
-    // Reserve the final four low-index cells for a compact live meter.
-    8.0f, 42.0f, 0.0f, 82.0f, 42.0f, 0.0f,
-    8.0f, 33.0f, 0.0f, 82.0f, 33.0f, 0.0f,
-    9.0f, 41.0f, 0.0f, 81.0f, 41.0f, 0.0f,
-    9.0f, 34.0f, 0.0f, 81.0f, 34.0f, 0.0f,
-    10.0f, 40.0f, 0.0f, 80.0f, 40.0f, 0.0f,
-    10.0f, 35.0f, 0.0f, 80.0f, 35.0f, 0.0f,
-    10.0f, 40.0f, 0.0f, 80.0f, 40.0f, 0.0f,
-    10.0f, 35.0f, 0.0f, 80.0f, 35.0f, 0.0f,
+    // Reserve the final four low-index cells for a fixed 110-pixel meter.
+    // Normal magic uses transparency after pixel 74; double magic spans the
+    // same width as the two heart rows.
+    8.0f, 42.0f, 0.0f, 118.0f, 42.0f, 0.0f,
+    8.0f, 33.0f, 0.0f, 118.0f, 33.0f, 0.0f,
+    8.0f, 42.0f, 0.0f, 118.0f, 42.0f, 0.0f,
+    8.0f, 33.0f, 0.0f, 118.0f, 33.0f, 0.0f,
+    8.0f, 42.0f, 0.0f, 118.0f, 42.0f, 0.0f,
+    8.0f, 33.0f, 0.0f, 118.0f, 33.0f, 0.0f,
+    10.0f, 40.0f, 0.0f, 116.0f, 40.0f, 0.0f,
+    10.0f, 35.0f, 0.0f, 116.0f, 35.0f, 0.0f,
     // Two unused low-index cells retained so the high-index research layout
     // continues to begin at quad 33.
     -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
@@ -105,53 +107,23 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
 #undef NATIVE_HEART_PAIR_POS
 #ifndef PLUS_HEARTS_ONLY
-    // Native magic meter: outer edge, light border, empty track, then seventy
-    // one-pixel live fill segments. UV changes hide segments above the current
-    // magic amount without resizing or stretching the texture.
-#define NATIVE_RECT_POS(x0, y0, x1, y1) \
-    (x0), (y1), 0.0f, (x1), (y1), 0.0f, \
-    (x0), (y0), 0.0f, (x1), (y0), 0.0f
-    NATIVE_RECT_POS(8.0f, 33.0f, 82.0f, 42.0f),
-    NATIVE_RECT_POS(9.0f, 34.0f, 81.0f, 41.0f),
-    NATIVE_RECT_POS(10.0f, 35.0f, 80.0f, 40.0f),
-#define NATIVE_MAGIC_SEGMENT(x) NATIVE_RECT_POS((x), 35.0f, (x) + 1.0f, 40.0f)
-    NATIVE_MAGIC_SEGMENT(10.0f), NATIVE_MAGIC_SEGMENT(11.0f),
-    NATIVE_MAGIC_SEGMENT(12.0f), NATIVE_MAGIC_SEGMENT(13.0f),
-    NATIVE_MAGIC_SEGMENT(14.0f), NATIVE_MAGIC_SEGMENT(15.0f),
-    NATIVE_MAGIC_SEGMENT(16.0f), NATIVE_MAGIC_SEGMENT(17.0f),
-    NATIVE_MAGIC_SEGMENT(18.0f), NATIVE_MAGIC_SEGMENT(19.0f),
-    NATIVE_MAGIC_SEGMENT(20.0f), NATIVE_MAGIC_SEGMENT(21.0f),
-    NATIVE_MAGIC_SEGMENT(22.0f), NATIVE_MAGIC_SEGMENT(23.0f),
-    NATIVE_MAGIC_SEGMENT(24.0f), NATIVE_MAGIC_SEGMENT(25.0f),
-    NATIVE_MAGIC_SEGMENT(26.0f), NATIVE_MAGIC_SEGMENT(27.0f),
-    NATIVE_MAGIC_SEGMENT(28.0f), NATIVE_MAGIC_SEGMENT(29.0f),
-    NATIVE_MAGIC_SEGMENT(30.0f), NATIVE_MAGIC_SEGMENT(31.0f),
-    NATIVE_MAGIC_SEGMENT(32.0f), NATIVE_MAGIC_SEGMENT(33.0f),
-    NATIVE_MAGIC_SEGMENT(34.0f), NATIVE_MAGIC_SEGMENT(35.0f),
-    NATIVE_MAGIC_SEGMENT(36.0f), NATIVE_MAGIC_SEGMENT(37.0f),
-    NATIVE_MAGIC_SEGMENT(38.0f), NATIVE_MAGIC_SEGMENT(39.0f),
-    NATIVE_MAGIC_SEGMENT(40.0f), NATIVE_MAGIC_SEGMENT(41.0f),
-    NATIVE_MAGIC_SEGMENT(42.0f), NATIVE_MAGIC_SEGMENT(43.0f),
-    NATIVE_MAGIC_SEGMENT(44.0f), NATIVE_MAGIC_SEGMENT(45.0f),
-    NATIVE_MAGIC_SEGMENT(46.0f), NATIVE_MAGIC_SEGMENT(47.0f),
-    NATIVE_MAGIC_SEGMENT(48.0f), NATIVE_MAGIC_SEGMENT(49.0f),
-    NATIVE_MAGIC_SEGMENT(50.0f), NATIVE_MAGIC_SEGMENT(51.0f),
-    NATIVE_MAGIC_SEGMENT(52.0f), NATIVE_MAGIC_SEGMENT(53.0f),
-    NATIVE_MAGIC_SEGMENT(54.0f), NATIVE_MAGIC_SEGMENT(55.0f),
-    NATIVE_MAGIC_SEGMENT(56.0f), NATIVE_MAGIC_SEGMENT(57.0f),
-    NATIVE_MAGIC_SEGMENT(58.0f), NATIVE_MAGIC_SEGMENT(59.0f),
-    NATIVE_MAGIC_SEGMENT(60.0f), NATIVE_MAGIC_SEGMENT(61.0f),
-    NATIVE_MAGIC_SEGMENT(62.0f), NATIVE_MAGIC_SEGMENT(63.0f),
-    NATIVE_MAGIC_SEGMENT(64.0f), NATIVE_MAGIC_SEGMENT(65.0f),
-    NATIVE_MAGIC_SEGMENT(66.0f), NATIVE_MAGIC_SEGMENT(67.0f),
-    NATIVE_MAGIC_SEGMENT(68.0f), NATIVE_MAGIC_SEGMENT(69.0f),
-    NATIVE_MAGIC_SEGMENT(70.0f), NATIVE_MAGIC_SEGMENT(71.0f),
-    NATIVE_MAGIC_SEGMENT(72.0f), NATIVE_MAGIC_SEGMENT(73.0f),
-    NATIVE_MAGIC_SEGMENT(74.0f), NATIVE_MAGIC_SEGMENT(75.0f),
-    NATIVE_MAGIC_SEGMENT(76.0f), NATIVE_MAGIC_SEGMENT(77.0f),
-    NATIVE_MAGIC_SEGMENT(78.0f), NATIVE_MAGIC_SEGMENT(79.0f),
-#undef NATIVE_MAGIC_SEGMENT
-#undef NATIVE_RECT_POS
+    // Preserve the legacy array footprint expected by the hook, but collapse
+    // the obsolete segmented meter. Leaving it visible overlays its normal-
+    // magic end cap at x=82 on top of the live double-magic frame above.
+#define NATIVE_HIDDEN_QUAD \
+    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f, \
+    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f
+#define NATIVE_HIDDEN_8 \
+    NATIVE_HIDDEN_QUAD, NATIVE_HIDDEN_QUAD, \
+    NATIVE_HIDDEN_QUAD, NATIVE_HIDDEN_QUAD, \
+    NATIVE_HIDDEN_QUAD, NATIVE_HIDDEN_QUAD, \
+    NATIVE_HIDDEN_QUAD, NATIVE_HIDDEN_QUAD
+    NATIVE_HIDDEN_8, NATIVE_HIDDEN_8, NATIVE_HIDDEN_8,
+    NATIVE_HIDDEN_8, NATIVE_HIDDEN_8, NATIVE_HIDDEN_8,
+    NATIVE_HIDDEN_8, NATIVE_HIDDEN_8, NATIVE_HIDDEN_8,
+    NATIVE_HIDDEN_QUAD,
+#undef NATIVE_HIDDEN_8
+#undef NATIVE_HIDDEN_QUAD
 #endif
 #endif
 };
@@ -355,25 +327,10 @@ u16 gNativeHudIndices[NATIVE_HUD_INDEX_COUNT]
 #define NATIVE_HUD_BOARD (*(void**)0x004FC6BC)
 
 typedef float* (*NativeHudMappedBufferFn)(void* board, u32 layer);
-#define NATIVE_HUD_MAPPED_POSITIONS ((NativeHudMappedBufferFn)0x002E11A4)
 #define NATIVE_HUD_SOURCE_POSITIONS ((NativeHudMappedBufferFn)0x002FC3FC)
 
 typedef void (*NativeHudUploadBufferFn)(void* board, u32 byteCount, const void* source);
 #define NATIVE_HUD_UPLOAD_UVS ((NativeHudUploadBufferFn)0x00317D1C)
-
-static void NativeHud_WriteMappedRect(void* board, u32 quad,
-                                      float x0, float y0, float x1, float y1) {
-    float* source = gNativeHudPositions + quad * 12;
-    source[0] = x0; source[1] = y1;
-    source[3] = x1; source[4] = y1;
-    source[6] = x0; source[7] = y0;
-    source[9] = x1; source[10] = y0;
-    float* mapped = NATIVE_HUD_MAPPED_POSITIONS(board, 0);
-    if (mapped != 0) {
-        mapped += quad * 12;
-        for (u32 i = 0; i < 12; i++) mapped[i] = source[i];
-    }
-}
 
 #define NATIVE_ACTION_VERTEX_COUNT 8
 static float sNativeActionOriginal[NATIVE_ACTION_VERTEX_COUNT * 3];
@@ -512,6 +469,32 @@ static void NativeHud_WriteSolidUV(float* uv, u32 quad, float pixelX, float pixe
     }
 }
 
+static void NativeHud_WriteMagicFrameUV(float* uv, u32 quad, bool doubleMagic) {
+    uv += quad * 8;
+    const float u0 = 1024.5f / 2048.0f;
+    const float u1 = u0 + 439.0f / 2048.0f;
+    const float y = doubleMagic ? 756.5f : 720.5f;
+    const float v1 = 1.0f - y / 1024.0f;
+    const float v0 = v1 - 35.0f / 1024.0f;
+    uv[0] = u0; uv[1] = v0;
+    uv[2] = u1; uv[3] = v0;
+    uv[4] = u0; uv[5] = v1;
+    uv[6] = u1; uv[7] = v1;
+}
+
+static void NativeHud_WriteMagicFillUV(float* uv, u32 quad, u32 width) {
+    if (width > 106) width = 106;
+    uv += quad * 8;
+    const float u0 = (1024.5f + (float)(106 - width) * 4.0f) / 2048.0f;
+    const float u1 = u0 + 423.0f / 2048.0f;
+    const float v1 = 1.0f - 800.5f / 1024.0f;
+    const float v0 = v1 - 19.0f / 1024.0f;
+    uv[0] = u0; uv[1] = v0;
+    uv[2] = u1; uv[3] = v0;
+    uv[4] = u0; uv[5] = v1;
+    uv[6] = u1; uv[7] = v1;
+}
+
 static void NativeHud_WriteRupeeUV(float* uv, u32 quad) {
     uv += quad * 8;
     const float u0 = 456.0f / 512.0f;
@@ -592,25 +575,30 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     }
     NativeHud_WriteDigitUV(gNativeHudUVs, 26, rupees % 10);
 
-    const bool hasMagic = gSaveContext.magicLevel > 0;
-    NativeHud_WriteSolidUV(gNativeHudUVs, 27, hasMagic ? 1462.0f : 1644.0f,
-                           hasMagic ? 42.0f : 48.0f);
-    NativeHud_WriteSolidUV(gNativeHudUVs, 28, hasMagic ? 1482.0f : 1644.0f,
-                           hasMagic ? 42.0f : 48.0f);
-    NativeHud_WriteSolidUV(gNativeHudUVs, 29, hasMagic ? 1502.0f : 1644.0f,
-                           hasMagic ? 42.0f : 48.0f);
+    // The upgrade state lives in dedicated save flags. magicLevel is not a
+    // reliable indication of double magic in a naturally progressed save.
+    const bool hasMagic = gSaveContext.magicAcquired != 0 || gSaveContext.magicLevel > 0;
+    const bool doubleMagic = gSaveContext.doubleMagic != 0;
+    if (hasMagic) {
+        NativeHud_WriteMagicFrameUV(gNativeHudUVs, 27, doubleMagic);
+    } else {
+        NativeHud_WriteSolidUV(gNativeHudUVs, 27, 1644.0f, 48.0f);
+    }
+    NativeHud_WriteSolidUV(gNativeHudUVs, 28, 1644.0f, 48.0f);
+    NativeHud_WriteSolidUV(gNativeHudUVs, 29, 1644.0f, 48.0f);
     u32 magicWidth = 0;
     if (hasMagic) {
-        const u32 maxMagic = (u32)gSaveContext.magicLevel * 0x30;
+        const u32 maxMagic = doubleMagic ? 0x60 : 0x30;
         u32 magic = gSaveContext.magic > 0 ? (u32)gSaveContext.magic : 0;
         if (magic > maxMagic) magic = maxMagic;
-        magicWidth = (magic * 70) / maxMagic;
+        const u32 displayWidth = doubleMagic ? 106 : 70;
+        magicWidth = (magic * displayWidth) / maxMagic;
     }
-    NativeHud_WriteSolidUV(gNativeHudUVs, 30,
-                           hasMagic && magicWidth > 0 ? 1522.0f : 1644.0f,
-                           hasMagic && magicWidth > 0 ? 42.0f : 48.0f);
-    NativeHud_WriteMappedRect(board, 30, 10.0f, 35.0f,
-                              10.0f + (float)magicWidth, 40.0f);
+    if (hasMagic) {
+        NativeHud_WriteMagicFillUV(gNativeHudUVs, 30, magicWidth);
+    } else {
+        NativeHud_WriteSolidUV(gNativeHudUVs, 30, 1644.0f, 48.0f);
+    }
 #endif
 #endif
 
