@@ -17,9 +17,11 @@ does not invoke item or player routines directly.
 4. `Controls_Resolve` gives the L+R camera-settings chord priority.
 5. A gameplay D-pad action becomes a vanilla touchscreen sample immediately before the normal game
    update: Left is I, Down is II, Up is Navi/View, and Right is the Ocarina.
-6. OoT3D processes that sample through its original UI/action path.
-7. The native HUD board is updated from live game state after the game update.
-8. The established free-camera hook handles supported normal-camera updates after C-stick activation.
+6. A fresh ZL press reproduces OoT3D's original minimap controls: a sustained D-pad Down state hides
+   the minimap, and a later fresh direction shows it again.
+7. OoT3D processes those samples through its original UI/action paths.
+8. The native HUD board is updated from live game state after the game update.
+9. The established free-camera hook handles supported normal-camera updates after C-stick activation.
 
 The touch injector remembers the exact HID ring entry it changes. If HID has not advanced on the next
 frame, it clears only that matching synthetic entry and does not overwrite a newer physical touch.
@@ -53,6 +55,7 @@ the full 20-heart maximum while retaining reliable low-index quads for rupees an
 - Azahar Plus on Android/AYN hardware and Azahar on macOS
 - normal gameplay with live items, action text, health, magic, and rupees
 - all D-pad press/release routes
+- ZL minimap hide/show routing on AYN hardware
 - standalone free camera and its L+R settings chord
 - concurrent 4K custom texture pack
 - 20-heart save at full health
