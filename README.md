@@ -20,7 +20,7 @@ save format unchanged.
 ## Features
 
 - Native HUD compatible with Azahar custom-texture scaling
-- Modern Nintendo-style ABXY diamond in the upper-right
+- Modern ABXY diamond in the upper-right
 - Original live A action prompt, repositioned without replacing its changing text
 - Live B, X, Y, I, and II item icons
 - D-pad shortcuts for I, II, Navi/View, and the Ocarina
