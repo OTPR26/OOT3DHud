@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-version="${VERSION:-0.3.1}"
+version="${VERSION:-0.3.2}"
 project_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 dist_dir="$project_dir/dist"
 work_dir=$(mktemp -d "${TMPDIR:-/tmp}/oot3d-modern-hud-package.XXXXXX")

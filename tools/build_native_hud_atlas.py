@@ -75,10 +75,12 @@ def remove_detached_item_artifacts(image: Image.Image) -> Image.Image:
                 for y in range(y0, min(y0 + 17, y1)):
                     for x in range(x0, min(x0 + 17, x1)):
                         pixels[x, y] = (0, 0, 0, 0)
-            if item_id in (0x0F, 0x46):
-                # Lens of Truth and Hover Boots both sit safely above their
-                # cell bottoms, but bilinear filtering samples a thin fragment
-                # from the next atlas row. Clear only that shared boundary.
+            if item_id in (0x0A, 0x0B, 0x0F, 0x46):
+                # Hookshot, Longshot, Lens of Truth, and Hover Boots sit safely
+                # above their cell bottoms, but bilinear filtering samples a
+                # thin fragment from the next atlas row. Clear only that shared
+                # boundary so the artifact cannot follow the icon to another
+                # HUD slot.
                 boundary = round((cell_y + 1) * cell_size)
                 for y in range(max(0, boundary - 1), min(height, boundary + 2)):
                     for x in range(x0, x1):
