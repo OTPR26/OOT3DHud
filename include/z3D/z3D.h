@@ -26,7 +26,14 @@ typedef struct {
     /* 0x0046 */ s8 magicLevel;
     /* 0x0047 */ s8 magic;
     /* 0x0048 */ s16 rupees;
-    char unk004A[0x000A];
+    /* 0x004A */ u16 bgsHitsLeft;
+    /* 0x004C */ u16 naviTimer;
+    /* 0x004E */ u8 magicAcquired;
+    /* 0x004F */ u8 unk004F;
+    /* 0x0050 */ u8 doubleMagic;
+    /* 0x0051 */ u8 doubleDefense;
+    /* 0x0052 */ s8 bgsFlag;
+    /* 0x0053 */ u8 unk0053;
     /* 0x0054 */ ItemEquips childEquips;
     /* 0x0060 */ ItemEquips adultEquips;
     char unk006C[0x0014];

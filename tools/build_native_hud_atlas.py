@@ -14,6 +14,14 @@ HEART_PAIR_BANK_X = 1024
 HEART_PAIR_BANK_Y = 512
 HEART_PAIR_TILE_WIDTH = 128
 HEART_PAIR_TILE_HEIGHT = 64
+MAGIC_FRAME_X = 1024
+MAGIC_FRAME_Y = 720
+MAGIC_FRAME_WIDTH = 440
+MAGIC_FRAME_HEIGHT = 36
+MAGIC_FILL_X = 1024
+MAGIC_FILL_Y = 800
+MAGIC_FILL_WIDTH = 848
+MAGIC_FILL_HEIGHT = 20
 
 
 def remove_detached_item_artifacts(image: Image.Image) -> Image.Image:
@@ -67,6 +75,14 @@ def remove_detached_item_artifacts(image: Image.Image) -> Image.Image:
                 for y in range(y0, min(y0 + 17, y1)):
                     for x in range(x0, min(x0 + 17, x1)):
                         pixels[x, y] = (0, 0, 0, 0)
+            if item_id in (0x0F, 0x46):
+                # Lens of Truth and Hover Boots both sit safely above their
+                # cell bottoms, but bilinear filtering samples a thin fragment
+                # from the next atlas row. Clear only that shared boundary.
+                boundary = round((cell_y + 1) * cell_size)
+                for y in range(max(0, boundary - 1), min(height, boundary + 2)):
+                    for x in range(x0, x1):
+                        pixels[x, y] = (0, 0, 0, 0)
     # Bilinear sampling can still pull a one-pixel sliver from the neighboring
     # cell even after detached components are removed. Add a narrow transparent
     # gutter at the exact runtime column boundaries; item art is centered well
@@ -114,6 +130,41 @@ def add_heart_pair_bank(hud: Image.Image) -> None:
             hud.alpha_composite(source_by_progress[right_state], (x + 64, y))
 
 
+def add_magic_meter_bank(hud: Image.Image) -> None:
+    """Add fixed-geometry normal/double frames and a sliding live-fill strip."""
+    draw = ImageDraw.Draw(hud)
+    transparent = (0, 0, 0, 0)
+    black = (0, 0, 0, 255)
+    border = (235, 235, 220, 255)
+    track = (72, 76, 76, 255)
+    green = (30, 220, 55, 255)
+
+    # Both frames occupy a 110x9 logical tile. The normal frame uses its
+    # first 74 logical pixels and leaves the remainder transparent; the
+    # double frame spans the same 110-pixel width as the heart rows.
+    for row, outer_width in enumerate((74, 110)):
+        x = MAGIC_FRAME_X
+        y = MAGIC_FRAME_Y + row * MAGIC_FRAME_HEIGHT
+        hud.paste(transparent, (x, y, x + MAGIC_FRAME_WIDTH,
+                                y + MAGIC_FRAME_HEIGHT))
+        draw.rectangle((x, y, x + outer_width * 4 - 1,
+                        y + MAGIC_FRAME_HEIGHT - 1), fill=black)
+        draw.rectangle((x + 4, y + 4, x + (outer_width - 1) * 4 - 1,
+                        y + 32 - 1), fill=border)
+        draw.rectangle((x + 8, y + 8, x + (outer_width - 2) * 4 - 1,
+                        y + 28 - 1), fill=track)
+
+    # A fixed 106-pixel fill quad samples a 212-pixel logical strip. Moving
+    # its 106-pixel UV window right replaces green pixels with transparency,
+    # so every live width can be represented without changing GPU geometry.
+    hud.paste(transparent, (MAGIC_FILL_X, MAGIC_FILL_Y,
+                            MAGIC_FILL_X + MAGIC_FILL_WIDTH,
+                            MAGIC_FILL_Y + MAGIC_FILL_HEIGHT))
+    draw.rectangle((MAGIC_FILL_X, MAGIC_FILL_Y,
+                    MAGIC_FILL_X + MAGIC_FILL_WIDTH // 2 - 1,
+                    MAGIC_FILL_Y + MAGIC_FILL_HEIGHT - 1), fill=green)
+
+
 def main() -> None:
     hud = Image.open(PR_ATLAS).convert("RGBA")
     items = remove_detached_item_artifacts(
@@ -138,6 +189,7 @@ def main() -> None:
     # Ten native pair quads can display all twenty live hearts while keeping
     # rupees and magic inside the board's proven low-index range.
     add_heart_pair_bank(hud)
+    add_magic_meter_bank(hud)
 
     # Solid native-renderer swatches in a confirmed transparent PR region.
     # Sampling their centers lets the GPU draw a perfectly crisp, scalable
