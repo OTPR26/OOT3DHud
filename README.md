@@ -51,8 +51,7 @@ D-pad actions.
 
 | Environment | Status |
 | --- | --- |
-| USA OoT3D 1.0 — Azahar Plus on Android | Tested |
-| USA OoT3D 1.0 — Azahar on macOS and Windows | Tested |
+| USA OoT3D 1.0 — Azahar on macOS, Windows, Android | Tested |
 | Henriko's 4K custom-texture pack | Tested |
 | EUR / JP / other game revisions | Not yet validated |
 | Original 3DS hardware | Not yet validated |
