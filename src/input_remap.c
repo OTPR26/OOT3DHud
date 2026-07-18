@@ -55,6 +55,8 @@ static TouchPoint InputRemap_GetTouchPoint(ControlAction action) {
             return (TouchPoint){ 3, 3 };
         case CONTROL_ACTION_OCARINA:
             return (TouchPoint){ 8, 235 };
+        case CONTROL_ACTION_ITEMS_MENU:
+            return (TouchPoint){ 222, 236 };
         default:
             return (TouchPoint){ -1, -1 };
     }
@@ -116,6 +118,13 @@ void InputRemap_Update(GlobalContext* globalCtx) {
         case CONTROL_ACTION_ITEM_II:
         case CONTROL_ACTION_NAVI:
         case CONTROL_ACTION_OCARINA:
+        case CONTROL_ACTION_ITEMS_MENU:
+            if (decision.action == CONTROL_ACTION_ITEMS_MENU) {
+                // Vanilla OoT3D treats Select as a second Start button. Remove
+                // it from the HID sample that the game is about to consume so
+                // only the native Items touch target handles this press.
+                real_hid.pad.pads[real_hid.pad.index].curr.val &= ~BUTTON_SELECT;
+            }
             InputRemap_ApplyVanillaAction(globalCtx, decision.action);
             break;
         case CONTROL_ACTION_NONE:
