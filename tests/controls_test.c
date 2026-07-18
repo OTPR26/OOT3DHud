@@ -14,6 +14,11 @@ int main(void) {
     expect(BUTTON_DOWN, BUTTON_DOWN, CONTROL_ACTION_ITEM_II);
     expect(BUTTON_UP, BUTTON_UP, CONTROL_ACTION_NAVI);
     expect(BUTTON_RIGHT, BUTTON_RIGHT, CONTROL_ACTION_OCARINA);
+    expect(BUTTON_SELECT, BUTTON_SELECT, CONTROL_ACTION_ITEMS_MENU);
+
+    // Opening Items is edge-triggered. Holding Select must not repeatedly
+    // synthesize touches or reopen the screen.
+    expect(BUTTON_SELECT, 0, CONTROL_ACTION_NONE);
 
     // Gameplay actions stay active while held so bows, hookshot, bottles, and
     // other hold-sensitive vanilla items receive a continuous virtual touch.
@@ -31,6 +36,8 @@ int main(void) {
 
     // A partial chord must not steal the gameplay binding.
     expect(BUTTON_L1 | BUTTON_LEFT, BUTTON_LEFT, CONTROL_ACTION_ITEM_I);
+    expect(BUTTON_L1 | BUTTON_R1 | BUTTON_SELECT, BUTTON_SELECT,
+           CONTROL_ACTION_NONE);
     expect(0, 0, CONTROL_ACTION_NONE);
 
     puts("controls_test: all mappings passed");

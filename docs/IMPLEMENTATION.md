@@ -6,8 +6,8 @@ The patch modifies presentation, physical-to-vanilla input routing, and camera b
 intentionally change damage, movement, inventory contents, item availability, progression flags,
 actor behavior, save data, or game balance.
 
-The D-pad implementation synthesizes the same touchscreen samples a player can produce manually. It
-does not invoke item or player routines directly.
+The D-pad and Select mappings synthesize the same touchscreen samples a player can produce manually.
+They do not invoke item or player routines directly.
 
 ## Update flow
 
@@ -15,8 +15,9 @@ does not invoke item or player routines directly.
 2. The `GlobalContext_Update` entry hook initializes services once.
 3. Physical input and C-stick state are sampled.
 4. `Controls_Resolve` gives the L+R camera-settings chord priority.
-5. A gameplay D-pad action becomes a vanilla touchscreen sample immediately before the normal game
-   update: Left is I, Down is II, Up is Navi/View, and Right is the Ocarina.
+5. A gameplay D-pad action or fresh Select press becomes a vanilla touchscreen sample immediately
+   before the normal game update: Left is I, Down is II, Up is Navi/View, Right is the Ocarina, and
+   Select opens Items.
 6. A fresh ZL press reproduces OoT3D's original minimap controls: a sustained D-pad Down state hides
    the minimap, and a later fresh direction shows it again.
 7. OoT3D processes those samples through its original UI/action paths.
@@ -56,6 +57,7 @@ the full 20-heart maximum while retaining reliable low-index quads for rupees an
 - normal gameplay with live items, action text, health, magic, and rupees
 - all D-pad press/release routes
 - ZL minimap hide/show routing on AYN hardware
+- Select opening Items without also triggering vanilla Select/Start behavior
 - standalone free camera and its L+R settings chord
 - concurrent 4K custom texture pack
 - 20-heart save at full health

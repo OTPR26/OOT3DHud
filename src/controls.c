@@ -24,7 +24,10 @@ ControlDecision Controls_Resolve(uint32_t held, uint32_t pressed) {
         return result;
     }
 
-    if (held & BUTTON_LEFT) {
+    if (pressed & BUTTON_SELECT) {
+        result.action = CONTROL_ACTION_ITEMS_MENU;
+        result.consumedButtons = BUTTON_SELECT;
+    } else if (held & BUTTON_LEFT) {
         result.action = CONTROL_ACTION_ITEM_I;
     } else if (held & BUTTON_DOWN) {
         result.action = CONTROL_ACTION_ITEM_II;
@@ -34,7 +37,8 @@ ControlDecision Controls_Resolve(uint32_t held, uint32_t pressed) {
         result.action = CONTROL_ACTION_OCARINA;
     }
 
-    if (result.action != CONTROL_ACTION_NONE) {
+    if (result.action != CONTROL_ACTION_NONE &&
+        result.action != CONTROL_ACTION_ITEMS_MENU) {
         result.consumedButtons = held &
             (BUTTON_UP | BUTTON_DOWN | BUTTON_LEFT | BUTTON_RIGHT);
     }

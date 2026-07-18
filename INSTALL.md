@@ -32,6 +32,7 @@ files.
 | D-pad Up | Navi / View |
 | D-pad Right | Ocarina |
 | ZL | Hide/show the minimap |
+| Select | Open the Items screen |
 | C-stick | Free camera |
 | L + R + D-pad Up/Down | Free-camera sensitivity |
 | L + R + D-pad Left/Right | Free-camera inversion |
