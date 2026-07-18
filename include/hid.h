@@ -111,6 +111,10 @@ typedef struct {
 #define BUTTON_L1 (1 << 9)
 #define BUTTON_X (1 << 10)
 #define BUTTON_Y (1 << 11)
+// New Nintendo 3DS / Circle Pad Pro buttons are reported by IRRST rather
+// than the original HID pad block above.
+#define IRRST_BUTTON_ZL (1 << 14)
+#define IRRST_BUTTON_ZR (1 << 15)
 #define CPAD_RIGHT (1 << 28)
 #define CPAD_LEFT (1 << 29)
 #define CPAD_UP (1 << 30)
