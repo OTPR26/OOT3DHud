@@ -3,12 +3,15 @@
 ## Before making a public repository
 
 - [x] Preserve and prominently link Roberto-Nessy's standalone free-camera attribution.
-- [x] Preserve the repository's GPLv3 license and all inherited file-level notices.
+- [x] License original OTPR26 source contributions under GPL-3.0-or-later while preserving all
+      inherited file-level notices and separate asset terms.
 - [ ] Preserve every file-level copyright and license notice.
 - [ ] Keep `artifacts/`, `derived-assets/`, `game-dumps/`, loose `exheader.bin` files, and private
       texture-pack files out of the public repository.
 - [ ] Confirm redistribution terms for the Project Restoration-derived release atlas and generated
       legacy framebuffer header.
+- [ ] Obtain or document permission for upstream-authored free-camera portions that do not carry an
+      explicit file-level license.
 - [ ] Confirm the source archive contains no `.git` directory, ROM data, credentials, device paths,
       or experimental IPS builds.
 - [ ] Rebuild from the clean source snapshot and compare `code.ips` with the tested hash.
