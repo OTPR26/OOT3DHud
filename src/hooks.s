@@ -47,7 +47,13 @@ hook_NativeActionHudSync:
     push {r0-r12, lr}
     bl NativeHud_PrepareActionPrompt
     ldmia sp, {r0-r3}
+.if _JP_==1
+    bl 0x42B820
+.elseif _EUR_==1
+    bl 0x42B86C
+.else
     bl 0x42B848
+.endif
     bl NativeHud_RestoreActionPrompt
     pop {r0-r12, lr}
     bx lr

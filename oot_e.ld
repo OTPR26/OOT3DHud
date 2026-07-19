@@ -12,12 +12,32 @@ SECTIONS
 	    * (.patch_CameraUpdate)
 	}
 
+	.patch_NativeActionHudSync 0x41E274 : {
+		*(.patch_NativeActionHudSync)
+	}
+
 	.patch_before_GlobalContext_Update 0x4523B0 : {
 		*(.patch_before_GlobalContext_Update)
 	}
 
 	.patch_after_GlobalContext_Update 0x452454 : {
 		*(.patch_after_GlobalContext_Update)
+	}
+
+	.patch_NativeHudTextureSlot 0x469648 : {
+		*(.patch_NativeHudTextureSlot)
+	}
+
+	.patch_NativeHudKeepPositionUVPointers 0x469610 : {
+		*(.patch_NativeHudKeepPositionUVPointers)
+	}
+
+	.patch_NativeHudKeepIndexPointer 0x469618 : {
+		*(.patch_NativeHudKeepIndexPointer)
+	}
+
+	.patch_NativeHudDescriptor 0x4D30A4 : {
+		*(.patch_NativeHudDescriptor)
 	}
 
 	. = 0x4C99A8;

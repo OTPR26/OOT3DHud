@@ -1,22 +1,28 @@
-# Installing the USA Azahar / Azahar Plus release
+# Installing Ocarina Reframed
 
-This release targets USA OoT3D 1.0, title ID `0004000000033500`.
+Choose the ZIP matching your copy of OoT3D:
+
+| Package | Tested game version | Title ID |
+| --- | --- | --- |
+| USA | USA 1.0 | `0004000000033500` |
+| EUR | Europe Rev 1 | `0004000000033600` |
+| JP | Japan Rev 1 | `0004000000033400` |
 
 1. Close OoT3D.
-2. Open the Azahar or Azahar Plus user-data directory.
+2. Open the Azahar or Citra user-data directory.
 3. Merge the release's `load` folder into that directory.
 4. Enable custom textures in Azahar.
 5. Start the game normally; do not resume an old emulator save state made before installing the mod.
 
-The resulting files should be:
+The resulting files use the title ID for your region:
 
 ```text
-load/mods/0004000000033500/code.ips
-load/mods/0004000000033500/exheader.bin
-load/textures/0004000000033500/UI/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png
+load/mods/<title-id>/code.ips
+load/mods/<title-id>/exheader.bin
+load/textures/<title-id>/UI/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png
 ```
 
-For the tested AYN configuration, the Azahar Plus user-data directory is
+For the tested AYN configuration, the Azahar user-data directory is
 `/storage/emulated/0/ROMs/n3ds`.
 
 Do not combine this release with another code patch for the same title. Existing non-HUD custom
