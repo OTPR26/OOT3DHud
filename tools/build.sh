@@ -29,6 +29,14 @@ rsync -a \
     --exclude .git \
     --exclude build \
     --exclude artifacts \
+    --exclude game-dumps \
+    --exclude test-builds \
+    --exclude test-backups \
+    --exclude dist \
+    --exclude release-v\* \
+    --exclude repo-release \
+    --exclude website \
+    --exclude .pnpm-store \
     --exclude code.ips \
     --exclude '*.elf' \
     "$project_dir/" "$stage_dir/"

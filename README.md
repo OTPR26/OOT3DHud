@@ -2,13 +2,13 @@
 
 [![Release](https://img.shields.io/github/v/release/OTPR26/OOT3DHud?display_name=tag)](https://github.com/OTPR26/OOT3DHud/releases/latest)
 [![License](https://img.shields.io/github/license/OTPR26/OOT3DHud)](LICENSE)
-![Game](https://img.shields.io/badge/OoT3D-USA%201.0-4b8bbe)
-![Tested](https://img.shields.io/badge/tested-Azahar%20%2B%20Azahar%20Plus-5aaa46)
+![Game](https://img.shields.io/badge/OoT3D-USA%20%7C%20EUR%20%7C%20JP-4b8bbe)
+![Tested](https://img.shields.io/badge/tested-Azahar-5aaa46)
 
 **Website:** [ocarinareframed.com](https://ocarinareframed.com)
 
-A modern, high-resolution top-screen HUD and C-stick free camera for the USA 1.0 release of
-*The Legend of Zelda: Ocarina of Time 3D*.
+A modern, high-resolution top-screen HUD and C-stick free camera for the USA, European, and
+Japanese releases of *The Legend of Zelda: Ocarina of Time 3D*.
 
 The HUD brings the Project Restoration style to OoT3D: ABXY in a diamond, live item assignments,
 the changing action prompt, D-pad shortcuts, hearts, magic, and rupees, all rendered through the
@@ -16,8 +16,8 @@ game's native interface. The patch leaves OoT3D's gameplay, progression, invento
 save format unchanged.
 
 > [!IMPORTANT]
-> This first release supports **USA OoT3D 1.0** (`0004000000033500`). EUR, JP, and other
-> revisions are still in progress.
+> Download the package matching your game region. The tested versions are **USA 1.0**,
+> **Europe Rev 1**, and **Japan Rev 1**.
 
 ## Features
 
@@ -52,13 +52,22 @@ save format unchanged.
 Unassigned I or II slots remain blank. The L+R camera-settings chord takes priority over gameplay
 D-pad actions.
 
+## Download and install
+
+Download the ZIP matching your game region from
+[Releases](https://github.com/OTPR26/OOT3DHud/releases/latest), then merge its `load` folder into
+your Azahar or Citra user-data directory. See [INSTALL.md](INSTALL.md) for complete instructions.
+
 ## Compatibility
 
 | Environment | Status |
 | --- | --- |
-| USA OoT3D 1.0 — Azahar on macOS, Windows, Android | Tested |
+| USA OoT3D 1.0 | Tested |
+| Europe OoT3D Rev 1 | Tested |
+| Japan OoT3D Rev 1 | Tested |
+| Azahar/Citra — macOS, Windows, Android | Supported |
 | Henriko's 4K custom-texture pack | Tested |
-| EUR / JP / other game revisions | Not yet validated |
+| Other game revisions | Not yet validated |
 | Original 3DS hardware | Not yet validated |
 
 ## Building from source
@@ -68,13 +77,15 @@ Requirements:
 - devkitARM / devkitPro with the 3DS rules installed
 - Python 3
 
-Build the tested USA/Azahar configuration:
+Build a regional configuration:
 
 ```sh
-./tools/build.sh
+REGION=USA ./tools/build.sh
+REGION=EUR ./tools/build.sh
+REGION=JP ./tools/build.sh
 ```
 
-The resulting patch is `artifacts/USA/code.ips`.
+The resulting patches are written to `artifacts/<region>/code.ips`.
 
 Run the host-side D-pad routing tests without a 3DS toolchain:
 
@@ -82,10 +93,12 @@ Run the host-side D-pad routing tests without a 3DS toolchain:
 make host-test
 ```
 
-The tested `code.ips` SHA-256 is:
+The tested `code.ips` SHA-256 values are:
 
 ```text
-82746278a26bdcfef5195d35975caf0e5ca53c6d48b74826d1c0498c7ddb009c
+USA  397c97bc0a53372dd74c22ce8acdba35f971012b189a9b7a5c2ae9318f73d3e5
+EUR  8b7df0358b079d5dc08dab3740c105e4c7470c90a62467faf6d85593ffd7b88a
+JP   bed48705b758ddd74d5540b17b8750a0b65aae7b061e5f3f194e185b3c639289
 ```
 
 ## How it works

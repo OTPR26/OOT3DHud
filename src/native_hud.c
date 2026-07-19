@@ -283,24 +283,37 @@ u16 gNativeHudIndices[NATIVE_HUD_INDEX_COUNT]
 
 // OoT3D's motion-control HUD flag. The standalone free camera does not use
 // the icon, so the native proof repurposes its existing stereoscopic quad.
-#define NATIVE_HUD_PROOF_VISIBLE (*(volatile u8*)0x004FC648)
-#define NATIVE_HUD_BOARD (*(void**)0x004FC6BC)
+#define NATIVE_HUD_PROOF_VISIBLE (*(volatile u8*)ADDR(0x004FC648))
+#define NATIVE_HUD_BOARD (*(void**)ADDR(0x004FC6BC))
 
 typedef float* (*NativeHudMappedBufferFn)(void* board, u32 layer);
-#define NATIVE_HUD_SOURCE_POSITIONS ((NativeHudMappedBufferFn)0x002FC3FC)
+#define NATIVE_HUD_SOURCE_POSITIONS ((NativeHudMappedBufferFn)ADDR(0x002FC3FC))
 
 typedef void (*NativeHudUploadBufferFn)(void* board, u32 byteCount, const void* source);
-#define NATIVE_HUD_UPLOAD_UVS ((NativeHudUploadBufferFn)0x00317D1C)
+#define NATIVE_HUD_UPLOAD_UVS ((NativeHudUploadBufferFn)ADDR(0x00317D1C))
 
 #define NATIVE_ACTION_VERTEX_COUNT 8
 static float sNativeActionOriginal[NATIVE_ACTION_VERTEX_COUNT * 3];
 static float* sNativeActionSource;
+static u32 sNativeHudUploadedHash;
+static u8 sNativeHudHasUploaded;
+static void* sNativeHudUploadedBoard;
+
+static u32 NativeHud_UvHash(void) {
+    const u32* words = (const u32*)gNativeHudUVs;
+    u32 hash = 2166136261u;
+    for (u32 i = 0; i < sizeof(gNativeHudUVs) / sizeof(u32); i++) {
+        hash ^= words[i];
+        hash *= 16777619u;
+    }
+    return hash;
+}
 
 void NativeHud_PrepareActionPrompt(void) {
     // Quads 0 and 1 are alternate live A states. One may be collapsed while
     // the other is active, so transform them independently instead of using a
     // combined bound (which made the visible artwork tiny and malformed).
-    void* actionSource = *(void**)0x004FC660;
+    void* actionSource = *(void**)ADDR(0x004FC660);
     float* source = actionSource != 0 ? NATIVE_HUD_SOURCE_POSITIONS(actionSource, 0) : 0;
     sNativeActionSource = 0;
     if (source == 0) {
@@ -615,7 +628,14 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     // 0x4546F4, used previously, is an internal address calculator rather
     // than a UV getter and caused the correct values to land in unrelated
     // GPU memory.
-    NATIVE_HUD_UPLOAD_UVS(board, sizeof(gNativeHudUVs), gNativeHudUVs);
+    const u32 uvHash = NativeHud_UvHash();
+    if (!sNativeHudHasUploaded || board != sNativeHudUploadedBoard ||
+        uvHash != sNativeHudUploadedHash) {
+        NATIVE_HUD_UPLOAD_UVS(board, sizeof(gNativeHudUVs), gNativeHudUVs);
+        sNativeHudUploadedHash = uvHash;
+        sNativeHudUploadedBoard = board;
+        sNativeHudHasUploaded = 1;
+    }
 }
 
 void NativeHud_UpdateProof(GlobalContext* globalCtx) {
