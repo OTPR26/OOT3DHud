@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://ocarinareframed.com
+Sitemap: https://ocarinareframed.com/sitemap.xml
