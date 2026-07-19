@@ -62,7 +62,7 @@ your Azahar or Citra user-data directory. See [INSTALL.md](INSTALL.md) for compl
 
 | Environment | Status |
 | --- | --- |
-| USA 1.0 | Supported |
+| USA Rev 0/1 | Supported |
 | Europe Rev 1 | Supported |
 | Japan Rev 1 | Supported |
 | Azahar/Citra — macOS, Windows, Android | Supported |
