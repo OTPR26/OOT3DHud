@@ -3,7 +3,6 @@
 #include "3ds/services/irrst.h"
 #include "camera.h"
 #include "draw.h"
-#include "hud.h"
 #include "input.h"
 #include "input_remap.h"
 #include "native_hud.h"
@@ -36,10 +35,6 @@ void before_GlobalContext_Update(GlobalContext* globalCtx) {
 
 void after_GlobalContext_Update(GlobalContext* globalCtx) {
 #ifndef PLUS_CONTROLS_ONLY
-#if !defined(PLUS_MINIMAL_HUD) && !defined(PLUS_NATIVE_MAGIC_STAGE) && \
-    (!defined(PLUS_HEARTS_ONLY) || defined(PLUS_RUPEES_STAGE))
-    Hud_Draw(globalCtx);
-#endif
     NativeHud_UpdateProof(globalCtx);
 #endif
     Camera_DrawSettingsOverlay();

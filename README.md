@@ -25,12 +25,13 @@ save format unchanged.
 - Modern ABXY diamond in the upper-right
 - Original live A action prompt, repositioned without replacing its changing text
 - Live B, X, Y, I, and II item icons
+- Live ammo counts for consumable X, Y, I, and II items
 - D-pad shortcuts for I, II, Navi/View, and the Ocarina
 - ZL minimap hide/show control, preserving access after the D-pad remap
 - Select opens the native Items screen
-- Live hearts, magic meter,and rupees
+- Live hearts, magic meter, and rupees
 - C-stick free camera using [Roberto-Nessy/OoT3D_Standalone_Free_Cam](https://github.com/Roberto-Nessy/OoT3D_Standalone_Free_Cam)
-- Compatible with [Henriko's 4K texture pack](https://www.henrikomagnifico.com).
+- Compatible with [Henriko Magnifico's OoT3D 4K texture pack](https://www.henrikomagnifico.com/zelda-ocarina-of-time-3d-4k).
 
 
 
@@ -84,7 +85,7 @@ make host-test
 The tested `code.ips` SHA-256 is:
 
 ```text
-8dacc17763ccd6c167b8b1b65fabb8280c399f3e1b80c728fbab66a83682e3a8
+82746278a26bdcfef5195d35975caf0e5ca53c6d48b74826d1c0498c7ddb009c
 ```
 
 ## How it works

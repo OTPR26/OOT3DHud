@@ -21,10 +21,10 @@
 // and follows the visual scale of Project Restoration's widescreen HUD.
 float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     __attribute__((aligned(16), used)) = {
-    // Reserved A base. The live vanilla action widget will occupy this spot;
-    // keep this static quad degenerate so it cannot obscure changing text.
-    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
-    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
+    // Native bottom-right rupee. This old A-placeholder quad is drawn early,
+    // but the rupee occupies an unrelated screen area and needs no overlap.
+    345.0f, 227.0f, 0.0f, 355.0f, 227.0f, 0.0f,
+    345.0f, 215.0f, 0.0f, 355.0f, 215.0f, 0.0f,
     // B base (bottom)
     357.0f, 62.0f, 0.0f, 373.0f, 62.0f, 0.0f,
     357.0f, 46.0f, 0.0f, 373.0f, 46.0f, 0.0f,
@@ -46,9 +46,9 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     // Live Y item, centered inside the left face-button base.
     342.0f, 43.0f, 0.0f, 354.0f, 43.0f, 0.0f,
     342.0f, 31.0f, 0.0f, 354.0f, 31.0f, 0.0f,
-    // Reserved A label. The action prompt must supply its own live contents.
-    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
-    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
+    // Ocarina (D-pad right), moved onto the obsolete static A-label quad.
+    50.0f, 85.0f, 0.0f, 64.0f, 85.0f, 0.0f,
+    50.0f, 71.0f, 0.0f, 64.0f, 71.0f, 0.0f,
     // Navi marker (D-pad up)
     34.0f, 64.0f, 0.0f, 46.0f, 64.0f, 0.0f,
     34.0f, 52.0f, 0.0f, 46.0f, 52.0f, 0.0f,
@@ -58,9 +58,10 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     // II-slot equipped item (D-pad down)
     33.0f, 105.0f, 0.0f, 47.0f, 105.0f, 0.0f,
     33.0f, 91.0f, 0.0f, 47.0f, 91.0f, 0.0f,
-    // Ocarina (D-pad right)
-    50.0f, 85.0f, 0.0f, 64.0f, 85.0f, 0.0f,
-    50.0f, 71.0f, 0.0f, 64.0f, 71.0f, 0.0f,
+    // I ammo count. Quad 12 is drawn after both D-pad item quads, so the
+    // digits remain visibly layered over the equipped item artwork.
+    23.0f, 85.0f, 0.0f, 30.0f, 85.0f, 0.0f,
+    23.0f, 80.0f, 0.0f, 30.0f, 80.0f, 0.0f,
 #ifndef PLUS_MINIMAL_HUD
     // Ten native pair cells cover all twenty hearts while staying below the
     // board's proven 33-quad upload boundary. Runtime UV updates select one
@@ -78,9 +79,10 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     NATIVE_HEART_PAIR_POS(52.0f, 19.0f),
     NATIVE_HEART_PAIR_POS(74.0f, 19.0f),
     NATIVE_HEART_PAIR_POS(96.0f, 19.0f),
-    // Native bottom-right rupee plus three live PR number glyphs.
-    345.0f, 227.0f, 0.0f, 355.0f, 227.0f, 0.0f,
-    345.0f, 215.0f, 0.0f, 355.0f, 215.0f, 0.0f,
+    // II ammo count plus three live PR rupee-number glyphs. Quad 23 is
+    // safely inside the proven upload range and renders after the item quad.
+    40.0f, 105.0f, 0.0f, 47.0f, 105.0f, 0.0f,
+    40.0f, 100.0f, 0.0f, 47.0f, 100.0f, 0.0f,
     359.0f, 226.0f, 0.0f, 365.0f, 226.0f, 0.0f,
     359.0f, 216.0f, 0.0f, 365.0f, 216.0f, 0.0f,
     366.0f, 226.0f, 0.0f, 372.0f, 226.0f, 0.0f,
@@ -88,43 +90,28 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     373.0f, 226.0f, 0.0f, 379.0f, 226.0f, 0.0f,
     373.0f, 216.0f, 0.0f, 379.0f, 216.0f, 0.0f,
     // The board only uploads its first 33 quads reliably in Azahar Plus.
-    // Reserve the final four low-index cells for a fixed 110-pixel meter.
-    // Normal magic uses transparency after pixel 74; double magic spans the
-    // same width as the two heart rows.
+    // Magic needs two cells (frame and fill); the other four reliable cells
+    // carry live ammo counts for X, Y, I, and II.
     8.0f, 42.0f, 0.0f, 118.0f, 42.0f, 0.0f,
     8.0f, 33.0f, 0.0f, 118.0f, 33.0f, 0.0f,
-    8.0f, 42.0f, 0.0f, 118.0f, 42.0f, 0.0f,
-    8.0f, 33.0f, 0.0f, 118.0f, 33.0f, 0.0f,
-    8.0f, 42.0f, 0.0f, 118.0f, 42.0f, 0.0f,
-    8.0f, 33.0f, 0.0f, 118.0f, 33.0f, 0.0f,
+    // X ammo count
+    366.0f, 27.0f, 0.0f, 373.0f, 27.0f, 0.0f,
+    366.0f, 22.0f, 0.0f, 373.0f, 22.0f, 0.0f,
+    // Y ammo count
+    349.0f, 44.0f, 0.0f, 356.0f, 44.0f, 0.0f,
+    349.0f, 39.0f, 0.0f, 356.0f, 39.0f, 0.0f,
     10.0f, 40.0f, 0.0f, 116.0f, 40.0f, 0.0f,
     10.0f, 35.0f, 0.0f, 116.0f, 35.0f, 0.0f,
-    // Two unused low-index cells retained so the high-index research layout
-    // continues to begin at quad 33.
+    // Quads 31 and 32 cannot safely carry visible geometry on every Azahar
+    // renderer. Keep them degenerate; I/II use safe quads 12 and 23 instead.
     -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
     -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
     -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
     -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
 #undef NATIVE_HEART_PAIR_POS
-#ifndef PLUS_HEARTS_ONLY
-    // Preserve the legacy array footprint expected by the hook, but collapse
-    // the obsolete segmented meter. Leaving it visible overlays its normal-
-    // magic end cap at x=82 on top of the live double-magic frame above.
-#define NATIVE_HIDDEN_QUAD \
-    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f, \
-    -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f
-#define NATIVE_HIDDEN_8 \
-    NATIVE_HIDDEN_QUAD, NATIVE_HIDDEN_QUAD, \
-    NATIVE_HIDDEN_QUAD, NATIVE_HIDDEN_QUAD, \
-    NATIVE_HIDDEN_QUAD, NATIVE_HIDDEN_QUAD, \
-    NATIVE_HIDDEN_QUAD, NATIVE_HIDDEN_QUAD
-    NATIVE_HIDDEN_8, NATIVE_HIDDEN_8, NATIVE_HIDDEN_8,
-    NATIVE_HIDDEN_8, NATIVE_HIDDEN_8, NATIVE_HIDDEN_8,
-    NATIVE_HIDDEN_8, NATIVE_HIDDEN_8, NATIVE_HIDDEN_8,
-    NATIVE_HIDDEN_QUAD,
-#undef NATIVE_HIDDEN_8
-#undef NATIVE_HIDDEN_QUAD
-#endif
+    // Quads 33-105 are an obsolete research tail. Their implicit zero
+    // initialization makes every triangle degenerate while preserving the
+    // descriptor's legacy buffer footprint without spending IPS payload.
 #endif
 };
 
@@ -132,9 +119,10 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
 // because the native board uses a bottom-left texture origin.
 float gNativeHudUVs[NATIVE_HUD_VERTEX_COUNT * 2]
     __attribute__((aligned(16), used)) = {
-    // Blank circular base: (48,0)-(85,38), used by A/B/X/Y.
-    0.09375f, 0.8515625f, 0.166015625f, 0.8515625f,
-    0.09375f, 1.0f,       0.166015625f, 1.0f,
+    // Rupee starts transparent until the first live state upload.
+    0.99609375f, 0.0078125f, 0.99609375f, 0.0078125f,
+    0.99609375f, 0.0078125f, 0.99609375f, 0.0078125f,
+    // Blank circular base: (48,0)-(85,38), used by B/X/Y.
     0.09375f, 0.8515625f, 0.166015625f, 0.8515625f,
     0.09375f, 1.0f,       0.166015625f, 1.0f,
     0.09375f, 0.8515625f, 0.166015625f, 0.8515625f,
@@ -152,20 +140,21 @@ float gNativeHudUVs[NATIVE_HUD_VERTEX_COUNT * 2]
     0.3100585938f, 0.5f,          0.3308919271f, 0.5f,
     0.4142252604f, 0.4166666667f, 0.4350585938f, 0.4166666667f,
     0.4142252604f, 0.4583333333f, 0.4350585938f, 0.4583333333f,
-    // Yellow A glyph above PR's A circle: (23,0)-(32,10)
-    0.044921875f, 0.9609375f, 0.0625f, 0.9609375f,
-    0.044921875f, 1.0f,       0.0625f, 1.0f,
+    // Ocarina of Time (item-atlas cell 8).
+    0.4142252604f, 0.4583333333f, 0.4350585938f, 0.4583333333f,
+    0.4142252604f, 0.5f,          0.4350585938f, 0.5f,
     // Navi: (88,0)-(116,26)
     0.171875f, 0.8984375f, 0.2265625f, 0.8984375f,
     0.171875f, 1.0f,       0.2265625f, 1.0f,
     // Active-save constructor defaults from the OoT atlas's 12x12 grid:
-    // I/Bombchu (cell 9), II/Longshot (cell 11), Ocarina of Time (cell 8).
+    // I/Bombchu (cell 9), II/Longshot (cell 11).
     0.4350585938f, 0.4583333333f, 0.4558919271f, 0.4583333333f,
     0.4350585938f, 0.5f,          0.4558919271f, 0.5f,
     0.4767252604f, 0.4583333333f, 0.4975585938f, 0.4583333333f,
     0.4767252604f, 0.5f,          0.4975585938f, 0.5f,
-    0.4142252604f, 0.4583333333f, 0.4350585938f, 0.4583333333f,
-    0.4142252604f, 0.5f,          0.4350585938f, 0.5f,
+    // I count starts transparent until the first live state upload.
+    0.99609375f, 0.0078125f, 0.99609375f, 0.0078125f,
+    0.99609375f, 0.0078125f, 0.99609375f, 0.0078125f,
 #ifndef PLUS_MINIMAL_HUD
     // Default to atlas tile 14: two full hearts. Runtime replaces all ten
     // pair cells from live capacity and health before the board is displayed.
@@ -189,37 +178,8 @@ float gNativeHudUVs[NATIVE_HUD_VERTEX_COUNT * 2]
     NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
     NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
 #undef NATIVE_TRANSPARENT_UV
-#ifndef PLUS_HEARTS_ONLY
-    // Solid swatch centers added by build_native_hud_atlas.py.
-#define NATIVE_SOLID_UV(px) \
-    ((px) / 2048.0f), (1.0f - 42.0f / 1024.0f), \
-    ((px) / 2048.0f), (1.0f - 42.0f / 1024.0f), \
-    ((px) / 2048.0f), (1.0f - 42.0f / 1024.0f), \
-    ((px) / 2048.0f), (1.0f - 42.0f / 1024.0f)
-    NATIVE_SOLID_UV(1462.0f), NATIVE_SOLID_UV(1482.0f),
-    NATIVE_SOLID_UV(1502.0f),
-#define NATIVE_GREEN_UV NATIVE_SOLID_UV(1522.0f)
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-    NATIVE_GREEN_UV, NATIVE_GREEN_UV,
-#undef NATIVE_GREEN_UV
-#undef NATIVE_SOLID_UV
-#endif
+    // The unused research UV tail is implicitly zeroed to match its
+    // degenerate position data above.
 #endif
 };
 
@@ -516,6 +476,50 @@ static void NativeHud_WriteDigitUV(float* uv, u32 quad, u32 digit) {
     uv[4] = u0; uv[5] = v1; uv[6] = u1; uv[7] = v1;
 }
 
+static u8 NativeHud_AmmoSlotForItem(u8 item) {
+    switch (item) {
+        case ITEM_STICK: return SLOT_STICK;
+        case ITEM_NUT: return SLOT_NUT;
+        case ITEM_BOMB: return SLOT_BOMB;
+        case ITEM_BOW:
+        case ITEM_ARROW_FIRE:
+        case ITEM_ARROW_ICE:
+        case ITEM_ARROW_LIGHT:
+        case ITEM_BOW_ARROW_FIRE:
+        case ITEM_BOW_ARROW_ICE:
+        case ITEM_BOW_ARROW_LIGHT: return SLOT_BOW;
+        case ITEM_SLINGSHOT: return SLOT_SLINGSHOT;
+        case ITEM_BOMBCHU: return SLOT_BOMBCHU;
+        case ITEM_BEAN: return SLOT_BEAN;
+        default: return SLOT_NONE;
+    }
+}
+
+static void NativeHud_WriteAmmoUV(float* uv, u32 quad, u8 item) {
+    const u8 slot = NativeHud_AmmoSlotForItem(item);
+    if (slot == SLOT_NONE) {
+        NativeHud_WriteSolidUV(uv, quad, 2040.0f, 1016.0f);
+        return;
+    }
+
+    s32 ammo = gSaveContext.ammo[slot];
+    if (ammo < 0) ammo = 0;
+    if (ammo > 50) ammo = 50;
+
+    // The atlas stores 0-50 as lossless two-digit PR tiles in an 18-column
+    // bank. Single-digit values are right-aligned with a transparent tens
+    // cell, matching the native OoT3D counter treatment.
+    const u32 column = (u32)ammo % 18;
+    const u32 row = (u32)ammo / 18;
+    const float u0 = (1024.5f + (float)column * 56.0f) / 2048.0f;
+    const float u1 = u0 + 55.0f / 2048.0f;
+    const float v1 = 1.0f - (832.5f + (float)row * 64.0f) / 1024.0f;
+    const float v0 = v1 - 63.0f / 1024.0f;
+    uv += quad * 8;
+    uv[0] = u0; uv[1] = v0; uv[2] = u1; uv[3] = v0;
+    uv[4] = u0; uv[5] = v1; uv[6] = u1; uv[7] = v1;
+}
+
 static void NativeHud_UpdateMappedItems(u8 visible) {
     void* board = NATIVE_HUD_BOARD;
     if (!visible || board == 0) {
@@ -545,7 +549,7 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     NativeHud_WriteItemUV(gNativeHudUVs, 7, gSaveContext.equips.buttonItems[1]);
     NativeHud_WriteItemUV(gNativeHudUVs, 10, itemI);
     NativeHud_WriteItemUV(gNativeHudUVs, 11, itemII);
-    NativeHud_WriteItemUV(gNativeHudUVs, 12, ITEM_OCARINA_TIME);
+    NativeHud_WriteItemUV(gNativeHudUVs, 8, ITEM_OCARINA_TIME);
 
 #ifndef PLUS_MINIMAL_HUD
     s32 maxHearts = gSaveContext.healthCapacity > 0 ? gSaveContext.healthCapacity / 16 : 0;
@@ -562,7 +566,7 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
 #ifndef PLUS_HEARTS_ONLY
     u32 rupees = gSaveContext.rupees > 0 ? (u32)gSaveContext.rupees : 0;
     if (rupees > 999) rupees = 999;
-    NativeHud_WriteRupeeUV(gNativeHudUVs, 23);
+    NativeHud_WriteRupeeUV(gNativeHudUVs, 0);
     if (rupees >= 100) {
         NativeHud_WriteDigitUV(gNativeHudUVs, 24, rupees / 100);
     } else {
@@ -575,6 +579,13 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     }
     NativeHud_WriteDigitUV(gNativeHudUVs, 26, rupees % 10);
 
+    NativeHud_WriteAmmoUV(gNativeHudUVs, 28,
+                          gSaveContext.equips.buttonItems[2]);
+    NativeHud_WriteAmmoUV(gNativeHudUVs, 29,
+                          gSaveContext.equips.buttonItems[1]);
+    NativeHud_WriteAmmoUV(gNativeHudUVs, 12, itemI);
+    NativeHud_WriteAmmoUV(gNativeHudUVs, 23, itemII);
+
     // The upgrade state lives in dedicated save flags. magicLevel is not a
     // reliable indication of double magic in a naturally progressed save.
     const bool hasMagic = gSaveContext.magicAcquired != 0 || gSaveContext.magicLevel > 0;
@@ -584,8 +595,6 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     } else {
         NativeHud_WriteSolidUV(gNativeHudUVs, 27, 1644.0f, 48.0f);
     }
-    NativeHud_WriteSolidUV(gNativeHudUVs, 28, 1644.0f, 48.0f);
-    NativeHud_WriteSolidUV(gNativeHudUVs, 29, 1644.0f, 48.0f);
     u32 magicWidth = 0;
     if (hasMagic) {
         const u32 maxMagic = doubleMagic ? 0x60 : 0x30;
