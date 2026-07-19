@@ -22,6 +22,11 @@ MAGIC_FILL_X = 1024
 MAGIC_FILL_Y = 800
 MAGIC_FILL_WIDTH = 848
 MAGIC_FILL_HEIGHT = 20
+AMMO_BANK_X = 1024
+AMMO_BANK_Y = 832
+AMMO_TILE_WIDTH = 56
+AMMO_TILE_HEIGHT = 64
+AMMO_BANK_COLUMNS = 18
 
 
 def remove_detached_item_artifacts(image: Image.Image) -> Image.Image:
@@ -167,6 +172,26 @@ def add_magic_meter_bank(hud: Image.Image) -> None:
                     MAGIC_FILL_Y + MAGIC_FILL_HEIGHT - 1), fill=green)
 
 
+def add_ammo_count_bank(hud: Image.Image) -> None:
+    """Add lossless live-count tiles for every attainable ammo value."""
+    # PR's native 0-9 strip occupies 8x16 logical cells. Trim two transparent
+    # source pixels from each side so two digits fit in a compact 56x64 tile;
+    # no scaling, filtering, or format conversion is involved.
+    digits = [hud.crop((digit * 32 + 2, 288,
+                        digit * 32 + 30, 352))
+              for digit in range(10)]
+    hud.paste((0, 0, 0, 0),
+              (AMMO_BANK_X, AMMO_BANK_Y,
+               AMMO_BANK_X + AMMO_BANK_COLUMNS * AMMO_TILE_WIDTH,
+               AMMO_BANK_Y + 3 * AMMO_TILE_HEIGHT))
+    for amount in range(51):
+        x = AMMO_BANK_X + (amount % AMMO_BANK_COLUMNS) * AMMO_TILE_WIDTH
+        y = AMMO_BANK_Y + (amount // AMMO_BANK_COLUMNS) * AMMO_TILE_HEIGHT
+        if amount >= 10:
+            hud.alpha_composite(digits[amount // 10], (x, y))
+        hud.alpha_composite(digits[amount % 10], (x + 28, y))
+
+
 def main() -> None:
     hud = Image.open(PR_ATLAS).convert("RGBA")
     items = remove_detached_item_artifacts(
@@ -192,6 +217,7 @@ def main() -> None:
     # rupees and magic inside the board's proven low-index range.
     add_heart_pair_bank(hud)
     add_magic_meter_bank(hud)
+    add_ammo_count_bank(hud)
 
     # Solid native-renderer swatches in a confirmed transparent PR region.
     # Sampling their centers lets the GPU draw a perfectly crisp, scalable
@@ -202,6 +228,8 @@ def main() -> None:
     draw.rectangle((1476, 36, 1488, 48), fill=(235, 235, 220, 255))
     draw.rectangle((1496, 36, 1508, 48), fill=(72, 76, 76, 255))
     draw.rectangle((1516, 36, 1528, 48), fill=(30, 220, 55, 255))
+    # Dedicated transparent texel used to collapse inactive count quads.
+    hud.paste((0, 0, 0, 0), (2036, 1012, 2048, 1024))
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     hud.save(OUTPUT, format="PNG", optimize=False)
     print(OUTPUT)

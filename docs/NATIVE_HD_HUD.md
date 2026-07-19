@@ -25,6 +25,8 @@ pixel coordinates.
 - A action prompt: the original changing action art is repositioned and resized.
 - B/X/Y: reads current button items.
 - D-pad Left/Down: reads the active I/II assignments; an unassigned slot is transparent.
+- X/Y/I/II ammo counts: reads the live quantity for sticks, nuts, bombs, arrows, seeds,
+  Bombchus, and beans; non-consumable and unassigned items have no count.
 - D-pad Up/Right: Navi/View and Ocarina.
 - Hearts: reads health capacity and current health, including partial and empty-heart states, for all
   20 possible heart containers.
