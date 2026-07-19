@@ -62,13 +62,13 @@ your Azahar or Citra user-data directory. See [INSTALL.md](INSTALL.md) for compl
 
 | Environment | Status |
 | --- | --- |
-| USA OoT3D 1.0 | Tested |
-| Europe OoT3D Rev 1 | Tested |
-| Japan OoT3D Rev 1 | Tested |
+| USA 1.0 | Tested |
+| Europe Rev 1 | Tested |
+| Japan Rev 1 | Tested |
 | Azahar/Citra — macOS, Windows, Android | Supported |
 | Henriko's 4K custom-texture pack | Tested |
-| Other game revisions | Not yet validated |
-| Original 3DS hardware | Not yet validated |
+| Other regions | In Progress |
+| Original 3DS + Lumas3DS | Not yet validated |
 
 ## Building from source
 
