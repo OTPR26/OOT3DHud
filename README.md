@@ -62,11 +62,11 @@ your Azahar or Citra user-data directory. See [INSTALL.md](INSTALL.md) for compl
 
 | Environment | Status |
 | --- | --- |
-| USA 1.0 | Tested |
-| Europe Rev 1 | Tested |
-| Japan Rev 1 | Tested |
+| USA 1.0 | Supported |
+| Europe Rev 1 | Supported |
+| Japan Rev 1 | Supported |
 | Azahar/Citra — macOS, Windows, Android | Supported |
-| Henriko's 4K custom-texture pack | Tested |
+| Henriko's 4K custom-texture pack | Supported |
 | Other regions | In Progress |
 | Original 3DS + Lumas3DS | Not yet validated |
 
