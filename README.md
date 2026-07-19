@@ -66,7 +66,7 @@ your Azahar or Citra user-data directory. See [INSTALL.md](INSTALL.md) for compl
 | Europe Rev 1 | Supported |
 | Japan Rev 1 | Supported |
 | Azahar/Citra — macOS, Windows, Android | Supported |
-| Henriko's 4K custom-texture pack | Supported |
+| Henriko's 4K texture pack | Supported |
 | Other regions | In Progress |
 | Original 3DS + Lumas3DS | Not yet validated |
 
