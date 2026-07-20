@@ -58,15 +58,13 @@ Download the package matching your game region from
 [Releases](https://github.com/OTPR26/OOT3DHud/releases/latest). Each region has a normal emulator
 mod and a self-contained ROM patch.
 
-### Azahar or Citra
+### Azahar, Citra, or other emulators
 
 1. Download the regional **Mod ZIP**.
-2. Fully close the emulator.
-3. Extract the ZIP and merge its `load` folder into the Azahar or Citra user-data directory.
-4. Enable **Use Custom Textures** in the emulator's graphics settings.
-5. Restart the emulator and launch the game normally.
+2. Extract the ZIP and merge its `load` folder into the Azahar or Citra user-data directory.
+3. Enable **Use Custom Textures** in the emulator's graphics settings.
+4. Restart the emulator and launch the game normally.
 
-Do not resume an old save state after installing. Normal in-game save files are unaffected.
 Existing unrelated texture packs can remain installed, but do not combine Ocarina Reframed with
 another `code.ips` patch for the same title. See [INSTALL.md](INSTALL.md) for the regional title IDs
 and complete folder paths.
@@ -89,9 +87,7 @@ testing any modified ROM.
 
 Original 3DS support is still in progress. Luma3DS can load the included `code.ips` and
 `exheader.bin`, but the current HD HUD atlas uses Azahar/Citra custom-texture replacement and cannot
-yet be loaded by Luma3DS. The current emulator Mod ZIP should therefore not be treated as a complete
-Luma3DS release. Hardware installation instructions will be added after a compatible HUD package is
-validated.
+yet be loaded by Luma3DS. 3DS users may instead prefer to use the rom patching directions above.
 
 ## Compatibility
 
