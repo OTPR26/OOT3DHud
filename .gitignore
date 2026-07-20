@@ -13,3 +13,5 @@ code.bin
 romfs/
 game-dumps/
 derived-assets/
+__pycache__/
+*.pyc

@@ -6,19 +6,13 @@
 // The native motion-control board is converted into a multi-quad triangle
 // strip. These buffers stay resident for the lifetime of the game because the
 // board's descriptor retains their addresses while uploading GPU data.
-#ifdef PLUS_MINIMAL_HUD
-#define NATIVE_HUD_QUAD_COUNT 13
-#elif defined(PLUS_HEARTS_ONLY)
-#define NATIVE_HUD_QUAD_COUNT 33
-#else
 #define NATIVE_HUD_QUAD_COUNT 106
-#endif
 #define NATIVE_HUD_VERTEX_COUNT (NATIVE_HUD_QUAD_COUNT * 4)
 #define NATIVE_HUD_INDEX_COUNT (4 + (NATIVE_HUD_QUAD_COUNT - 1) * 6)
 
 // Vertex order per quad: lower-left, lower-right, upper-left, upper-right.
-// The face-button size is intentionally smaller than the initial 40x40 proof
-// and follows the visual scale of Project Restoration's widescreen HUD.
+// The face-button size follows the visual scale of Project Restoration's
+// widescreen HUD.
 float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     __attribute__((aligned(16), used)) = {
     // Native bottom-right rupee. This old A-placeholder quad is drawn early,
@@ -62,7 +56,6 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     // digits remain visibly layered over the equipped item artwork.
     23.0f, 85.0f, 0.0f, 30.0f, 85.0f, 0.0f,
     23.0f, 80.0f, 0.0f, 30.0f, 80.0f, 0.0f,
-#ifndef PLUS_MINIMAL_HUD
     // Ten native pair cells cover all twenty hearts while staying below the
     // board's proven 33-quad upload boundary. Runtime UV updates select one
     // of fifteen lossless two-heart states from the HD atlas.
@@ -89,7 +82,8 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     366.0f, 216.0f, 0.0f, 372.0f, 216.0f, 0.0f,
     373.0f, 226.0f, 0.0f, 379.0f, 226.0f, 0.0f,
     373.0f, 216.0f, 0.0f, 379.0f, 216.0f, 0.0f,
-    // The board only uploads its first 33 quads reliably in Azahar Plus.
+    // The board only uploads its first 33 quads reliably across supported
+    // emulator renderers.
     // Magic needs two cells (frame and fill); the other four reliable cells
     // carry live ammo counts for X, Y, I, and II.
     8.0f, 42.0f, 0.0f, 118.0f, 42.0f, 0.0f,
@@ -109,10 +103,9 @@ float gNativeHudPositions[NATIVE_HUD_VERTEX_COUNT * 3]
     -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
     -100.0f, -100.0f, 0.0f, -100.0f, -100.0f, 0.0f,
 #undef NATIVE_HEART_PAIR_POS
-    // Quads 33-105 are an obsolete research tail. Their implicit zero
-    // initialization makes every triangle degenerate while preserving the
-    // descriptor's legacy buffer footprint without spending IPS payload.
-#endif
+    // Quads 33-105 are compatibility padding. Their implicit zero
+    // initialization keeps every triangle degenerate while preserving the
+    // descriptor layout used by the supported regional builds.
 };
 
 // UVs address Project Restoration's logical 512x256 atlas. V is flipped
@@ -155,7 +148,6 @@ float gNativeHudUVs[NATIVE_HUD_VERTEX_COUNT * 2]
     // I count starts transparent until the first live state upload.
     0.99609375f, 0.0078125f, 0.99609375f, 0.0078125f,
     0.99609375f, 0.0078125f, 0.99609375f, 0.0078125f,
-#ifndef PLUS_MINIMAL_HUD
     // Default to atlas tile 14: two full hearts. Runtime replaces all ten
     // pair cells from live capacity and health before the board is displayed.
 #define NATIVE_FULL_HEART_PAIR_UV \
@@ -178,9 +170,8 @@ float gNativeHudUVs[NATIVE_HUD_VERTEX_COUNT * 2]
     NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
     NATIVE_TRANSPARENT_UV, NATIVE_TRANSPARENT_UV,
 #undef NATIVE_TRANSPARENT_UV
-    // The unused research UV tail is implicitly zeroed to match its
-    // degenerate position data above.
-#endif
+    // Compatibility padding is implicitly zeroed to match its degenerate
+    // position data above.
 };
 
 // Join independent four-vertex strips with repeated degenerate vertices.
@@ -194,7 +185,6 @@ u16 gNativeHudIndices[NATIVE_HUD_INDEX_COUNT]
     NATIVE_HUD_JOIN(4), NATIVE_HUD_JOIN(5), NATIVE_HUD_JOIN(6),
     NATIVE_HUD_JOIN(7), NATIVE_HUD_JOIN(8), NATIVE_HUD_JOIN(9),
     NATIVE_HUD_JOIN(10), NATIVE_HUD_JOIN(11), NATIVE_HUD_JOIN(12),
-#ifndef PLUS_MINIMAL_HUD
     NATIVE_HUD_JOIN(13), NATIVE_HUD_JOIN(14), NATIVE_HUD_JOIN(15),
     NATIVE_HUD_JOIN(16), NATIVE_HUD_JOIN(17), NATIVE_HUD_JOIN(18),
     NATIVE_HUD_JOIN(19), NATIVE_HUD_JOIN(20), NATIVE_HUD_JOIN(21),
@@ -202,7 +192,6 @@ u16 gNativeHudIndices[NATIVE_HUD_INDEX_COUNT]
     NATIVE_HUD_JOIN(25), NATIVE_HUD_JOIN(26), NATIVE_HUD_JOIN(27),
     NATIVE_HUD_JOIN(28), NATIVE_HUD_JOIN(29), NATIVE_HUD_JOIN(30),
     NATIVE_HUD_JOIN(31), NATIVE_HUD_JOIN(32),
-#ifndef PLUS_HEARTS_ONLY
     NATIVE_HUD_JOIN(33),
     NATIVE_HUD_JOIN(34),
     NATIVE_HUD_JOIN(35),
@@ -276,14 +265,12 @@ u16 gNativeHudIndices[NATIVE_HUD_INDEX_COUNT]
     NATIVE_HUD_JOIN(103),
     NATIVE_HUD_JOIN(104),
     NATIVE_HUD_JOIN(105),
-#endif
-#endif
 };
 #undef NATIVE_HUD_JOIN
 
 // OoT3D's motion-control HUD flag. The standalone free camera does not use
-// the icon, so the native proof repurposes its existing stereoscopic quad.
-#define NATIVE_HUD_PROOF_VISIBLE (*(volatile u8*)ADDR(0x004FC648))
+// the icon, so the HUD repurposes its existing stereoscopic quad.
+#define NATIVE_HUD_VISIBLE (*(volatile u8*)ADDR(0x004FC648))
 #define NATIVE_HUD_BOARD (*(void**)ADDR(0x004FC6BC))
 
 typedef float* (*NativeHudMappedBufferFn)(void* board, u32 layer);
@@ -564,7 +551,6 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     NativeHud_WriteItemUV(gNativeHudUVs, 11, itemII);
     NativeHud_WriteItemUV(gNativeHudUVs, 8, ITEM_OCARINA_TIME);
 
-#ifndef PLUS_MINIMAL_HUD
     s32 maxHearts = gSaveContext.healthCapacity > 0 ? gSaveContext.healthCapacity / 16 : 0;
     if (maxHearts > 20) maxHearts = 20;
     s32 health = gSaveContext.health > 0 ? gSaveContext.health : 0;
@@ -576,7 +562,6 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
                                    health - (s32)i * 32);
     }
 
-#ifndef PLUS_HEARTS_ONLY
     u32 rupees = gSaveContext.rupees > 0 ? (u32)gSaveContext.rupees : 0;
     if (rupees > 999) rupees = 999;
     NativeHud_WriteRupeeUV(gNativeHudUVs, 0);
@@ -621,8 +606,6 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     } else {
         NativeHud_WriteSolidUV(gNativeHudUVs, 30, 1644.0f, 48.0f);
     }
-#endif
-#endif
 
     // Upload the complete UV stream through the board's native setter.
     // 0x4546F4, used previously, is an internal address calculator rather
@@ -638,8 +621,8 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     }
 }
 
-void NativeHud_UpdateProof(GlobalContext* globalCtx) {
+void NativeHud_Update(GlobalContext* globalCtx) {
     u8 visible = globalCtx != 0 && IsInGameOrBossChallenge();
     NativeHud_UpdateMappedItems(visible);
-    NATIVE_HUD_PROOF_VISIBLE = visible ? 1 : 0;
+    NATIVE_HUD_VISIBLE = visible ? 1 : 0;
 }

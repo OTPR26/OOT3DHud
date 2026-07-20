@@ -96,32 +96,6 @@ ifneq ($(citra), 0)
 CFLAGS += -g -DCITRA
 endif
 
-# Compatibility-isolation build for Azahar Plus. This retains the standalone
-# free camera and D-pad/touch remapping while omitting every custom HUD and
-# native texture-board patch, so HD texture packs remain completely untouched.
-ifneq ($(plus_controls_only),)
-CFLAGS += -DPLUS_CONTROLS_ONLY
-ASFLAGS += -DPLUS_CONTROLS_ONLY
-endif
-
-ifneq ($(plus_minimal_hud),)
-CFLAGS += -DPLUS_MINIMAL_HUD
-ASFLAGS += -DPLUS_MINIMAL_HUD
-endif
-
-ifneq ($(plus_hearts_only),)
-CFLAGS += -DPLUS_HEARTS_ONLY
-ASFLAGS += -DPLUS_HEARTS_ONLY
-endif
-
-ifneq ($(plus_rupees_stage),)
-CFLAGS += -DPLUS_RUPEES_STAGE
-endif
-
-ifneq ($(plus_native_magic_stage),)
-CFLAGS += -DPLUS_NATIVE_MAGIC_STAGE
-endif
-
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib

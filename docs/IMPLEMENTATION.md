@@ -30,7 +30,7 @@ frame, it clears only that matching synthetic entry and does not overwrite a new
 ## Native HUD
 
 The release renderer reuses an OoT3D native stereoscopic top-screen board and redirects it to the
-2:1 `cam_interface00` texture slot. Azahar Plus can therefore apply a high-resolution replacement
+2:1 `cam_interface00` texture slot. Azahar can therefore apply a high-resolution replacement
 texture before internal-resolution scaling; no release HUD sprites are drawn into the 400x240
 framebuffer.
 
@@ -52,8 +52,8 @@ the full 20-heart maximum while retaining reliable low-index quads for rupees an
 
 ## Validated configuration
 
-- USA retail 1.0
-- Azahar Plus on Android/AYN hardware and Azahar on macOS
+- USA Rev 0 and Rev 1, Europe Rev 1, and Japan Rev 1
+- Azahar on Android/AYN hardware and macOS
 - normal gameplay with live items, action text, health, magic, and rupees
 - all D-pad press/release routes
 - ZL minimap hide/show routing on AYN hardware
@@ -62,5 +62,5 @@ the full 20-heart maximum while retaining reliable low-index quads for rupees an
 - concurrent 4K custom texture pack
 - 20-heart save at full health
 
-Not yet validated: EUR, JP, other game revisions, Master Quest, original 3DS hardware, stereoscopic
-3D, and every context-specific item restriction or minigame.
+Not yet validated: original 3DS hardware, stereoscopic 3D, and every context-specific item
+restriction or minigame.

@@ -4,13 +4,13 @@
 
 An early prototype wrote ARGB2222 sprites into OoT3D's fixed 400x240 framebuffer. Upscaling that
 result could never preserve HD detail. The release instead uses OoT3D's GPU board renderer, allowing
-Azahar Plus to substitute a 2048x1024 RGBA texture before rendering at the configured internal
+supported emulators to substitute a 2048x1024 RGBA texture before rendering at the configured internal
 resolution.
 
 ## Texture and board path
 
 The implementation reuses the normally hidden stereoscopic motion-control board and points it at the
-2:1 `cam_interface00` slot. For the tested USA build, Azahar Plus identifies the replacement as:
+2:1 `cam_interface00` slot. Azahar identifies the replacement as:
 
 ```text
 tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png
@@ -47,7 +47,7 @@ The replacement atlas contains every sequential two-heart fill state needed by t
 - Keep custom texture art outside `code.ips`.
 - Preserve full RGBA resolution; do not convert release art to framebuffer sprites.
 - Keep private source art, game extracts, and full-resolution generated atlases out of the source
-  snapshot. The small legacy generated header is retained only for reproducible link layout.
+  snapshot.
 - Keep D-pad routing and the free camera independent from texture loading.
 
 The atlas-building tools operate only on user-supplied, legally obtained source textures. The source

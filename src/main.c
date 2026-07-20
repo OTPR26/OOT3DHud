@@ -34,8 +34,6 @@ void before_GlobalContext_Update(GlobalContext* globalCtx) {
 }
 
 void after_GlobalContext_Update(GlobalContext* globalCtx) {
-#ifndef PLUS_CONTROLS_ONLY
-    NativeHud_UpdateProof(globalCtx);
-#endif
+    NativeHud_Update(globalCtx);
     Camera_DrawSettingsOverlay();
 }

@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "hid.h"
 #include "input.h"
+#include "input_consume.h"
 
 // OoT3D's GameState owns a sampled controller state beginning at offset 0x14.
 // The sampler copies its source block at +0x04 into the GameState destination
@@ -10,6 +11,7 @@
 // PlayState+0x14/+0x18/+0x1C. This differs from MM3D's later pad::State layout.
 #define PLAY_PAD_BUTTONS_OFFSET     0x14
 #define PLAY_PAD_NEW_BUTTONS_OFFSET 0x18
+#define PLAY_PAD_RELEASED_BUTTONS_OFFSET 0x1C
 
 // Vanilla OoT3D hides the minimap only after D-Pad Down has been held for
 // about three seconds. A later D-Pad press shows it immediately. Run the hide
@@ -29,6 +31,18 @@ static u8 sSyntheticTouchActive = 0;
 static u32 sPreviousIrrstButtons = 0;
 static u16 sMinimapHideFrames = 0;
 static u8 sMinimapAssumedVisible = 1;
+
+static void InputRemap_ConsumeButton(GlobalContext* globalCtx, u32 button) {
+    pad_t* const pad = &real_hid.pad.pads[real_hid.pad.index];
+    volatile u32* const held =
+        (volatile u32*)((u8*)globalCtx + PLAY_PAD_BUTTONS_OFFSET);
+    volatile u32* const pressed =
+        (volatile u32*)((u8*)globalCtx + PLAY_PAD_NEW_BUTTONS_OFFSET);
+    volatile u32* const released =
+        (volatile u32*)((u8*)globalCtx + PLAY_PAD_RELEASED_BUTTONS_OFFSET);
+
+    InputRemap_ClearButtonMasks(pad, held, pressed, released, button);
+}
 
 static void InputRemap_InjectMinimapButton(GlobalContext* globalCtx, u32 button,
                                            u8 pressed) {
@@ -123,7 +137,7 @@ void InputRemap_Update(GlobalContext* globalCtx) {
                 // Vanilla OoT3D treats Select as a second Start button. Remove
                 // it from the HID sample that the game is about to consume so
                 // only the native Items touch target handles this press.
-                real_hid.pad.pads[real_hid.pad.index].curr.val &= ~BUTTON_SELECT;
+                InputRemap_ConsumeButton(globalCtx, BUTTON_SELECT);
             }
             InputRemap_ApplyVanillaAction(globalCtx, decision.action);
             break;

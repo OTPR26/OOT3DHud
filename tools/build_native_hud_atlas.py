@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 """Build the lossless PR HUD atlas with OoT's HD item cells embedded."""
 
+import argparse
 from pathlib import Path
 
 from PIL import Image, ImageDraw
 
 
-ROOT = Path(__file__).resolve().parents[1]
-PR_ATLAS = Path("/tmp/project-restoration-hd-hud-official.png")
-ITEM_ATLAS = ROOT / "derived-assets/oot3d-hd-pack/Items/tex1_512x512_AAC267B3D165E6FF_4_mip0.png"
-OUTPUT = ROOT / "derived-assets/project-restoration-oot-items-clean.png"
 HEART_PAIR_BANK_X = 1024
 HEART_PAIR_BANK_Y = 512
 HEART_PAIR_TILE_WIDTH = 128
@@ -193,9 +190,15 @@ def add_ammo_count_bank(hud: Image.Image) -> None:
 
 
 def main() -> None:
-    hud = Image.open(PR_ATLAS).convert("RGBA")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("project_restoration_atlas", type=Path)
+    parser.add_argument("item_atlas", type=Path)
+    parser.add_argument("output", type=Path)
+    args = parser.parse_args()
+
+    hud = Image.open(args.project_restoration_atlas).convert("RGBA")
     items = remove_detached_item_artifacts(
-        Image.open(ITEM_ATLAS).convert("RGBA"))
+        Image.open(args.item_atlas).convert("RGBA"))
     if hud.size != (2048, 1024):
         raise ValueError(f"unexpected PR atlas size: {hud.size}")
     if items.size != (512, 512):
@@ -230,9 +233,9 @@ def main() -> None:
     draw.rectangle((1516, 36, 1528, 48), fill=(30, 220, 55, 255))
     # Dedicated transparent texel used to collapse inactive count quads.
     hud.paste((0, 0, 0, 0), (2036, 1012, 2048, 1024))
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    hud.save(OUTPUT, format="PNG", optimize=False)
-    print(OUTPUT)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    hud.save(args.output, format="PNG", optimize=False)
+    print(args.output)
 
 
 if __name__ == "__main__":

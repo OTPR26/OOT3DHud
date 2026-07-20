@@ -13,10 +13,9 @@ Some OoT3D structure definitions and hook conventions were cross-checked against
 `gamestabled/OoT3D_Randomizer`; its applicable license notice is reproduced in
 `licenses/OOT3D_RANDOMIZER.md`.
 
-The HUD design is inspired by Project Restoration's HD HUD. The release texture and generated legacy
-framebuffer header are adapted from third-party and game-derived art. They are not licensed under
-this repository's GPL grant. Preserve Project Restoration attribution and confirm the relevant asset
-terms before redistributing them.
+The HUD design is inspired by Project Restoration's HD HUD. The release texture is adapted from
+third-party and game-derived art. It is not licensed under this repository's GPL grant. Preserve
+Project Restoration attribution and confirm the relevant asset terms before redistributing it.
 
 Do not publish Nintendo game binaries, unrelated exheaders, extracted UI archives, private texture
 packs, game dumps, or patched game executables from this working directory. `artifacts/`,

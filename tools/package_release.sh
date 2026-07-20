@@ -1,7 +1,8 @@
 #!/bin/sh
 set -eu
 
-version="${VERSION:-0.2.0}"
+: "${VERSION:?Set VERSION to the release version, for example VERSION=0.4.0}"
+version="$VERSION"
 region="${REGION:-USA}"
 project_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 dist_dir="$project_dir/dist"
@@ -42,13 +43,6 @@ cp "$project_dir/artifacts/USA/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png" \
     "$work_dir/$release_name/load/textures/$title_id/UI/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png"
 cp "$project_dir/INSTALL.md" "$work_dir/$release_name/README.md"
 cp "$project_dir/NOTICE.md" "$work_dir/$release_name/NOTICE.md"
-
-(
-    cd "$work_dir/$release_name"
-    find load -type f -print | LC_ALL=C sort | while IFS= read -r file; do
-        shasum -a 256 "$file"
-    done > SHA256SUMS.txt
-)
 
 (
     cd "$work_dir"

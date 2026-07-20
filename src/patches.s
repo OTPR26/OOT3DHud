@@ -20,13 +20,12 @@ loader_patch:
 CameraUpdate_patch:
     bl hook_CameraUpdate
 
-#ifndef PLUS_CONTROLS_ONLY
 .section .patch_NativeHudIgnoreMotionDisable
 .global NativeHudIgnoreMotionDisable_patch
 NativeHudIgnoreMotionDisable_patch:
     // OoT3D normally clears the motion-control board's visibility when gyro
     // aiming is disabled. Ocarina Reframed owns this repurposed board, so let
-    // NativeHud_UpdateProof manage visibility independently of that setting.
+    // NativeHud_Update manages visibility independently of that setting.
     bx lr
 
 .section .patch_NativeHudIgnoreMotionSettingGate1
@@ -45,7 +44,7 @@ NativeHudIgnoreMotionSettingGate2_patch:
 .global NativeActionHudSync_patch
 NativeActionHudSync_patch:
     bl hook_NativeActionHudSync
-// Native HD renderer proof. OoT3D's unused motion-control quad already draws
+// Native HD renderer. OoT3D's unused motion-control quad already draws
 // stereoscopically on the top screen. Point it at cam_interface00 (slot 15),
 // whose 2:1 texture is replaced losslessly by the official PR HD atlas.
 .section .patch_NativeHudTextureSlot
@@ -71,21 +70,8 @@ NativeHudDescriptor_patch:
     .word gNativeHudPositions
     .word gNativeHudUVs
     .word 0
-#ifdef PLUS_MINIMAL_HUD
-    .word 52
-#elif defined(PLUS_HEARTS_ONLY)
-    .word 132
-#else
     .word 424
-#endif
     .word gNativeHudIndices
-#ifdef PLUS_MINIMAL_HUD
-    .word 76
-#elif defined(PLUS_HEARTS_ONLY)
-    .word 196
-#else
     .word 634
-#endif
     .word 2
     .word 0x0C
-#endif

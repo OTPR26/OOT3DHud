@@ -266,7 +266,7 @@ void Camera_FreeCamUpdate(Vec3s* out, Camera* camera) {
     // to hide its gyro icon. Ocarina Reframed repurposes that same native
     // board for the HUD, so clearing the flag makes the entire HUD disappear
     // whenever the game's motion-control option is disabled. HUD visibility
-    // is now managed independently by NativeHud_UpdateProof().
+    // is now managed independently by NativeHud_Update().
     if (camera->player) {
         Vec3f at;
         CamColChk eye;
@@ -332,7 +332,8 @@ void Camera_FreeCamUpdate(Vec3s* out, Camera* camera) {
             if (newSetting != camera->setting) {
                 camera->prevSetting = camera->setting;
                 camera->setting     = newSetting;
-                camera->mode        = 0; // TODO: calculate mode properly, using default for now as applies to all settings
+                // Mode 0 is the common default for every supported setting.
+                camera->mode = 0;
             }
         }
     }
