@@ -54,9 +54,44 @@ D-pad actions.
 
 ## Download and install
 
-Download the ZIP matching your game region from
-[Releases](https://github.com/OTPR26/OOT3DHud/releases/latest), then merge its `load` folder into
-your Azahar or Citra user-data directory. See [INSTALL.md](INSTALL.md) for complete instructions.
+Download the package matching your game region from
+[Releases](https://github.com/OTPR26/OOT3DHud/releases/latest). Each region has a normal emulator
+mod and a self-contained ROM patch.
+
+### Azahar or Citra
+
+1. Download the regional **Mod ZIP**.
+2. Fully close the emulator.
+3. Extract the ZIP and merge its `load` folder into the Azahar or Citra user-data directory.
+4. Enable **Use Custom Textures** in the emulator's graphics settings.
+5. Restart the emulator and launch the game normally.
+
+Do not resume an old save state after installing. Normal in-game save files are unaffected.
+Existing unrelated texture packs can remain installed, but do not combine Ocarina Reframed with
+another `code.ips` patch for the same title. See [INSTALL.md](INSTALL.md) for the regional title IDs
+and complete folder paths.
+
+### ROM patch
+
+1. Download and extract the regional **ROM Patch ZIP**.
+2. Open [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/).
+3. Select a clean, legally obtained, decrypted `.3ds` or `.cci` dump matching the region and
+   revision listed in the included README.
+4. Select the included `.xdelta` file and apply the patch.
+5. Save the resulting ROM, add it to Azahar or Citra, and launch it normally.
+
+Xdelta patches require the exact original ROM specified by the package. Encrypted, previously
+modified, or mismatched dumps will not work. Disable the separate Ocarina Reframed mod-folder
+installation when using a patched ROM so the mod is not applied twice. Back up save data before
+testing any modified ROM.
+
+### Original 3DS with Luma3DS
+
+Original 3DS support is still in progress. Luma3DS can load the included `code.ips` and
+`exheader.bin`, but the current HD HUD atlas uses Azahar/Citra custom-texture replacement and cannot
+yet be loaded by Luma3DS. The current emulator Mod ZIP should therefore not be treated as a complete
+Luma3DS release. Hardware installation instructions will be added after a compatible HUD package is
+validated.
 
 ## Compatibility
 
