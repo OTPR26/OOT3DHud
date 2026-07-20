@@ -28,6 +28,18 @@ SECTIONS
 		*(.patch_NativeHudTextureSlot)
 	}
 
+	.patch_NativeHudIgnoreMotionDisable 0x2DE878 : {
+		*(.patch_NativeHudIgnoreMotionDisable)
+	}
+
+	.patch_NativeHudIgnoreMotionSettingGate1 0x42BC80 : {
+		*(.patch_NativeHudIgnoreMotionSettingGate1)
+	}
+
+	.patch_NativeHudIgnoreMotionSettingGate2 0x42BE20 : {
+		*(.patch_NativeHudIgnoreMotionSettingGate2)
+	}
+
 	.patch_NativeHudKeepPositionUVPointers 0x4695C8 : {
 		*(.patch_NativeHudKeepPositionUVPointers)
 	}

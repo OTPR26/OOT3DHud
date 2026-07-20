@@ -6,7 +6,6 @@
 #include "input.h"
 #include "draw.h"
 
-#define GyroDrawHUDIcon *(u8*)0x4FC648
 s16 pitch = 0, yaw = 0;
 f32 dist = 0;
 u8 spdOpt = 3, speed = 6, controls = 0, alertSpd = 0, alertCtr = 0;
@@ -263,7 +262,11 @@ void Camera_FreeCamUpdate(Vec3s* out, Camera* camera) {
     Camera_UpdateHotRoom(camera);    // Check if in a hot room (mainly for DC load planes)
     Camera_UpdateDistortion(camera); // Handle heat/water screen distortions
     Camera_UpdateInterface(0);       // Remove the black bars at the top/bottom of the screen
-    GyroDrawHUDIcon = 0;             // Remove the icon in the top right indicating motion controls
+    // The original free-camera mod cleared OoT3D's motion-control board here
+    // to hide its gyro icon. Ocarina Reframed repurposes that same native
+    // board for the HUD, so clearing the flag makes the entire HUD disappear
+    // whenever the game's motion-control option is disabled. HUD visibility
+    // is now managed independently by NativeHud_UpdateProof().
     if (camera->player) {
         Vec3f at;
         CamColChk eye;
