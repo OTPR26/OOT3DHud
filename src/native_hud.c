@@ -270,14 +270,29 @@ u16 gNativeHudIndices[NATIVE_HUD_INDEX_COUNT]
 
 // OoT3D's motion-control HUD flag. The standalone free camera does not use
 // the icon, so the HUD repurposes its existing stereoscopic quad.
-#define NATIVE_HUD_VISIBLE (*(volatile u8*)ADDR(0x004FC648))
-#define NATIVE_HUD_BOARD (*(void**)ADDR(0x004FC6BC))
+#if defined(Version_TWN)
+    #define NATIVE_HUD_BASE 0x00508A30
+    #define NATIVE_HUD_SOURCE_POSITIONS_ADDR 0x0031B0A4
+    #define NATIVE_HUD_UPLOAD_UVS_ADDR 0x0031701C
+#elif defined(Version_KOR)
+    #define NATIVE_HUD_BASE 0x00508A30
+    #define NATIVE_HUD_SOURCE_POSITIONS_ADDR 0x0031AFA4
+    #define NATIVE_HUD_UPLOAD_UVS_ADDR 0x00316F1C
+#else
+    #define NATIVE_HUD_BASE ADDR(0x004FC648)
+    #define NATIVE_HUD_SOURCE_POSITIONS_ADDR ADDR(0x002FC3FC)
+    #define NATIVE_HUD_UPLOAD_UVS_ADDR ADDR(0x00317D1C)
+#endif
+
+#define NATIVE_HUD_VISIBLE (*(volatile u8*)NATIVE_HUD_BASE)
+#define NATIVE_HUD_BOARD (*(void**)(NATIVE_HUD_BASE + 0x74))
 
 typedef float* (*NativeHudMappedBufferFn)(void* board, u32 layer);
-#define NATIVE_HUD_SOURCE_POSITIONS ((NativeHudMappedBufferFn)ADDR(0x002FC3FC))
+#define NATIVE_HUD_SOURCE_POSITIONS \
+    ((NativeHudMappedBufferFn)NATIVE_HUD_SOURCE_POSITIONS_ADDR)
 
 typedef void (*NativeHudUploadBufferFn)(void* board, u32 byteCount, const void* source);
-#define NATIVE_HUD_UPLOAD_UVS ((NativeHudUploadBufferFn)ADDR(0x00317D1C))
+#define NATIVE_HUD_UPLOAD_UVS ((NativeHudUploadBufferFn)NATIVE_HUD_UPLOAD_UVS_ADDR)
 
 #define NATIVE_ACTION_VERTEX_COUNT 8
 static float sNativeActionOriginal[NATIVE_ACTION_VERTEX_COUNT * 3];
@@ -300,7 +315,7 @@ void NativeHud_PrepareActionPrompt(void) {
     // Quads 0 and 1 are alternate live A states. One may be collapsed while
     // the other is active, so transform them independently instead of using a
     // combined bound (which made the visible artwork tiny and malformed).
-    void* actionSource = *(void**)ADDR(0x004FC660);
+    void* actionSource = *(void**)(NATIVE_HUD_BASE + 0x18);
     float* source = actionSource != 0 ? NATIVE_HUD_SOURCE_POSITIONS(actionSource, 0) : 0;
     sNativeActionSource = 0;
     if (source == 0) {

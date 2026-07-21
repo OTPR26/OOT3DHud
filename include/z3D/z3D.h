@@ -217,7 +217,12 @@ typedef struct GlobalContext {
 } GlobalContext; // size = 0x5F14 TODO
 _Static_assert(sizeof(GlobalContext) == 0x5F14, "Global Context size");
 
-#define gSaveContext (*(SaveContext*)0x00587958)
+#if defined(Version_TWN) || defined(Version_KOR)
+    #define Z3D_SAVE_CONTEXT_ADDR 0x00595FD0
+#else
+    #define Z3D_SAVE_CONTEXT_ADDR 0x00587958
+#endif
+#define gSaveContext (*(SaveContext*)Z3D_SAVE_CONTEXT_ADDR)
 #define real_hid_addr 0x10002000
 #define real_hid (*(hid_mem_t*)real_hid_addr)
 
@@ -228,7 +233,11 @@ _Static_assert(sizeof(GlobalContext) == 0x5F14, "Global Context size");
 #define Z3D_BOTTOM_SCREEN_1 0x143A02B0
 #define Z3D_BOTTOM_SCREEN_2 0x143D86C0
 
-#ifdef Version_JP
+#if defined(Version_TWN) || defined(Version_KOR)
+    // The Chinese and Korean executables use a substantially reordered link
+    // layout. Their few imported game functions are declared explicitly below.
+    #define ADDR(locUSA) (locUSA)
+#elif defined(Version_JP)
     #define ADDR(locUSA) (\
         ((locUSA) < 0x2B6D4C) ? (locUSA) : \
         ((locUSA) < 0x2B7234) ? (locUSA) + 0xC0B5C : \
@@ -245,21 +254,57 @@ _Static_assert(sizeof(GlobalContext) == 0x5F14, "Global Context size");
 #endif
 
 typedef s32 (*BossChallenge_IsActive_proc)(void);
-#define BossChallenge_IsActive ((BossChallenge_IsActive_proc)ADDR(0x35B164))
+#if defined(Version_TWN)
+    #define BossChallenge_IsActive ((BossChallenge_IsActive_proc)0x00316A48)
+#elif defined(Version_KOR)
+    #define BossChallenge_IsActive ((BossChallenge_IsActive_proc)0x00316948)
+#else
+    #define BossChallenge_IsActive ((BossChallenge_IsActive_proc)ADDR(0x35B164))
+#endif
 
 typedef s32 (*Camera_CheckWater_proc)(Camera* camera);
-#define Camera_CheckWater ((Camera_CheckWater_proc)ADDR(0x2D06A0))
+#if defined(Version_TWN)
+    #define Camera_CheckWater ((Camera_CheckWater_proc)0x002E29D8)
+#elif defined(Version_KOR)
+    #define Camera_CheckWater ((Camera_CheckWater_proc)0x002E28D8)
+#else
+    #define Camera_CheckWater ((Camera_CheckWater_proc)ADDR(0x2D06A0))
+#endif
 
 typedef void (*Camera_UpdateInterface_proc)(u32 flags);
-#define Camera_UpdateInterface ((Camera_UpdateInterface_proc)ADDR(0x330D84))
+#if defined(Version_TWN)
+    #define Camera_UpdateInterface ((Camera_UpdateInterface_proc)0x002E2764)
+#elif defined(Version_KOR)
+    #define Camera_UpdateInterface ((Camera_UpdateInterface_proc)0x002E2664)
+#else
+    #define Camera_UpdateInterface ((Camera_UpdateInterface_proc)ADDR(0x330D84))
+#endif
 
 typedef f32 (*Camera_BGCheckInfo_proc)(Camera* camera, Vec3f* from, CamColChk* to);
-#define Camera_BGCheckInfo ((Camera_BGCheckInfo_proc)ADDR(0x3553FC))
+#if defined(Version_TWN)
+    #define Camera_BGCheckInfo ((Camera_BGCheckInfo_proc)0x00295D90)
+#elif defined(Version_KOR)
+    #define Camera_BGCheckInfo ((Camera_BGCheckInfo_proc)0x00295C90)
+#else
+    #define Camera_BGCheckInfo ((Camera_BGCheckInfo_proc)ADDR(0x3553FC))
+#endif
 
 typedef s32 (*Quake_Update_proc)(Camera* camera, ShakeInfo* camShake);
-#define Quake_Update ((Quake_Update_proc)ADDR(0x4787C8))
+#if defined(Version_TWN)
+    #define Quake_Update ((Quake_Update_proc)0x00159FC0)
+#elif defined(Version_KOR)
+    #define Quake_Update ((Quake_Update_proc)0x00159EE8)
+#else
+    #define Quake_Update ((Quake_Update_proc)ADDR(0x4787C8))
+#endif
 
 typedef s16 (*Camera_GetCamDataId_proc)(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
-#define Camera_GetCamDataId ((Camera_GetCamDataId_proc)ADDR(0x47BFD8))
+#if defined(Version_TWN)
+    #define Camera_GetCamDataId ((Camera_GetCamDataId_proc)0x0015D958)
+#elif defined(Version_KOR)
+    #define Camera_GetCamDataId ((Camera_GetCamDataId_proc)0x0015D880)
+#else
+    #define Camera_GetCamDataId ((Camera_GetCamDataId_proc)ADDR(0x47BFD8))
+#endif
 
 #endif //_Z3D_H_

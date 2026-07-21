@@ -2,13 +2,13 @@
 
 [![Release](https://img.shields.io/github/v/release/OTPR26/OOT3DHud?display_name=tag)](https://github.com/OTPR26/OOT3DHud/releases/latest)
 [![License](https://img.shields.io/github/license/OTPR26/OOT3DHud)](LICENSE)
-![Game](https://img.shields.io/badge/OoT3D-USA%20%7C%20EUR%20%7C%20JP-4b8bbe)
+![Game](https://img.shields.io/badge/OoT3D-USA%20%7C%20EUR%20%7C%20JP%20%7C%20TWN%20%7C%20KOR-4b8bbe)
 ![Tested](https://img.shields.io/badge/tested-Azahar-5aaa46)
 
 **Website:** [ocarinareframed.com](https://ocarinareframed.com)
 
-A modern, high-resolution top-screen HUD and C-stick free camera for the USA, European, and
-Japanese releases of *The Legend of Zelda: Ocarina of Time 3D*.
+A modern, high-resolution top-screen HUD and C-stick free camera for the USA, European, Japanese,
+Taiwanese, and Korean releases of *The Legend of Zelda: Ocarina of Time 3D*.
 
 The HUD brings the Project Restoration style to OoT3D: ABXY in a diamond, live item assignments,
 the changing action prompt, D-pad shortcuts, hearts, magic, and rupees, all rendered through the
@@ -17,7 +17,7 @@ save format unchanged.
 
 > [!IMPORTANT]
 > Download the package matching your game region. The tested versions are **USA 1.0**,
-> **Europe Rev 1**, and **Japan Rev 1**.
+> **Europe Rev 1**, **Japan Rev 1**, **Taiwan Rev 1**, and **Korea Rev 1**.
 
 ## Features
 
@@ -100,7 +100,6 @@ yet be loaded by Luma3DS. 3DS users may instead prefer to use the rom patching d
 | Korea Rev 1 | Supported |
 | Azahar/Citra — macOS, Windows, Android | Supported |
 | Henriko's 4K texture pack | Supported |
-| Other regions | In Progress |
 | Original 3DS + Luma3DS | Not yet validated - Should work with rom patching |
 
 ## Building from source
@@ -116,6 +115,8 @@ Build a regional configuration:
 REGION=USA ./tools/build.sh
 REGION=EUR ./tools/build.sh
 REGION=JP ./tools/build.sh
+REGION=TWN ./tools/build.sh
+REGION=KOR ./tools/build.sh
 ```
 
 The resulting patches are written to `artifacts/<region>/code.ips`.
@@ -132,6 +133,8 @@ The tested `code.ips` SHA-256 values are:
 USA  b1ec0136f09232bea190d643fe5b4d29a6e5bfa3efe15abc50439cd8e1d5c565
 EUR  7766c0da9778a49b0311f1603ffe070234a47eff109d96d46c5040e709d3f191
 JP   3541d2881c5c9eab5b88c151909a3741d6943012505c29463b1cbf15f5f44000
+TWN  ab262fd1f2b85ff616d09c210df19d013eefcdae089e99c1885df713e318934e
+KOR  673090d87b5eeef31044fa429d971573c3abfc2ad70d7b50f5f6e6083a37e117
 ```
 
 ## How it works

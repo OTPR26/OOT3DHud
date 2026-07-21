@@ -17,8 +17,14 @@ case "$region" in
     JP)
         title_id="0004000000033400"
         ;;
+    TWN)
+        title_id="000400000008F900"
+        ;;
+    KOR)
+        title_id="000400000008F800"
+        ;;
     *)
-        echo "Unsupported region: $region (expected USA, EUR, or JP)" >&2
+        echo "Unsupported region: $region (expected USA, EUR, JP, TWN, or KOR)" >&2
         exit 1
         ;;
 esac

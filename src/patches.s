@@ -57,7 +57,16 @@ NativeHudTextureSlot_patch:
 .section .patch_NativeHudKeepPositionUVPointers
 .global NativeHudKeepPositionUVPointers_patch
 NativeHudKeepPositionUVPointers_patch:
+.if (_TWN_==1) || (_KOR_==1)
+    // The CJK constructor stores position and UV pointers with two STRs,
+    // separated by the ADD that selects the UV stack buffer. Preserve the
+    // ADD while suppressing both pointer replacements.
     nop
+    add r0, sp, #344
+    nop
+.else
+    nop
+.endif
 
 .section .patch_NativeHudKeepIndexPointer
 .global NativeHudKeepIndexPointer_patch

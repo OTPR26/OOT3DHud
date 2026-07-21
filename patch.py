@@ -20,7 +20,8 @@ with open(elf, 'rb') as e:
         # The original broad address-range filter avoids linker-generated data,
         # but valid in-place patches can live in the same range. Always retain
         # explicitly named patch sections.
-        if vaddr >= 0x4CA000 and vaddr < 0x5C7000 and not name.startswith('.patch_'):
+        if (vaddr >= 0x4CA000 and vaddr < 0x5C7000
+                and not name.startswith('.patch_') and name != '.loader'):
             continue
 
         e.seek(offset, 0)

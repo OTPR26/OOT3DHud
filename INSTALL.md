@@ -7,6 +7,8 @@ Choose the ZIP matching your copy of OoT3D:
 | USA | USA 1.0 | `0004000000033500` |
 | EUR | Europe Rev 1 | `0004000000033600` |
 | JP | Japan Rev 1 | `0004000000033400` |
+| TWN | Taiwan Rev 1 | `000400000008F900` |
+| KOR | Korea Rev 1 | `000400000008F800` |
 
 1. Close OoT3D.
 2. Open the Azahar or Citra user-data directory.

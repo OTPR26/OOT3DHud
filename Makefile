@@ -45,22 +45,34 @@ INCLUDES    +=  assets
 USA         := USA
 EUR         := EUR
 JP          := JP
+TWN         := TWN
+KOR         := KOR
 REGION      := USA
 
 ifeq ($(USA), $(REGION))
   LINK_SCRIPT 	:= oot.ld
-  ASFLAGS += -D _USA_=1 -D _JP_=0 -D _EUR_=0
+  ASFLAGS += -D _USA_=1 -D _JP_=0 -D _EUR_=0 -D _TWN_=0 -D _KOR_=0
 endif
 ifeq ($(JP), $(REGION))
   LINK_SCRIPT 	:= oot_j.ld
-  ASFLAGS += -D _USA_=0 -D _JP_=1 -D _EUR_=0
+  ASFLAGS += -D _USA_=0 -D _JP_=1 -D _EUR_=0 -D _TWN_=0 -D _KOR_=0
 endif
 ifeq ($(EUR), $(REGION))
   LINK_SCRIPT 	:= oot_e.ld
-  ASFLAGS += -D _USA_=0 -D _JP_=0 -D _EUR_=1
+  ASFLAGS += -D _USA_=0 -D _JP_=0 -D _EUR_=1 -D _TWN_=0 -D _KOR_=0
 endif
 
-VERFLAGS := -D USA=$(USA) -D JP=$(JP) -D EUR=$(EUR) -D REGION=$(REGION)
+ifeq ($(TWN), $(REGION))
+  LINK_SCRIPT 	:= oot_t.ld
+  ASFLAGS += -D _USA_=0 -D _JP_=0 -D _EUR_=0 -D _TWN_=1 -D _KOR_=0
+endif
+
+ifeq ($(KOR), $(REGION))
+  LINK_SCRIPT 	:= oot_k.ld
+  ASFLAGS += -D _USA_=0 -D _JP_=0 -D _EUR_=0 -D _TWN_=0 -D _KOR_=1
+endif
+
+VERFLAGS := -D USA=$(USA) -D JP=$(JP) -D EUR=$(EUR) -D TWN=$(TWN) -D KOR=$(KOR) -D REGION=$(REGION)
 
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=softfp -mtp=soft -mfpu=vfpv2
 
@@ -89,6 +101,12 @@ CFLAGS += -g -DVersion_JP
 endif
 ifeq ($(REGION), $(EUR))
 CFLAGS += -g -DVersion_EUR
+endif
+ifeq ($(REGION), $(TWN))
+CFLAGS += -g -DVersion_TWN
+endif
+ifeq ($(REGION), $(KOR))
+CFLAGS += -g -DVersion_KOR
 endif
 
 citra ?= 0
