@@ -96,10 +96,12 @@ yet be loaded by Luma3DS. 3DS users may instead prefer to use the rom patching d
 | USA Rev 0/1 | Supported |
 | Europe Rev 1 | Supported |
 | Japan Rev 1 | Supported |
+| Taiwan Rev 1 | Supported |
+| Korea Rev 1 | Supported |
 | Azahar/Citra — macOS, Windows, Android | Supported |
 | Henriko's 4K texture pack | Supported |
 | Other regions | In Progress |
-| Original 3DS + Lumas3DS | Not yet validated |
+| Original 3DS + Luma3DS | Not yet validated - Should work with rom patching |
 
 ## Building from source
 
