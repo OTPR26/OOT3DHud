@@ -6,6 +6,7 @@
 #include "newcodeinfo.h"
 #include "3ds/types.h"
 #include "loader.h"
+#include "native_hud.h"
 
 Result svcOpenProcess(Handle* process, u32 processId);
 Result svcGetProcessId(u32* out, Handle handle);
@@ -25,6 +26,8 @@ void loader_main(void)
 
     if (res < 0)
         svcBreak(1);
+
+    NativeHud_InitializeScale();
 }
 
 Handle getCurrentProcessHandle(void)

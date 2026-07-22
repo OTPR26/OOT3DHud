@@ -20,6 +20,10 @@ The board's external position, UV, and index buffers are retained. `native_hud.c
 quads after OoT3D's normal gameplay update. Native V coordinates use the opposite origin from PNG
 pixel coordinates.
 
+The 75%, 100%, and 125% size presets rebuild geometry from a fixed base copy, then use the game's
+native position setter to refresh the GPU buffer. The Off state hides the board and collapses the
+separate live action prompt. Texture data stays at its original resolution.
+
 ## Live elements
 
 - A action prompt: the original changing action art is repositioned and resized.
@@ -64,6 +68,7 @@ These addresses are for the legally extracted USA 1.0 executable with text base 
 | `0x00348F34` | Constructs a GPU board from vertex/index buffers |
 | `0x00348A64` | Assigns a texture and initial board coordinates |
 | `0x0034897C` | Registers a board with the renderer |
+| `0x0036759C` | Uploads the board position buffer |
 | `0x002E11D0` | Retrieves a loaded menu texture by slot |
 | `0x00469590` | Constructs the motion-control top-screen quad |
 | `0x004FC648` | Motion-control quad visibility flag |

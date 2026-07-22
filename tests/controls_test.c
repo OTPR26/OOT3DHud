@@ -6,8 +6,7 @@
 #include "input_consume.h"
 
 static void expect(uint32_t held, uint32_t pressed, ControlAction action) {
-    const ControlDecision decision = Controls_Resolve(held, pressed);
-    assert(decision.action == action);
+    assert(Controls_Resolve(held, pressed) == action);
 }
 
 int main(void) {
@@ -34,12 +33,22 @@ int main(void) {
            CONTROL_ACTION_CAMERA_INVERT_PREVIOUS);
     expect(BUTTON_L1 | BUTTON_R1 | BUTTON_RIGHT, BUTTON_RIGHT,
            CONTROL_ACTION_CAMERA_INVERT_NEXT);
+    // Select remains dedicated to the Items screen, even while both shoulder
+    // buttons are held.
+    expect(BUTTON_L1 | BUTTON_R1 | BUTTON_SELECT, BUTTON_SELECT,
+           CONTROL_ACTION_NONE);
 
     // A partial chord must not steal the gameplay binding.
     expect(BUTTON_L1 | BUTTON_LEFT, BUTTON_LEFT, CONTROL_ACTION_ITEM_I);
-    expect(BUTTON_L1 | BUTTON_R1 | BUTTON_SELECT, BUTTON_SELECT,
-           CONTROL_ACTION_NONE);
     expect(0, 0, CONTROL_ACTION_NONE);
+
+    assert(Controls_IsHudScaleHold(BUTTON_L1 | BUTTON_R1, IRRST_BUTTON_ZR));
+    assert(!Controls_IsHudScaleHold(BUTTON_L1 | BUTTON_R1, 0));
+    assert(!Controls_IsHudScaleHold(BUTTON_L1, IRRST_BUTTON_ZR));
+    assert(!Controls_IsHudScaleHold(BUTTON_L1 | BUTTON_R1 | BUTTON_UP,
+                                    IRRST_BUTTON_ZR));
+    assert(!Controls_IsHudScaleHold(BUTTON_L1 | BUTTON_R1,
+                                    IRRST_BUTTON_ZL | IRRST_BUTTON_ZR));
 
     // Consuming Select must remove it from every source and sampled mask. If
     // the pressed mask survives, vanilla OoT3D opens its save prompt even

@@ -30,6 +30,7 @@ save format unchanged.
 - ZL minimap hide/show control, preserving access after the D-pad remap
 - Select opens the native Items screen
 - Live hearts, magic meter, and rupees
+- Runtime HUD scaling with 75%, 100%, 125%, and Off settings
 - C-stick free camera using [Roberto-Nessy/OoT3D_Standalone_Free_Cam](https://github.com/Roberto-Nessy/OoT3D_Standalone_Free_Cam)
 - Compatible with [Henriko Magnifico's OoT3D 4K texture pack](https://www.henrikomagnifico.com/zelda-ocarina-of-time-3d-4k).
 
@@ -46,11 +47,12 @@ save format unchanged.
 | ZL | Hide/show the minimap |
 | Select | Open the Items screen |
 | C-stick | Free camera |
+| Hold L + R + ZR | Cycle HUD size: 75%, 100%, 125%, Off |
 | L + R + D-pad Up/Down | Adjust camera sensitivity |
 | L + R + D-pad Left/Right | Change camera inversion |
 
-Unassigned I or II slots remain blank. The L+R camera-settings chord takes priority over gameplay
-D-pad actions.
+Unassigned I or II slots remain blank. Hold L+R+ZR without pressing another button to change the
+HUD size. The L+R camera-settings chord takes priority over gameplay D-pad actions.
 
 ## Download and install
 
@@ -130,11 +132,11 @@ make host-test
 The tested `code.ips` SHA-256 values are:
 
 ```text
-USA  b1ec0136f09232bea190d643fe5b4d29a6e5bfa3efe15abc50439cd8e1d5c565
-EUR  7766c0da9778a49b0311f1603ffe070234a47eff109d96d46c5040e709d3f191
-JP   3541d2881c5c9eab5b88c151909a3741d6943012505c29463b1cbf15f5f44000
-TWN  ab262fd1f2b85ff616d09c210df19d013eefcdae089e99c1885df713e318934e
-KOR  673090d87b5eeef31044fa429d971573c3abfc2ad70d7b50f5f6e6083a37e117
+USA  6e36868f77c4bf564816d81656df14bb0db05926466e0750f19f9a22f43a5d0e
+EUR  845c440613e9496deba585ca180cdbf162aa176b2ec042ebba381c5b0aac58b0
+JP   e2f378e42fbbdb7fc2f5939be91da6147d66ed9a75e0d1d0df1519f5f735cc0a
+TWN  9281f0f52ceb08b9126d24042723ed4933b387e7a49c4073eb11ff954e6c092f
+KOR  ae7c5dbdcfc4b43e8ec4a81267deed2570678e554bb66545ff42eeb4940753a2
 ```
 
 ## How it works
@@ -143,7 +145,8 @@ Physical D-pad input is translated into OoT3D's original touchscreen samples, so
 normal item-usability checks and press/hold behavior. ZL reproduces the original minimap hide/show
 gestures through OoT3D's sampled controller state. Select opens the native Items screen through its
 original touchscreen action. The HUD reuses a native top-screen
-board and updates its position and UV buffers from live, read-only game state.
+board and updates its position and UV buffers from live, read-only game state. Runtime size changes
+rebuild that native geometry without resizing or replacing the source textures.
 
 See [Implementation notes](docs/IMPLEMENTATION.md) and
 [Native HD HUD notes](docs/NATIVE_HD_HUD.md) for technical details.

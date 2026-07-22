@@ -4,6 +4,7 @@
 #include "hid.h"
 #include "input.h"
 #include "input_consume.h"
+#include "native_hud.h"
 
 // OoT3D's GameState owns a sampled controller state beginning at offset 0x14.
 // The sampler copies its source block at +0x04 into the GameState destination
@@ -18,6 +19,7 @@
 // gesture a little longer than the nominal threshold so frame-rate jitter
 // cannot leave the map visible.
 #define MINIMAP_HIDE_HOLD_FRAMES 110
+#define HUD_SCALE_HOLD_FRAMES 45
 
 typedef struct {
     s16 x;
@@ -44,6 +46,28 @@ static u8 sItemsMenuOpen = 0;
 static u32 sPreviousIrrstButtons = 0;
 static u16 sMinimapHideFrames = 0;
 static u8 sMinimapAssumedVisible = 1;
+static u8 sHudScaleHoldFrames = 0;
+static u8 sHudScaleHoldTriggered = 0;
+
+static void InputRemap_UpdateHudScaleShortcut(u32 irrstHeld) {
+    const u32 held = rInputCtx.cur.val;
+
+    // Require ZR in addition to the two vanilla shoulder buttons so ordinary
+    // targeting with the shield raised cannot resize the HUD.
+    if (!Controls_IsHudScaleHold(held, irrstHeld)) {
+        sHudScaleHoldFrames = 0;
+        sHudScaleHoldTriggered = 0;
+        return;
+    }
+
+    if (sHudScaleHoldTriggered) {
+        return;
+    }
+    if (++sHudScaleHoldFrames >= HUD_SCALE_HOLD_FRAMES) {
+        NativeHud_CycleScale();
+        sHudScaleHoldTriggered = 1;
+    }
+}
 
 static void InputRemap_InjectMinimapButton(GlobalContext* globalCtx, u32 button,
                                            u8 pressed) {
@@ -124,7 +148,10 @@ void InputRemap_Update(GlobalContext* globalCtx) {
         return;
     }
 
-    const ControlDecision decision = Controls_Resolve(rInputCtx.cur.val, rInputCtx.pressed.val);
+    InputRemap_UpdateHudScaleShortcut(irrstButtons);
+
+    const ControlAction action = Controls_Resolve(rInputCtx.cur.val,
+                                                  rInputCtx.pressed.val);
 
     // Match Project Restoration's menu behavior: Select opens Items, then the
     // same button activates that screen's native close command. OoT3D closes
@@ -143,18 +170,18 @@ void InputRemap_Update(GlobalContext* globalCtx) {
         sItemsMenuOpen = 0;
     }
 
-    switch (decision.action) {
+    switch (action) {
         case CONTROL_ACTION_CAMERA_SENSITIVITY_UP:
         case CONTROL_ACTION_CAMERA_SENSITIVITY_DOWN:
         case CONTROL_ACTION_CAMERA_INVERT_PREVIOUS:
         case CONTROL_ACTION_CAMERA_INVERT_NEXT:
-            Camera_ApplyControlAction(decision.action);
+            Camera_ApplyControlAction(action);
             break;
         case CONTROL_ACTION_ITEM_I:
         case CONTROL_ACTION_ITEM_II:
         case CONTROL_ACTION_NAVI:
         case CONTROL_ACTION_OCARINA:
-            InputRemap_ApplyVanillaAction(globalCtx, decision.action);
+            InputRemap_ApplyVanillaAction(action);
             break;
         case CONTROL_ACTION_ITEMS_MENU:
             if (sItemsMenuOpen) {
@@ -195,9 +222,8 @@ u32 InputRemap_TryOpenItemsMenu(void* menuManager) {
     return 1;
 }
 
-void InputRemap_ApplyVanillaAction(GlobalContext* globalCtx, ControlAction action) {
+void InputRemap_ApplyVanillaAction(ControlAction action) {
     const TouchPoint point = InputRemap_GetTouchPoint(action);
-    (void)globalCtx;
 
     if (point.x < 0 || point.y < 0) {
         return;

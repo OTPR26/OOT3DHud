@@ -10,6 +10,15 @@
 #define NATIVE_HUD_VERTEX_COUNT (NATIVE_HUD_QUAD_COUNT * 4)
 #define NATIVE_HUD_INDEX_COUNT (4 + (NATIVE_HUD_QUAD_COUNT - 1) * 6)
 
+#ifndef HUD_SCALE_PERCENT
+#define HUD_SCALE_PERCENT 100
+#endif
+
+#if HUD_SCALE_PERCENT != 0 && HUD_SCALE_PERCENT != 75 && \
+    HUD_SCALE_PERCENT != 100 && HUD_SCALE_PERCENT != 125
+#error "HUD_SCALE_PERCENT must be 0, 75, 100, or 125"
+#endif
+
 // Vertex order per quad: lower-left, lower-right, upper-left, upper-right.
 // The face-button size follows the visual scale of Project Restoration's
 // widescreen HUD.
@@ -274,14 +283,17 @@ u16 gNativeHudIndices[NATIVE_HUD_INDEX_COUNT]
     #define NATIVE_HUD_BASE 0x00508A30
     #define NATIVE_HUD_SOURCE_POSITIONS_ADDR 0x0031B0A4
     #define NATIVE_HUD_UPLOAD_UVS_ADDR 0x0031701C
+    #define NATIVE_HUD_UPLOAD_POSITIONS_ADDR 0x003170C8
 #elif defined(Version_KOR)
     #define NATIVE_HUD_BASE 0x00508A30
     #define NATIVE_HUD_SOURCE_POSITIONS_ADDR 0x0031AFA4
     #define NATIVE_HUD_UPLOAD_UVS_ADDR 0x00316F1C
+    #define NATIVE_HUD_UPLOAD_POSITIONS_ADDR 0x00316FC8
 #else
     #define NATIVE_HUD_BASE ADDR(0x004FC648)
     #define NATIVE_HUD_SOURCE_POSITIONS_ADDR ADDR(0x002FC3FC)
     #define NATIVE_HUD_UPLOAD_UVS_ADDR ADDR(0x00317D1C)
+    #define NATIVE_HUD_UPLOAD_POSITIONS_ADDR ADDR(0x0036759C)
 #endif
 
 #define NATIVE_HUD_VISIBLE (*(volatile u8*)NATIVE_HUD_BASE)
@@ -293,6 +305,8 @@ typedef float* (*NativeHudMappedBufferFn)(void* board, u32 layer);
 
 typedef void (*NativeHudUploadBufferFn)(void* board, u32 byteCount, const void* source);
 #define NATIVE_HUD_UPLOAD_UVS ((NativeHudUploadBufferFn)NATIVE_HUD_UPLOAD_UVS_ADDR)
+#define NATIVE_HUD_UPLOAD_POSITIONS \
+    ((NativeHudUploadBufferFn)NATIVE_HUD_UPLOAD_POSITIONS_ADDR)
 
 #define NATIVE_ACTION_VERTEX_COUNT 8
 static float sNativeActionOriginal[NATIVE_ACTION_VERTEX_COUNT * 3];
@@ -300,6 +314,82 @@ static float* sNativeActionSource;
 static u32 sNativeHudUploadedHash;
 static u8 sNativeHudHasUploaded;
 static void* sNativeHudUploadedBoard;
+static float sNativeHudBasePositions[NATIVE_HUD_VERTEX_COUNT * 3];
+static void* sNativeHudPositionBoard;
+static u8 sNativeHudScalePercent = HUD_SCALE_PERCENT;
+static u8 sNativeHudScaleInitialized;
+static u8 sNativeHudPositionsDirty;
+
+static float NativeHud_GetScale(void) {
+    return (float)sNativeHudScalePercent / 100.0f;
+}
+
+static void NativeHud_ScaleQuad(u32 quad, float anchorX, float anchorY,
+                                float scale) {
+    float* positions = gNativeHudPositions + quad * 4 * 3;
+    for (u32 vertex = 0; vertex < 4; vertex++) {
+        float* position = positions + vertex * 3;
+        position[0] = anchorX + (position[0] - anchorX) * scale;
+        position[1] = anchorY + (position[1] - anchorY) * scale;
+    }
+}
+
+static void NativeHud_ScaleQuadRange(u32 first, u32 last,
+                                     float anchorX, float anchorY,
+                                     float scale) {
+    for (u32 quad = first; quad <= last; quad++) {
+        NativeHud_ScaleQuad(quad, anchorX, anchorY, scale);
+    }
+}
+
+static void NativeHud_RebuildPositions(void) {
+    for (u32 i = 0; i < NATIVE_HUD_VERTEX_COUNT * 3; i++) {
+        gNativeHudPositions[i] = sNativeHudBasePositions[i];
+    }
+
+    const float scale = NativeHud_GetScale();
+    if (sNativeHudScalePercent == 100) {
+        sNativeHudPositionsDirty = 1;
+        return;
+    }
+
+    // Keep each HUD cluster attached to its natural screen corner. Scaling
+    // positions and quad dimensions together preserves the source texture at
+    // full resolution and avoids the filtering damage of resized assets.
+    NativeHud_ScaleQuad(0, 400.0f, 240.0f, scale); // Rupee icon
+    NativeHud_ScaleQuadRange(1, 3, 400.0f, 0.0f, scale); // B/X/Y bases
+    NativeHud_ScaleQuad(4, 0.0f, 0.0f, scale); // D-pad cross
+    NativeHud_ScaleQuadRange(5, 7, 400.0f, 0.0f, scale); // B/X/Y items
+    NativeHud_ScaleQuadRange(8, 23, 0.0f, 0.0f, scale); // D-pad and hearts
+    NativeHud_ScaleQuadRange(24, 26, 400.0f, 240.0f, scale); // Rupee digits
+    NativeHud_ScaleQuad(27, 0.0f, 0.0f, scale); // Magic frame
+    NativeHud_ScaleQuadRange(28, 29, 400.0f, 0.0f, scale); // X/Y ammo
+    NativeHud_ScaleQuad(30, 0.0f, 0.0f, scale); // Magic fill
+    sNativeHudPositionsDirty = 1;
+}
+
+void NativeHud_InitializeScale(void) {
+    if (!sNativeHudScaleInitialized) {
+        for (u32 i = 0; i < NATIVE_HUD_VERTEX_COUNT * 3; i++) {
+            sNativeHudBasePositions[i] = gNativeHudPositions[i];
+        }
+        sNativeHudScaleInitialized = 1;
+    }
+    NativeHud_RebuildPositions();
+}
+
+void NativeHud_CycleScale(void) {
+    if (sNativeHudScalePercent == 75) {
+        sNativeHudScalePercent = 100;
+    } else if (sNativeHudScalePercent == 100) {
+        sNativeHudScalePercent = 125;
+    } else if (sNativeHudScalePercent == 125) {
+        sNativeHudScalePercent = 0;
+    } else {
+        sNativeHudScalePercent = 75;
+    }
+    NativeHud_RebuildPositions();
+}
 
 static u32 NativeHud_UvHash(void) {
     const u32* words = (const u32*)gNativeHudUVs;
@@ -350,13 +440,16 @@ void NativeHud_PrepareActionPrompt(void) {
         // scale and placement: Project Restoration keeps the circle in the
         // diamond and puts the smaller verb immediately below it.
         bool isActionText = width > height * 1.35f;
-        float scale = (isActionText ? 9.0f : 16.0f) / height;
-        if (isActionText && width * scale > 48.0f) {
-            scale = 48.0f / width;
+        const float hudScale = NativeHud_GetScale();
+        float scale = (isActionText ? 9.0f : 16.0f) * hudScale / height;
+        if (isActionText && width * scale > 48.0f * hudScale) {
+            scale = 48.0f * hudScale / width;
         }
         float scaledWidth = width * scale;
-        float targetCenterX = isActionText ? 392.0f - scaledWidth * 0.5f : 382.0f;
-        float targetCenterY = isActionText ? 40.0f : 37.0f;
+        float targetCenterX = isActionText ?
+            400.0f - 8.0f * hudScale - scaledWidth * 0.5f :
+            400.0f - 18.0f * hudScale;
+        float targetCenterY = (isActionText ? 40.0f : 37.0f) * hudScale;
         for (u32 i = 0; i < 4; i++) {
             float* vertex = first + i * 3;
             vertex[0] = targetCenterX + (vertex[0] - sourceCenterX) * scale;
@@ -636,8 +729,27 @@ static void NativeHud_UpdateMappedItems(u8 visible) {
     }
 }
 
+static void NativeHud_UploadPositions(u8 visible) {
+    void* board = NATIVE_HUD_BOARD;
+    if (!visible || board == 0) {
+        return;
+    }
+    if (!sNativeHudPositionsDirty && board == sNativeHudPositionBoard) {
+        return;
+    }
+
+    // The board keeps its CPU geometry and GPU vertex buffer separately. Use
+    // its native setter to keep both copies in sync.
+    NATIVE_HUD_UPLOAD_POSITIONS(board, sizeof(gNativeHudPositions),
+                                gNativeHudPositions);
+    sNativeHudPositionBoard = board;
+    sNativeHudPositionsDirty = 0;
+}
+
 void NativeHud_Update(GlobalContext* globalCtx) {
-    u8 visible = globalCtx != 0 && IsInGameOrBossChallenge();
+    const u8 visible = globalCtx != 0 && IsInGameOrBossChallenge() &&
+                       sNativeHudScalePercent != 0;
+    NativeHud_UploadPositions(visible);
     NativeHud_UpdateMappedItems(visible);
     NATIVE_HUD_VISIBLE = visible ? 1 : 0;
 }
