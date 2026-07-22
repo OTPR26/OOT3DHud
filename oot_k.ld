@@ -8,6 +8,7 @@ SECTIONS
 	.patch_NativeActionHudSync 0x108080 : { *(.patch_NativeActionHudSync) }
 	.patch_before_GlobalContext_Update 0x13A1F0 : { *(.patch_before_GlobalContext_Update) }
 	.patch_after_GlobalContext_Update 0x13A248 : { *(.patch_after_GlobalContext_Update) }
+	.patch_SelectItemsMenu 0x1188FC : { *(.patch_SelectItemsMenu) }
 	.patch_NativeHudTextureSlot 0x150B30 : { *(.patch_NativeHudTextureSlot) }
 	.patch_NativeHudIgnoreMotionDisable 0x2F80DC : { *(.patch_NativeHudIgnoreMotionDisable) }
 	.patch_NativeHudIgnoreMotionSettingGate1 0x115794 : { *(.patch_NativeHudIgnoreMotionSettingGate1) }

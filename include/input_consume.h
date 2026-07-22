@@ -19,4 +19,16 @@ static inline void InputRemap_ClearButtonMasks(
     *released &= ~button;
 }
 
+// Replace a physical button edge with the button a native menu already
+// understands. This keeps menu behavior inside Grezzo's own state machine.
+static inline void InputRemap_ReplaceButtonMasks(
+    pad_t* pad, volatile uint32_t* held, volatile uint32_t* pressed,
+    volatile uint32_t* released, uint32_t from, uint32_t to) {
+    InputRemap_ClearButtonMasks(pad, held, pressed, released, from);
+    pad->curr.val |= to;
+    pad->pressed.val |= to;
+    *held |= to;
+    *pressed |= to;
+}
+
 #endif // INPUT_CONSUME_H

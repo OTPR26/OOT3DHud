@@ -10,6 +10,11 @@ before_GlobalContext_Update_patch:
 after_GlobalContext_Update_patch:
     b hook_after_GlobalContext_Update
 
+.section .patch_SelectItemsMenu
+.global SelectItemsMenu_patch
+SelectItemsMenu_patch:
+    bl hook_SelectItemsMenu
+
 .section .patch_loader
 .global loader_patch
 loader_patch:

@@ -80,3 +80,19 @@ hook_NativeActionHudSync:
     bl NativeHud_RestoreActionPrompt
     pop {r0-r12, lr}
     bx lr
+
+.global hook_SelectItemsMenu
+hook_SelectItemsMenu:
+    push {r0-r12, lr}
+.if (_TWN_==1) || (_KOR_==1)
+    cpy r0,r10
+.else
+    cpy r0,r5
+.endif
+    bl InputRemap_TryOpenItemsMenu
+    cmp r0,#0x1
+    pop {r0-r12, lr}
+    // The replaced instruction is a NOP. If Select was handled, return at the
+    // existing BEQ that skips the vanilla save-menu activation.
+    addeq lr,lr,#0xC
+    bx lr

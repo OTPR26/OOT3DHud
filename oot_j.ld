@@ -24,6 +24,10 @@ SECTIONS
 		*(.patch_after_GlobalContext_Update)
 	}
 
+	.patch_SelectItemsMenu 0x42EBD8 : {
+		*(.patch_SelectItemsMenu)
+	}
+
 	.patch_NativeHudTextureSlot 0x469600 : {
 		*(.patch_NativeHudTextureSlot)
 	}

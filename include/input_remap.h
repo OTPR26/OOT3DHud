@@ -12,3 +12,6 @@ void InputRemap_Update(GlobalContext* globalCtx);
 // touchscreen-action flags and their update timing are being verified.
 void InputRemap_ApplyVanillaAction(GlobalContext* globalCtx, ControlAction action);
 
+// Called from OoT3D's native HUD menu manager at the point where it would
+// otherwise treat Select as Start and open the Save prompt.
+u32 InputRemap_TryOpenItemsMenu(void* menuManager);

@@ -66,6 +66,18 @@ int main(void) {
     assert((pressed & BUTTON_B) != 0);
     assert((released & BUTTON_X) != 0);
 
+    // An open Items screen receives Select as its native B close action.
+    InputRemap_ReplaceButtonMasks(&pad, &held, &pressed, &released,
+                                  BUTTON_SELECT, BUTTON_B);
+    assert((pad.curr.val & BUTTON_SELECT) == 0);
+    assert((pad.pressed.val & BUTTON_SELECT) == 0);
+    assert((held & BUTTON_SELECT) == 0);
+    assert((pressed & BUTTON_SELECT) == 0);
+    assert((pad.curr.val & BUTTON_B) != 0);
+    assert((pad.pressed.val & BUTTON_B) != 0);
+    assert((held & BUTTON_B) != 0);
+    assert((pressed & BUTTON_B) != 0);
+
     puts("controls_test: all mappings passed");
     return 0;
 }
