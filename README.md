@@ -1,11 +1,11 @@
-# OoT3D Modern HUD + Free Camera
+# Ocarina Reframed: OoT3D Single-Screen HUD + Free Camera
 
 [![Release](https://img.shields.io/github/v/release/OTPR26/OOT3DHud?display_name=tag)](https://github.com/OTPR26/OOT3DHud/releases/latest)
 [![License](https://img.shields.io/github/license/OTPR26/OOT3DHud)](LICENSE)
 ![Game](https://img.shields.io/badge/OoT3D-USA%20%7C%20EUR%20%7C%20JP%20%7C%20TWN%20%7C%20KOR-4b8bbe)
 ![Tested](https://img.shields.io/badge/tested-Azahar-5aaa46)
 
-**Website:** [ocarinareframed.com](https://ocarinareframed.com)
+[Website](https://ocarinareframed.com) · [GameBanana](https://gamebanana.com/mods/695604) · [Latest release](https://github.com/OTPR26/OOT3DHud/releases/latest)
 
 A modern, high-resolution top-screen HUD and C-stick free camera for the USA, European, Japanese,
 Taiwanese, and Korean releases of *The Legend of Zelda: Ocarina of Time 3D*.
