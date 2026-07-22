@@ -48,6 +48,11 @@ JP          := JP
 TWN         := TWN
 KOR         := KOR
 REGION      := USA
+HUD_SCALE   ?= 100
+
+ifeq ($(filter $(HUD_SCALE),0 75 100 125),)
+$(error HUD_SCALE must be 0, 75, 100, or 125)
+endif
 
 ifeq ($(USA), $(REGION))
   LINK_SCRIPT 	:= oot.ld
@@ -81,7 +86,7 @@ CFLAGS	:=	-g -Wall -mword-relocations -D DEBUG \
 			-fno-unwind-tables -fno-asynchronous-unwind-tables \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS $(VERFLAGS)
+CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS $(VERFLAGS) -DHUD_SCALE_PERCENT=$(HUD_SCALE)
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 

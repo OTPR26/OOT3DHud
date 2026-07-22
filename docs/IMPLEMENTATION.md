@@ -14,15 +14,15 @@ They do not invoke item or player routines directly.
 1. The loader transfers control to the expanded code region.
 2. The `GlobalContext_Update` entry hook initializes services once.
 3. Physical input and C-stick state are sampled.
-4. `Controls_Resolve` gives the L+R camera-settings chord priority.
-5. A gameplay D-pad action or fresh Select press becomes a vanilla touchscreen sample immediately
+4. A pure L+R+ZR hold advances the HUD size after 45 frames. Adding any other button cancels the hold.
+5. `Controls_Resolve` gives the L+R camera-settings chord priority.
+6. A gameplay D-pad action or fresh Select press becomes a vanilla touchscreen sample immediately
    before the normal game update: Left is I, Down is II, Up is Navi/View, Right is the Ocarina, and
    Select opens Items.
-6. A fresh ZL press reproduces OoT3D's original minimap controls: a sustained D-pad Down state hides
-   the minimap, and a later fresh direction shows it again.
-7. OoT3D processes those samples through its original UI/action paths.
-8. The native HUD board is updated from live game state after the game update.
-9. The established free-camera hook handles supported normal-camera updates after C-stick activation.
+7. A fresh ZL press reproduces OoT3D's original minimap behavior.
+8. OoT3D processes those samples through its original UI/action paths.
+9. The native HUD board is updated from live game state after the game update.
+10. The established free-camera hook handles supported normal-camera updates after C-stick activation.
 
 The touch injector remembers the exact HID ring entry it changes. If HID has not advanced on the next
 frame, it clears only that matching synthetic entry and does not overwrite a newer physical touch.
@@ -33,6 +33,9 @@ The release renderer reuses an OoT3D native stereoscopic top-screen board and re
 2:1 `cam_interface00` texture slot. Azahar can therefore apply a high-resolution replacement
 texture before internal-resolution scaling; no release HUD sprites are drawn into the 400x240
 framebuffer.
+
+The renderer keeps an untouched copy of the base geometry. HUD size changes rebuild positions from
+that copy and upload the complete position buffer through OoT3D's native board setter.
 
 The board contains live quads for:
 

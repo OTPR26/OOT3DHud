@@ -9,7 +9,7 @@
 
 extern GlobalContext* gGlobalContext;
 
-static void Project_Init(GlobalContext* globalCtx) {
+static void Project_Init(void) {
     static u8 initialized = 0;
     if (initialized) {
         return;
@@ -18,18 +18,15 @@ static void Project_Init(GlobalContext* globalCtx) {
     srvInit();
     irrstInit();
     Draw_SetupFramebuffer();
-    gGlobalContext = globalCtx;
     initialized = 1;
 }
 
 void before_GlobalContext_Update(GlobalContext* globalCtx) {
-    Project_Init(globalCtx);
+    Project_Init();
     gGlobalContext = globalCtx;
     Input_Update();
 
-    // Keep synthetic touch injection adjacent to OoT3D's update. Textured HUD
-    // alpha blending is intentionally restricted to the post-update hook so
-    // the HID ring cannot advance during expensive pre-update drawing.
+    // Inject shortcuts immediately before OoT3D samples the current input.
     InputRemap_Update(globalCtx);
 }
 

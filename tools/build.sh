@@ -3,9 +3,11 @@ set -eu
 
 region="${REGION:-USA}"
 citra="${CITRA:-1}"
+hud_scale="${HUD_SCALE:-100}"
 devkitpro="${DEVKITPRO:-/opt/devkitpro}"
 devkitarm="${DEVKITARM:-${devkitpro}/devkitARM}"
 project_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+output_dir="${OUTPUT_DIR:-$project_dir/artifacts/$region}"
 stage_dir=$(mktemp -d "${TMPDIR:-/tmp}/oot3d-modern-hud.XXXXXX")
 
 cleanup() {
@@ -35,11 +37,12 @@ rsync -a \
     "$project_dir/" "$stage_dir/"
 
 DEVKITPRO="$devkitpro" DEVKITARM="$devkitarm" \
-    make -C "$stage_dir" all REGION="$region" citra="$citra"
+    make -C "$stage_dir" all REGION="$region" citra="$citra" \
+    HUD_SCALE="$hud_scale"
 
-mkdir -p "$project_dir/artifacts/$region"
-cp "$stage_dir/code.ips" "$project_dir/artifacts/$region/code.ips"
+mkdir -p "$output_dir"
+cp "$stage_dir/code.ips" "$output_dir/code.ips"
 cp "$stage_dir/$(basename "$stage_dir").elf" \
-    "$project_dir/artifacts/$region/oot3d-modern-hud.elf"
+    "$output_dir/oot3d-modern-hud.elf"
 
-echo "Built artifacts/$region/code.ips"
+echo "Built $output_dir/code.ips (HUD scale: $hud_scale%)"

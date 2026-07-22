@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdbool.h>
 #include <stdint.h>
 
 typedef enum {
@@ -15,9 +16,5 @@ typedef enum {
     CONTROL_ACTION_CAMERA_INVERT_NEXT,
 } ControlAction;
 
-typedef struct {
-    ControlAction action;
-    uint32_t consumedButtons;
-} ControlDecision;
-
-ControlDecision Controls_Resolve(uint32_t held, uint32_t pressed);
+ControlAction Controls_Resolve(uint32_t held, uint32_t pressed);
+bool Controls_IsHudScaleHold(uint32_t held, uint32_t irrstHeld);

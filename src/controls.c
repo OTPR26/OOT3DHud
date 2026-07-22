@@ -2,45 +2,46 @@
 
 #include "hid.h"
 
-ControlDecision Controls_Resolve(uint32_t held, uint32_t pressed) {
+bool Controls_IsHudScaleHold(uint32_t held, uint32_t irrstHeld) {
+    const uint32_t shoulderButtons = IRRST_BUTTON_ZL | IRRST_BUTTON_ZR;
+
+    return held == (BUTTON_L1 | BUTTON_R1) &&
+           (irrstHeld & shoulderButtons) == IRRST_BUTTON_ZR;
+}
+
+ControlAction Controls_Resolve(uint32_t held, uint32_t pressed) {
     const uint32_t configChord = BUTTON_L1 | BUTTON_R1;
-    ControlDecision result = { CONTROL_ACTION_NONE, 0 };
 
     if ((held & configChord) == configChord) {
         if (pressed & BUTTON_UP) {
-            result.action = CONTROL_ACTION_CAMERA_SENSITIVITY_UP;
-        } else if (pressed & BUTTON_DOWN) {
-            result.action = CONTROL_ACTION_CAMERA_SENSITIVITY_DOWN;
-        } else if (pressed & BUTTON_LEFT) {
-            result.action = CONTROL_ACTION_CAMERA_INVERT_PREVIOUS;
-        } else if (pressed & BUTTON_RIGHT) {
-            result.action = CONTROL_ACTION_CAMERA_INVERT_NEXT;
+            return CONTROL_ACTION_CAMERA_SENSITIVITY_UP;
         }
-
-        if (result.action != CONTROL_ACTION_NONE) {
-            result.consumedButtons = pressed &
-                (BUTTON_UP | BUTTON_DOWN | BUTTON_LEFT | BUTTON_RIGHT);
+        if (pressed & BUTTON_DOWN) {
+            return CONTROL_ACTION_CAMERA_SENSITIVITY_DOWN;
         }
-        return result;
+        if (pressed & BUTTON_LEFT) {
+            return CONTROL_ACTION_CAMERA_INVERT_PREVIOUS;
+        }
+        if (pressed & BUTTON_RIGHT) {
+            return CONTROL_ACTION_CAMERA_INVERT_NEXT;
+        }
+        return CONTROL_ACTION_NONE;
     }
 
     if (pressed & BUTTON_SELECT) {
-        result.action = CONTROL_ACTION_ITEMS_MENU;
-        result.consumedButtons = BUTTON_SELECT;
-    } else if (held & BUTTON_LEFT) {
-        result.action = CONTROL_ACTION_ITEM_I;
-    } else if (held & BUTTON_DOWN) {
-        result.action = CONTROL_ACTION_ITEM_II;
-    } else if (held & BUTTON_UP) {
-        result.action = CONTROL_ACTION_NAVI;
-    } else if (held & BUTTON_RIGHT) {
-        result.action = CONTROL_ACTION_OCARINA;
+        return CONTROL_ACTION_ITEMS_MENU;
     }
-
-    if (result.action != CONTROL_ACTION_NONE &&
-        result.action != CONTROL_ACTION_ITEMS_MENU) {
-        result.consumedButtons = held &
-            (BUTTON_UP | BUTTON_DOWN | BUTTON_LEFT | BUTTON_RIGHT);
+    if (held & BUTTON_LEFT) {
+        return CONTROL_ACTION_ITEM_I;
     }
-    return result;
+    if (held & BUTTON_DOWN) {
+        return CONTROL_ACTION_ITEM_II;
+    }
+    if (held & BUTTON_UP) {
+        return CONTROL_ACTION_NAVI;
+    }
+    if (held & BUTTON_RIGHT) {
+        return CONTROL_ACTION_OCARINA;
+    }
+    return CONTROL_ACTION_NONE;
 }
