@@ -27,22 +27,23 @@ typedef struct {
 static u32 sSyntheticTouchIndex = 0;
 static TouchPoint sSyntheticTouchPoint = { -1, -1 };
 static u8 sSyntheticTouchActive = 0;
+static u8 sItemsMenuRequested = 0;
+static u8 sItemsMenuOpen = 0;
+
+#if defined(Version_JP)
+    #define NATIVE_ITEMS_OPEN_ADDR 0x002F3EF0
+#elif defined(Version_TWN)
+    #define NATIVE_ITEMS_OPEN_ADDR 0x003118EC
+#elif defined(Version_KOR)
+    #define NATIVE_ITEMS_OPEN_ADDR 0x003117EC
+#else
+    // USA and Europe share this native menu transition.
+    #define NATIVE_ITEMS_OPEN_ADDR 0x002F43D8
+#endif
 
 static u32 sPreviousIrrstButtons = 0;
 static u16 sMinimapHideFrames = 0;
 static u8 sMinimapAssumedVisible = 1;
-
-static void InputRemap_ConsumeButton(GlobalContext* globalCtx, u32 button) {
-    pad_t* const pad = &real_hid.pad.pads[real_hid.pad.index];
-    volatile u32* const held =
-        (volatile u32*)((u8*)globalCtx + PLAY_PAD_BUTTONS_OFFSET);
-    volatile u32* const pressed =
-        (volatile u32*)((u8*)globalCtx + PLAY_PAD_NEW_BUTTONS_OFFSET);
-    volatile u32* const released =
-        (volatile u32*)((u8*)globalCtx + PLAY_PAD_RELEASED_BUTTONS_OFFSET);
-
-    InputRemap_ClearButtonMasks(pad, held, pressed, released, button);
-}
 
 static void InputRemap_InjectMinimapButton(GlobalContext* globalCtx, u32 button,
                                            u8 pressed) {
@@ -77,6 +78,10 @@ static TouchPoint InputRemap_GetTouchPoint(ControlAction action) {
 }
 
 void InputRemap_Update(GlobalContext* globalCtx) {
+    // Menu requests are valid only for the current gameplay update. The
+    // native menu hook consumes this later in the same frame.
+    sItemsMenuRequested = 0;
+
     // If HID has not advanced to a new sample since our previous injection,
     // clear only the exact sample we created. Never clear a newer physical
     // touch sample from the player.
@@ -121,6 +126,23 @@ void InputRemap_Update(GlobalContext* globalCtx) {
 
     const ControlDecision decision = Controls_Resolve(rInputCtx.cur.val, rInputCtx.pressed.val);
 
+    // Match Project Restoration's menu behavior: Select opens Items, then the
+    // same button activates that screen's native close command. OoT3D closes
+    // Items with B, so translate only the fresh Select edge while it is open.
+    volatile u32* const gameHeld =
+        (volatile u32*)((u8*)globalCtx + PLAY_PAD_BUTTONS_OFFSET);
+    volatile u32* const gamePressed =
+        (volatile u32*)((u8*)globalCtx + PLAY_PAD_NEW_BUTTONS_OFFSET);
+    volatile u32* const gameReleased =
+        (volatile u32*)((u8*)globalCtx + PLAY_PAD_RELEASED_BUTTONS_OFFSET);
+    pad_t* const hidPad = &real_hid.pad.pads[real_hid.pad.index];
+
+    // Keep the toggle synchronized when the player uses the screen's normal
+    // B exit instead of pressing Select again.
+    if (sItemsMenuOpen && (rInputCtx.pressed.val & BUTTON_B)) {
+        sItemsMenuOpen = 0;
+    }
+
     switch (decision.action) {
         case CONTROL_ACTION_CAMERA_SENSITIVITY_UP:
         case CONTROL_ACTION_CAMERA_SENSITIVITY_DOWN:
@@ -132,18 +154,45 @@ void InputRemap_Update(GlobalContext* globalCtx) {
         case CONTROL_ACTION_ITEM_II:
         case CONTROL_ACTION_NAVI:
         case CONTROL_ACTION_OCARINA:
-        case CONTROL_ACTION_ITEMS_MENU:
-            if (decision.action == CONTROL_ACTION_ITEMS_MENU) {
-                // Vanilla OoT3D treats Select as a second Start button. Remove
-                // it from the HID sample that the game is about to consume so
-                // only the native Items touch target handles this press.
-                InputRemap_ConsumeButton(globalCtx, BUTTON_SELECT);
-            }
             InputRemap_ApplyVanillaAction(globalCtx, decision.action);
+            break;
+        case CONTROL_ACTION_ITEMS_MENU:
+            if (sItemsMenuOpen) {
+                InputRemap_ReplaceButtonMasks(hidPad, gameHeld, gamePressed,
+                                              gameReleased, BUTTON_SELECT,
+                                              BUTTON_B);
+                sItemsMenuOpen = 0;
+            } else {
+                InputRemap_ClearButtonMasks(hidPad, gameHeld, gamePressed,
+                                            gameReleased, BUTTON_SELECT);
+                sItemsMenuRequested = 1;
+            }
             break;
         case CONTROL_ACTION_NONE:
             break;
     }
+}
+
+u32 InputRemap_TryOpenItemsMenu(void* menuManager) {
+    volatile u32* const state = (volatile u32*)menuManager;
+
+    if (!sItemsMenuRequested) {
+        return 0;
+    }
+    sItemsMenuRequested = 0;
+
+    // State 2 is the normal gameplay HUD. The native Items touch target moves
+    // through state 7 and reaches 0x0C when released. Enter that completed
+    // activation state directly so no touchscreen sample can be missed.
+    if (state[0x0D] == 2) {
+        ((void (*)(u32))NATIVE_ITEMS_OPEN_ADDR)(1);
+        state[0x0D] = 0x0C;
+        state[0x17] = 0;
+        sItemsMenuOpen = 1;
+    }
+
+    // Always suppress the vanilla Select-as-Start path for this press.
+    return 1;
 }
 
 void InputRemap_ApplyVanillaAction(GlobalContext* globalCtx, ControlAction action) {
