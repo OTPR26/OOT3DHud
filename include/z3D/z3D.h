@@ -264,18 +264,18 @@ typedef s32 (*BossChallenge_IsActive_proc)(void);
 
 typedef s32 (*Camera_CheckWater_proc)(Camera* camera);
 #if defined(Version_TWN)
-    #define Camera_CheckWater ((Camera_CheckWater_proc)0x002E29D8)
+    #define Camera_CheckWater ((Camera_CheckWater_proc)0x002E29D4)
 #elif defined(Version_KOR)
-    #define Camera_CheckWater ((Camera_CheckWater_proc)0x002E28D8)
+    #define Camera_CheckWater ((Camera_CheckWater_proc)0x002E28D4)
 #else
     #define Camera_CheckWater ((Camera_CheckWater_proc)ADDR(0x2D06A0))
 #endif
 
 typedef void (*Camera_UpdateInterface_proc)(u32 flags);
 #if defined(Version_TWN)
-    #define Camera_UpdateInterface ((Camera_UpdateInterface_proc)0x002E2764)
+    #define Camera_UpdateInterface ((Camera_UpdateInterface_proc)0x002E276C)
 #elif defined(Version_KOR)
-    #define Camera_UpdateInterface ((Camera_UpdateInterface_proc)0x002E2664)
+    #define Camera_UpdateInterface ((Camera_UpdateInterface_proc)0x002E266C)
 #else
     #define Camera_UpdateInterface ((Camera_UpdateInterface_proc)ADDR(0x330D84))
 #endif
