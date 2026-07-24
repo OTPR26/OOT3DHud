@@ -139,14 +139,18 @@ TWN  9281f0f52ceb08b9126d24042723ed4933b387e7a49c4073eb11ff954e6c092f
 KOR  ae7c5dbdcfc4b43e8ec4a81267deed2570678e554bb66545ff42eeb4940753a2
 ```
 
-## How it works
+## Controls
 
-Physical D-pad input is translated into OoT3D's original touchscreen samples, so the game retains its
-normal item-usability checks and press/hold behavior. ZL reproduces the original minimap hide/show
-gestures through OoT3D's sampled controller state. Select opens the native Items screen through its
-original touchscreen action. The HUD reuses a native top-screen
-board and updates its position and UV buffers from live, read-only game state. Runtime size changes
-rebuild that native geometry without resizing or replacing the source textures.
+ABXY Switch-style diamond 
+D-pad items (Fairy/Look Up, Ocarina Right, Items I & II Down and Left)
+Select-to-Items access
+ZL minimap toggle
+Single screen hearts, magic and rupees
+C-stick free camera (Sensitivity: Press L + R + D-Pad Up/Down to increase or decrease the camera speed.Invert Axes: Press L + R + D-Pad Left/Right to toggle axes inversion (Neither, just X, just Y, or Both).
+ 
+Adjust HUD scaling or turn the HUD off - L+R+ZR rotates through 75%, 100%, 125%, Off (defaults to 100%)
+
+Each HUD element reflects the game’s live gameplay.
 
 See [Implementation notes](docs/IMPLEMENTATION.md) and
 [Native HD HUD notes](docs/NATIVE_HD_HUD.md) for technical details.
