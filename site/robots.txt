@@ -1,5 +1,4 @@
-User-Agent: *
+User-agent: *
 Allow: /
 
-Host: https://ocarinareframed.com
 Sitemap: https://ocarinareframed.com/sitemap.xml
