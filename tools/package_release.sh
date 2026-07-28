@@ -10,18 +10,23 @@ work_dir=$(mktemp -d "${TMPDIR:-/tmp}/oot3d-modern-hud-package.XXXXXX")
 case "$region" in
     USA)
         title_id="0004000000033500"
+        font_locale="us"
         ;;
     EUR)
         title_id="0004000000033600"
+        font_locale="eu"
         ;;
     JP)
         title_id="0004000000033400"
+        font_locale=""
         ;;
     TWN)
         title_id="000400000008F900"
+        font_locale=""
         ;;
     KOR)
         title_id="000400000008F800"
+        font_locale=""
         ;;
     *)
         echo "Unsupported region: $region (expected USA, EUR, JP, TWN, or KOR)" >&2
@@ -47,6 +52,11 @@ cp "$project_dir/artifacts/$region/exheader.bin" \
     "$work_dir/$release_name/load/mods/$title_id/exheader.bin"
 cp "$project_dir/artifacts/USA/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png" \
     "$work_dir/$release_name/load/textures/$title_id/UI/tex1_256x128_F23CD5DE9DCE99C4_4_mip0.png"
+if [ -n "$font_locale" ]; then
+    mkdir -p "$work_dir/$release_name/load/mods/$title_id/romfs/message/$font_locale"
+    cp "$project_dir/release-assets/fonts/$region/ltn16.qbf" \
+        "$work_dir/$release_name/load/mods/$title_id/romfs/message/$font_locale/ltn16.qbf"
+fi
 cp "$project_dir/INSTALL.md" "$work_dir/$release_name/README.md"
 cp "$project_dir/NOTICE.md" "$work_dir/$release_name/NOTICE.md"
 

@@ -89,3 +89,110 @@ NativeHudDescriptor_patch:
     .word 634
     .word 2
     .word 0x0C
+
+// USA and Europe use the same Latin message font. Their HD QBF stores
+// 32x32 source cells in a 512x512 atlas, while the original renderer expects
+// 16x16 cells in a 256x256 atlas. Keep the high-resolution source cells but
+// draw and measure them at the game's original visual scale.
+.if (_USA_==1) || (_EUR_==1)
+.section .patch_MessageFontAtlasDimensions
+.global MessageFontAtlasDimensions_patch
+MessageFontAtlasDimensions_patch:
+    mov r3, #0x200
+
+.section .patch_MessageFontCommandCapacity
+.global MessageFontCommandCapacity_patch
+MessageFontCommandCapacity_patch:
+    mov r2, #0x100
+
+.section .patch_MessageFontQuadWidth
+.global MessageFontQuadWidth_patch
+MessageFontQuadWidth_patch:
+    b MessageFontQuadWidth_hook
+
+.section .text.MessageFontQuadWidth, "ax", %progbits
+.align 2
+.global MessageFontQuadWidth_hook
+MessageFontQuadWidth_hook:
+    rsb ip, ip, ip, lsl #3
+    add ip, sl, ip, asr #4
+    ldr pc, =0x002B72B8
+
+// Lower the complete glyph quad by one native pixel without clipping it.
+.section .patch_MessageFontQuadBaseline
+.global MessageFontQuadBaseline_patch
+MessageFontQuadBaseline_patch:
+    b MessageFontQuadBaseline_hook
+
+.section .text.MessageFontQuadBaseline, "ax", %progbits
+.align 2
+.global MessageFontQuadBaseline_hook
+MessageFontQuadBaseline_hook:
+    ldr r9, [sp, #52]
+    add r9, r9, #1
+    rsb ip, ip, ip, lsl #3
+    add ip, r9, ip, asr #4
+    ldr pc, =0x002B72E4
+
+// Preserve the original 16-pixel line advance even though the replacement
+// QBF reports a 32-pixel cell height.
+.section .patch_MessageFontLineAdvancePrimary
+.global MessageFontLineAdvancePrimary_patch
+MessageFontLineAdvancePrimary_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontLineAdvanceSecondary
+.global MessageFontLineAdvanceSecondary_patch
+MessageFontLineAdvanceSecondary_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontMeasureSecondary
+.global MessageFontMeasureSecondary_patch
+MessageFontMeasureSecondary_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontMeasureBlock0
+.global MessageFontMeasureBlock0_patch
+MessageFontMeasureBlock0_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontMeasureBlock1
+.global MessageFontMeasureBlock1_patch
+MessageFontMeasureBlock1_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontMeasureBlock2
+.global MessageFontMeasureBlock2_patch
+MessageFontMeasureBlock2_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontMeasureBlock3
+.global MessageFontMeasureBlock3_patch
+MessageFontMeasureBlock3_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontMeasureBounds0
+.global MessageFontMeasureBounds0_patch
+MessageFontMeasureBounds0_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontMeasureBounds1
+.global MessageFontMeasureBounds1_patch
+MessageFontMeasureBounds1_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .patch_MessageFontMeasureBounds2
+.global MessageFontMeasureBounds2_patch
+MessageFontMeasureBounds2_patch:
+    bl MessageFontLayoutHeight_hook
+
+.section .text.MessageFontLayoutHeight, "ax", %progbits
+.align 2
+.global MessageFontLayoutHeight_hook
+MessageFontLayoutHeight_hook:
+    push {lr}
+    ldr ip, =0x002DA7C8
+    blx ip
+    mov r0, r0, asr #1
+    pop {pc}
+.endif

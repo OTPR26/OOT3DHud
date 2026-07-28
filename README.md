@@ -71,6 +71,9 @@ Existing unrelated texture packs can remain installed, but do not combine Ocarin
 another `code.ips` patch for the same title. See [INSTALL.md](INSTALL.md) for the regional title IDs
 and complete folder paths.
 
+The Mod ZIP is intended only for emulators that support the included custom-texture replacement.
+Do not install it through Luma3DS.
+
 ### ROM patch
 
 1. Download and extract the regional **ROM Patch ZIP**.
@@ -87,9 +90,14 @@ testing any modified ROM.
 
 ### Original 3DS with Luma3DS
 
-Original 3DS support is still in progress. Luma3DS can load the included `code.ips` and
-`exheader.bin`, but the current HD HUD atlas uses Azahar/Citra custom-texture replacement and cannot
-yet be loaded by Luma3DS. 3DS users may instead prefer to use the rom patching directions above.
+Do not use the Mod ZIP on original hardware. Its HUD artwork relies on Azahar/Citra custom-texture
+replacement, which Luma3DS does not load in that format. Applying only its code patch could leave
+HUD graphics missing or malformed.
+
+Instead, use the regional **ROM Patch ZIP** above. The resulting ROM contains the required code and
+HUD resources together. Original-hardware operation has not yet been validated by this project, so
+use a compatible method for launching a legally dumped, decrypted, patched `.3ds` or `.cci` file,
+and keep a backup of the original ROM and save data.
 
 ## Compatibility
 
@@ -102,7 +110,7 @@ yet be loaded by Luma3DS. 3DS users may instead prefer to use the rom patching d
 | Korea Rev 1 | Supported |
 | Azahar/Citra — macOS, Windows, Android | Supported |
 | Henriko's 4K texture pack | Supported |
-| Original 3DS + Luma3DS | Not yet validated - Should work with rom patching |
+| Original 3DS + Luma3DS | Experimental / not yet validated; use the ROM Patch package |
 
 ## Building from source
 
@@ -132,8 +140,8 @@ make host-test
 The tested `code.ips` SHA-256 values are:
 
 ```text
-USA  6e36868f77c4bf564816d81656df14bb0db05926466e0750f19f9a22f43a5d0e
-EUR  845c440613e9496deba585ca180cdbf162aa176b2ec042ebba381c5b0aac58b0
+USA  37f5cc139676ade00743e16d7b3302c80fb8cd3670c165e90dbe1a91af1bd29f
+EUR  47259d5613742661452a2e6fc43eea54edf28579f766429db58bddc1ea22a8ed
 JP   e2f378e42fbbdb7fc2f5939be91da6147d66ed9a75e0d1d0df1519f5f735cc0a
 TWN  9281f0f52ceb08b9126d24042723ed4933b387e7a49c4073eb11ff954e6c092f
 KOR  ae7c5dbdcfc4b43e8ec4a81267deed2570678e554bb66545ff42eeb4940753a2
@@ -141,13 +149,13 @@ KOR  ae7c5dbdcfc4b43e8ec4a81267deed2570678e554bb66545ff42eeb4940753a2
 
 ## Controls
 
-ABXY Switch-style diamond 
+ABXY Switch-style diamond
 D-pad items (Fairy/Look Up, Ocarina Right, Items I & II Down and Left)
 Select-to-Items access
 ZL minimap toggle
 Single screen hearts, magic and rupees
-C-stick free camera (Sensitivity: Press L + R + D-Pad Up/Down to increase or decrease the camera speed.Invert Axes: Press L + R + D-Pad Left/Right to toggle axes inversion (Neither, just X, just Y, or Both).
- 
+C-stick free camera (Sensitivity: Press L + R + D-Pad Up/Down to increase or decrease the camera speed. Invert Axes: Press L + R + D-Pad Left/Right to toggle axes inversion (Neither, just X, just Y, or Both).
+
 Adjust HUD scaling or turn the HUD off - L+R+ZR rotates through 75%, 100%, 125%, Off (defaults to 100%)
 
 Each HUD element reflects the game’s live gameplay.

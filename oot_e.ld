@@ -56,6 +56,62 @@ SECTIONS
 		*(.patch_NativeHudDescriptor)
 	}
 
+	.patch_MessageFontAtlasDimensions 0x44CF08 : {
+		*(.patch_MessageFontAtlasDimensions)
+	}
+
+	.patch_MessageFontCommandCapacity 0x44CF14 : {
+		*(.patch_MessageFontCommandCapacity)
+	}
+
+	.patch_MessageFontQuadWidth 0x2B72B4 : {
+		*(.patch_MessageFontQuadWidth)
+	}
+
+	.patch_MessageFontQuadBaseline 0x2B72DC : {
+		*(.patch_MessageFontQuadBaseline)
+	}
+
+	.patch_MessageFontLineAdvancePrimary 0x4C0D90 : {
+		*(.patch_MessageFontLineAdvancePrimary)
+	}
+
+	.patch_MessageFontLineAdvanceSecondary 0x4C0DB0 : {
+		*(.patch_MessageFontLineAdvanceSecondary)
+	}
+
+	.patch_MessageFontMeasureSecondary 0x2BAFE8 : {
+		*(.patch_MessageFontMeasureSecondary)
+	}
+
+	.patch_MessageFontMeasureBlock0 0x2C2814 : {
+		*(.patch_MessageFontMeasureBlock0)
+	}
+
+	.patch_MessageFontMeasureBlock1 0x2C282C : {
+		*(.patch_MessageFontMeasureBlock1)
+	}
+
+	.patch_MessageFontMeasureBlock2 0x2C2890 : {
+		*(.patch_MessageFontMeasureBlock2)
+	}
+
+	.patch_MessageFontMeasureBlock3 0x2C28F8 : {
+		*(.patch_MessageFontMeasureBlock3)
+	}
+
+	.patch_MessageFontMeasureBounds0 0x48C3BC : {
+		*(.patch_MessageFontMeasureBounds0)
+	}
+
+	.patch_MessageFontMeasureBounds1 0x48C3F0 : {
+		*(.patch_MessageFontMeasureBounds1)
+	}
+
+	.patch_MessageFontMeasureBounds2 0x48C408 : {
+		*(.patch_MessageFontMeasureBounds2)
+	}
+
 	. = 0x4C99A8;
 	. = ALIGN(4);
 	.loader : {
