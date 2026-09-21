@@ -1,0 +1,5 @@
+Corresponding source for this regional binary.
+Requires devkitPro/devkitARM and Python 3.
+Run from this directory:
+REGION=TWN HUD_SCALE=100 CITRA=1 TWN_SINGLE_SCREEN_PROBE=1 sh tools/build.sh
+Expected code.ips SHA-256: c8613ca18b58ddd40870085b26e95e1885936b5b950a0a54852ba718625d00c0

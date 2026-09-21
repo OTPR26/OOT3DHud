@@ -36,7 +36,7 @@ Keep backups outside `load/mods`. Use the directory belonging to the emulator yo
 
 ## ROM-patch installation
 
-1. Choose your region and check your original ROM against `SOURCE.txt`.
+1. Choose your region and check the required source-ROM checksum on GitHub.
 2. Apply `patch.xdelta` using an xdelta3-compatible patcher.
 3. Verify the patched ROM's output checksum.
 4. Disable or remove any existing HUD-related mod, then launch the patched ROM.
@@ -45,6 +45,12 @@ Preserve your original ROM and write to a new output file. Do not force checksum
 
 See [installation details](INSTALL.md) and [release notes](docs/releases/1.0.md).
 
+
+## Corresponding source
+
+The exact [1.0 regional source](release-source/1.0/README.md), build instructions,
+licenses and [checksums](docs/releases/1.0-checksums.md) are hosted in this repository.
+The download ZIPs contain only the mod or patch files and one simple README.
 
 ## Credits and licensing
 
