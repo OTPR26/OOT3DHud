@@ -1,0 +1,8 @@
+.edition-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin:2.5rem 0}
+.edition-note{font-size:1rem;line-height:1.7;margin:1.5rem 0 2.5rem}
+.edition-note a,.info-card a:not(.button){text-decoration:underline;text-underline-offset:3px}
+.install-directions{padding-left:1.3rem;font-size:1rem;line-height:1.8}
+.install-directions li+li{margin-top:.8rem}
+.download-card h3{margin:.5rem 0 1rem}
+.download-card .button{margin-top:1.5rem}
+@media(max-width:700px){.edition-grid{grid-template-columns:1fr}.download-card .button{white-space:normal}}
