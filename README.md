@@ -20,7 +20,9 @@ Choose one ZIP, then the folder for North America, Europe, Japan, Taiwan, or Kor
 - `Ocarina-Reframed-1.0-Dual-Screen-Mods.zip`
 - `Ocarina-Reframed-1.0-Dual-Screen-ROM-Patches.zip`
 
-No game ROMs or saves are included. A 4K texture pack is not required.
+No game ROMs or saves are included. 
+
+A 4K texture pack is not required but these patches and mods are compatible with Henriko's 4K texture packs.
 
 ## Mod installation
 
