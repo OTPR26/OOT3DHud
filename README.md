@@ -43,17 +43,6 @@ Preserve your original ROM and write to a new output file. Do not force checksum
 
 See [installation details](INSTALL.md) and [release notes](docs/releases/1.0.md).
 
-## Compatibility
-
-The selected builds have scoped AYN Azahar Plus checks in both delivery methods for all five regions, without custom textures. USA, Europe, and Japan ROM patches target the tested Rev 1 sources; Taiwan and Korea target the exact supplied regional sources. Check each folder's source checksum rather than relying on a filename or region alone.
-
-European runtime checks used English and Taiwan checks used Simplified Chinese. These checks do not cover every language, revision, platform, HUD scale, or gameplay scenario. Final-build Windows Azahar/RetroArch and optional texture-pack combinations have not all been retested.
-
-Do not install a texture pack's bundled code mod over Ocarina Reframed. Randomizer combinations are not validated; clean-ROM xdelta patches are not patches for arbitrary randomized ROMs.
-
-## Corresponding source
-
-Each release ZIP includes the exact per-region source used for its code patches, with `BUILD.txt` instructions and expected checksums. Use those edition-specific sources to reproduce 1.0 binaries; the older root source layout is not the unified 1.0 build entry point. All ten packaged regional sources rebuild to their tested IPS checksums.
 
 ## Credits and licensing
 
