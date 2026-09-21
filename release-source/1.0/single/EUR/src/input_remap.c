@@ -28,8 +28,6 @@
 #define OCARINA_OPEN_TOUCH_FRAMES 4
 #define OCARINA_SONG_BUTTON_DELAY_FRAMES 32
 #define OCARINA_SONG_TOUCH_FRAMES 4
-#define OCARINA_MIN_SONG_NOTES 6
-#define OCARINA_DISMISS_IDLE_FRAMES 18
 #define SAVE_CONTINUE_DISMISS_FRAMES 12
 #define SAVE_DISMISS_PULSE_FRAMES 4
 
@@ -49,8 +47,6 @@ static u8 sSaveMenuOpen = 0;
 static u8 sOcarinaOpenTouchFrames = 0;
 static u8 sOcarinaSongButtonDelay = 0;
 static u8 sOcarinaSongTouchFrames = 0;
-static u8 sOcarinaNoteCount = 0;
-static u8 sOcarinaNoteIdleFrames = 0;
 #if defined(Version_USA) || (defined(Version_EUR) && EUR_SINGLE_SCREEN_PROBE) || (defined(Version_JP) && JP_SINGLE_SCREEN_PROBE) || (defined(Version_TWN) && TWN_SINGLE_SCREEN_PROBE)
 static u8 sOcarinaSongsPending = 0;
 static u8 sOcarinaOpenWatchdog = 0;
@@ -168,8 +164,6 @@ void InputRemap_CloseOcarinaUi(void) {
     sOcarinaOpenTouchFrames = 0;
     sOcarinaSongButtonDelay = 0;
     sOcarinaSongTouchFrames = 0;
-    sOcarinaNoteCount = 0;
-    sOcarinaNoteIdleFrames = 0;
 #if defined(Version_USA) || (defined(Version_EUR) && EUR_SINGLE_SCREEN_PROBE) || (defined(Version_JP) && JP_SINGLE_SCREEN_PROBE) || (defined(Version_TWN) && TWN_SINGLE_SCREEN_PROBE)
     sOcarinaSongsPending = 0;
     sOcarinaOpenWatchdog = 0;
@@ -294,32 +288,11 @@ void InputRemap_Update(GlobalContext* globalCtx) {
     // Match Project Restoration's menu behavior: Select opens Items, then the
     // same button activates that screen's native close command. OoT3D closes
     // Items with B, so translate only the fresh Select edge while it is open.
-    // Built-in ocarina songs contain at least six notes. Once the sixth note
-    // has been entered and input goes briefly idle, recognition/playback has
-    // begun. At that point B cannot cancel the song, so use a synthetic edge
-    // to dismiss the native lower-screen interface before it returns to Map.
-    if (sOcarinaUiOpen) {
-        const u32 notePressed =
-            rInputCtx.pressed.val &
-            (BUTTON_A | BUTTON_X | BUTTON_Y | BUTTON_L1 | BUTTON_R1);
-        if (notePressed != 0) {
-            if (sOcarinaNoteCount != 0xFF) {
-                ++sOcarinaNoteCount;
-            }
-            sOcarinaNoteIdleFrames = 0;
-        } else if (sOcarinaNoteCount >= OCARINA_MIN_SONG_NOTES &&
-                   sOcarinaNoteIdleFrames <
-                       OCARINA_DISMISS_IDLE_FRAMES) {
-            ++sOcarinaNoteIdleFrames;
-        }
-
-        if (sOcarinaNoteIdleFrames == OCARINA_DISMISS_IDLE_FRAMES) {
-            InputRemap_ReplaceButtonMasks(hidPad, gameHeld, gamePressed,
-                                          gameReleased, 0, BUTTON_B);
-            InputRemap_CloseOcarinaUi();
-            return;
-        }
-    }
+    // Never infer song completion from note count or a pause between notes.
+    // Longer songs, held notes, mistakes and free play all remain interactive.
+    // Native song recognition owns playback; only explicit exit input should
+    // send B. Any future automatic overlay cleanup must observe native state
+    // without injecting a cancel into an unfinished performance.
 
     // The Save prompt begins on Save. Down enters the bottom row at Options;
     // Left/Right then selects the adjacent native Mods button.
@@ -546,8 +519,6 @@ void InputRemap_Update(GlobalContext* globalCtx) {
                     sOcarinaOpenWatchdog = 0;
 #endif
                     sOcarinaSongTouchFrames = 0;
-                    sOcarinaNoteCount = 0;
-                    sOcarinaNoteIdleFrames = 0;
                     InputRemap_ApplyVanillaAction(action);
                 }
             }

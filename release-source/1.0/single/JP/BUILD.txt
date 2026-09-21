@@ -2,4 +2,4 @@ Corresponding source for this regional binary.
 Requires devkitPro/devkitARM and Python 3.
 Run from this directory:
 REGION=JP HUD_SCALE=100 CITRA=1 JP_SINGLE_SCREEN_PROBE=1 sh tools/build.sh
-Expected code.ips SHA-256: 3fde6ca6ae1ad81d96f6ffeb11d5afd5c17167524d4f36e9c620637324c19119
+Expected code.ips SHA-256: 30c76bcf7b5382a2eaa34ee370c3dcd7257760938a0da4db1fdd4c85f043998e
