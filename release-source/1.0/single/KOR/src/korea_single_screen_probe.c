@@ -97,7 +97,11 @@ void KoreaProbe_Title(void* node, void (*draw)(void*)) {
 }
 
 void KoreaProbe_AfterTopPass(void* pass) {
-    if (gSaveContext.gameMode == 1 || gSaveContext.gameMode == 2) {
+    // Save and its nested Options/Continue dialogs use the shared replay.
+    // Without this dispatch, Korea's gameplay-only path finishes the top
+    // pass and returns before drawing any of those lower-screen controls.
+    if (gSaveContext.gameMode == 1 || gSaveContext.gameMode == 2 ||
+        InputRemap_IsSaveMenuOpen()) {
         SingleScreen_AfterTopPass(pass);
         return;
     }

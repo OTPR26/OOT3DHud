@@ -2,4 +2,4 @@ Corresponding source for this regional binary.
 Requires devkitPro/devkitARM and Python 3.
 Run from this directory:
 REGION=KOR HUD_SCALE=100 CITRA=1 KOR_SINGLE_SCREEN_PROBE=1 sh tools/build.sh
-Expected code.ips SHA-256: a6d5e205313e017f1c16d41a0e9972a1a92224e4ff3186240f39c4bbf7b7317e
+Expected code.ips SHA-256: 0f76e392c9764b45c43c3dfc32d2dcf0369199fba043c6dc6f27474c00372dc4
