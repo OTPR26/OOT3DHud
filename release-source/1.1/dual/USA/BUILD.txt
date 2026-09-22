@@ -1,0 +1,5 @@
+Corresponding source for this regional binary.
+Requires devkitPro/devkitARM and Python 3.
+Run from this directory:
+REGION=USA HUD_SCALE=100 CITRA=1 sh tools/build.sh
+Expected code.ips SHA-256: a3b954d98f76210c29d11307735324bc18b6bb26c19c64d137363e77f47f450a

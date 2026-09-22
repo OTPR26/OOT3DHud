@@ -1,4 +1,4 @@
-# Ocarina Reframed 1.0
+# Ocarina Reframed 1.1
 
 Two ways to experience Ocarina of Time 3D:
 
@@ -11,14 +11,14 @@ Four downloads: Single Screen or Dual Screen, each available as **Mod** or **ROM
 
 ## Download
 
-[Ocarina Reframed 1.0 release](https://github.com/OTPR26/OOT3DHud/releases/tag/v1.0)
+[Ocarina Reframed 1.1 release](https://github.com/OTPR26/OOT3DHud/releases/tag/v1.1)
 
 Choose one ZIP, then the folder for North America, Europe, Japan, Taiwan, or Korea:
 
-- `Ocarina-Reframed-1.0-Single-Screen-Mods.zip`
-- `Ocarina-Reframed-1.0-Single-Screen-ROM-Patches.zip`
-- `Ocarina-Reframed-1.0-Dual-Screen-Mods.zip`
-- `Ocarina-Reframed-1.0-Dual-Screen-ROM-Patches.zip`
+- `Ocarina-Reframed-1.1-Single-Screen-Mods.zip`
+- `Ocarina-Reframed-1.1-Single-Screen-ROM-Patches.zip`
+- `Ocarina-Reframed-1.1-Dual-Screen-Mods.zip`
+- `Ocarina-Reframed-1.1-Dual-Screen-ROM-Patches.zip`
 
 No game ROMs or saves are included. 
 
@@ -43,13 +43,13 @@ Keep backups outside `load/mods`. Use the directory belonging to the emulator yo
 
 Preserve your original ROM and write to a new output file. Do not force checksum mismatches or combine competing code patches. Other code mods need explicit compatibility validation even when they are not HUD-related.
 
-See [installation details](INSTALL.md) and [release notes](docs/releases/1.0.md).
+See [installation details](INSTALL.md) and [release notes](docs/releases/1.1.md).
 
 
 ## Corresponding source
 
-The exact [1.0 regional source](release-source/1.0/README.md), build instructions,
-licenses and [checksums](docs/releases/1.0-checksums.md) are hosted in this repository.
+The exact [1.1 regional source](release-source/1.1/README.md), build instructions,
+licenses and [checksums](docs/releases/1.1-checksums.md) are hosted in this repository.
 The download ZIPs contain only the mod or patch files and one simple README.
 
 ## Credits and licensing

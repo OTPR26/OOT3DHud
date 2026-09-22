@@ -1,4 +1,4 @@
-# Installing Ocarina Reframed 1.0
+# Installing Ocarina Reframed 1.1
 
 Choose Single Screen or Dual Screen, then Mod or ROM Patch. Each main ZIP has
 folders for North America, Europe, Japan, Taiwan, and Korea. Use one edition
@@ -18,7 +18,7 @@ Do not move or delete saves. Do not resume an old emulator save state.
 
 ## ROM Patch
 
-1. Choose your region and [verify the source-ROM checksum](docs/releases/1.0-checksums.md).
+1. Choose your region and [verify the source-ROM checksum](docs/releases/1.1-checksums.md).
 2. Apply patch.xdelta using an xdelta3-compatible patcher.
 3. Save to a new ROM file; retain your original. Verify the output checksum.
 4. Disable or remove existing HUD-related mods, then launch the patched ROM.
@@ -26,7 +26,7 @@ Do not move or delete saves. Do not resume an old emulator save state.
 North America, Europe and Japan patches use the tested Rev 1 sources. Taiwan
 and Korea use the exact source hashes listed above. Matching a filename or
 region alone is not enough. Do not force checksum mismatches. The legacy
-North America download now contains Single Screen 1.0 and requires the same
+North America download now contains Single Screen 1.1 and requires the same
 Rev 1 input; the older patch accepted a different source ROM.
 
 ## Controls
@@ -42,7 +42,7 @@ patched ROM. Other code mods need explicit compatibility checks even when not
 HUD-related. These patches are not validated for arbitrary Randomizer outputs.
 Use only a texture pack's textures, not its bundled code mod.
 
-See [release notes](docs/releases/1.0.md), [ROM checksums](docs/releases/1.0-checksums.md),
-[download checksums](docs/releases/1.0-download-checksums.txt),
-[corresponding source](release-source/1.0/README.md), [license scope](LICENSE_SCOPE.md)
+See [release notes](docs/releases/1.1.md), [ROM checksums](docs/releases/1.1-checksums.md),
+[download checksums](docs/releases/1.1-download-checksums.txt),
+[corresponding source](release-source/1.1/README.md), [license scope](LICENSE_SCOPE.md)
 and [notices](NOTICE.md). The ZIPs contain only installable files and one README.
