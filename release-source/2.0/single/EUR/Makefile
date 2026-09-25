@@ -1,0 +1,332 @@
+#---------------------------------------------------------------------------------
+.SUFFIXES:
+#---------------------------------------------------------------------------------
+
+ifneq ($(MAKECMDGOALS),host-test)
+ifeq ($(strip $(DEVKITARM)),)
+$(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>DEVKITARM")
+endif
+
+TOPDIR ?= $(CURDIR)
+include $(DEVKITARM)/3ds_rules
+else
+TOPDIR ?= $(CURDIR)
+endif
+
+#---------------------------------------------------------------------------------
+# TARGET is the name of the output
+# BUILD is the directory where object files & intermediate files will be placed
+# SOURCES is a list of directories containing source code
+# DATA is a list of directories containing data files
+# INCLUDES is a list of directories containing header files
+#
+# NO_SMDH: if set to anything, no SMDH file is generated.
+# ROMFS is the directory which contains the RomFS, relative to the Makefile (Optional)
+# APP_TITLE is the name of the app stored in the SMDH file (Optional)
+# APP_DESCRIPTION is the description of the app stored in the SMDH file (Optional)
+# APP_AUTHOR is the author of the app stored in the SMDH file (Optional)
+# ICON is the filename of the icon (.png), relative to the project folder.
+#   If not set, it attempts to use one of the following (in this order):
+#     - <Project name>.png
+#     - icon.png
+#     - <libctru folder>/default_icon.png
+#---------------------------------------------------------------------------------
+TARGET		:=	$(notdir $(CURDIR))
+BUILD		:=	build
+SOURCES		:=	$(sort $(dir $(wildcard src/*/ src/)))
+DATA		:=	data
+INCLUDES	:=	include $(SOURCES)
+INCLUDES    +=  assets
+#ROMFS		:=	romfs
+
+#---------------------------------------------------------------------------------
+# options for code generation
+#---------------------------------------------------------------------------------
+USA         := USA
+EUR         := EUR
+JP          := JP
+TWN         := TWN
+KOR         := KOR
+REGION      := USA
+HUD_SCALE   ?= 100
+CONTROLLER_OPTIONS ?= 0
+UNIFIED_MENU_PROTOTYPE ?= 0
+ifeq ($(UNIFIED_MENU_PROTOTYPE),1)
+ifeq ($(filter $(REGION),USA EUR),)
+$(error UNIFIED_MENU_PROTOTYPE in this isolated port supports USA and EUR only)
+endif
+endif
+TWN_SINGLE_SCREEN_PROBE ?= 0
+JP_SINGLE_SCREEN_PROBE ?= 0
+EUR_SINGLE_SCREEN_PROBE ?= 0
+ifeq ($(EUR_SINGLE_SCREEN_PROBE),1)
+ifneq ($(REGION),EUR)
+$(error EUR_SINGLE_SCREEN_PROBE is Europe-only)
+endif
+endif
+ifeq ($(REGION),EUR)
+ifneq ($(EUR_SINGLE_SCREEN_PROBE),1)
+$(error This isolated European snapshot requires EUR_SINGLE_SCREEN_PROBE=1; use the preserved Dual Screen source otherwise)
+endif
+endif
+ASFLAGS += -D_EUR_SINGLE_SCREEN_PROBE_=$(EUR_SINGLE_SCREEN_PROBE)
+AB_SWAP ?= 0
+DISABLE_BEFORE_GLOBAL_HOOK ?= 0
+DISABLE_AFTER_GLOBAL_HOOK ?= 0
+DISABLE_NATIVE_HUD_PATCHES ?= 0
+DISABLE_CAMERA_PATCH ?= 0
+DISABLE_SELECT_PATCH ?= 0
+
+ifeq ($(filter $(JP_SINGLE_SCREEN_PROBE),0 1),)
+$(error JP_SINGLE_SCREEN_PROBE must be 0 or 1)
+endif
+ifeq ($(JP_SINGLE_SCREEN_PROBE),1)
+ifneq ($(REGION),JP)
+$(error JP_SINGLE_SCREEN_PROBE is a Japan-only local diagnostic)
+endif
+endif
+ifeq ($(filter $(TWN_SINGLE_SCREEN_PROBE),0 1),)
+$(error TWN_SINGLE_SCREEN_PROBE must be 0 or 1)
+endif
+ifeq ($(TWN_SINGLE_SCREEN_PROBE),1)
+ifneq ($(REGION),TWN)
+$(error TWN_SINGLE_SCREEN_PROBE is a Taiwan-only local diagnostic)
+endif
+endif
+
+ifeq ($(filter $(HUD_SCALE),0 75 100 125),)
+$(error HUD_SCALE must be 0, 75, 100, or 125)
+endif
+
+ifeq ($(filter $(CONTROLLER_OPTIONS),0 1),)
+$(error CONTROLLER_OPTIONS must be 0 or 1)
+endif
+
+ifeq ($(filter $(AB_SWAP),0 1),)
+$(error AB_SWAP must be 0 or 1)
+endif
+
+ifeq ($(USA), $(REGION))
+  LINK_SCRIPT 	:= oot.ld
+  ASFLAGS += -D _USA_=1 -D _JP_=0 -D _EUR_=0 -D _TWN_=0 -D _KOR_=0
+endif
+ifeq ($(JP), $(REGION))
+  LINK_SCRIPT 	:= oot_j.ld
+  ASFLAGS += -D _USA_=0 -D _JP_=1 -D _EUR_=0 -D _TWN_=0 -D _KOR_=0
+endif
+ifeq ($(EUR), $(REGION))
+  LINK_SCRIPT 	:= oot_e.ld
+  ASFLAGS += -D _USA_=0 -D _JP_=0 -D _EUR_=1 -D _TWN_=0 -D _KOR_=0
+endif
+
+ifeq ($(TWN), $(REGION))
+  LINK_SCRIPT 	:= oot_t.ld
+  ASFLAGS += -D _USA_=0 -D _JP_=0 -D _EUR_=0 -D _TWN_=1 -D _KOR_=0
+endif
+
+ifeq ($(KOR), $(REGION))
+  LINK_SCRIPT 	:= oot_k.ld
+  ASFLAGS += -D _USA_=0 -D _JP_=0 -D _EUR_=0 -D _TWN_=0 -D _KOR_=1
+endif
+
+VERFLAGS := -DEUR_SINGLE_SCREEN_PROBE=$(EUR_SINGLE_SCREEN_PROBE) -D USA=$(USA) -D JP=$(JP) -D EUR=$(EUR) -D TWN=$(TWN) -D KOR=$(KOR) -D REGION=$(REGION)
+
+ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=softfp -mtp=soft -mfpu=vfpv2
+
+CFLAGS	:=	-g -Wall -mword-relocations -D DEBUG \
+			-fomit-frame-pointer -ffunction-sections \
+			-fno-unwind-tables -fno-asynchronous-unwind-tables \
+			$(ARCH)
+
+CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS $(VERFLAGS) \
+			-DHUD_SCALE_PERCENT=$(HUD_SCALE) \
+			-DCONTROLLER_OPTIONS_ENABLED=$(CONTROLLER_OPTIONS) \
+			-DUNIFIED_MENU_PROTOTYPE=$(UNIFIED_MENU_PROTOTYPE) \
+			-DTWN_SINGLE_SCREEN_PROBE=$(TWN_SINGLE_SCREEN_PROBE) \
+			-DJP_SINGLE_SCREEN_PROBE=$(JP_SINGLE_SCREEN_PROBE) \
+			-DAB_SWAP_ENABLED=$(AB_SWAP)
+
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
+
+ASFLAGS	+=	-g $(ARCH) $(VERFLAGS) \
+			-D UNIFIED_MENU_PROTOTYPE=$(UNIFIED_MENU_PROTOTYPE) \
+			-D _CONTROLLER_OPTIONS_=$(CONTROLLER_OPTIONS) \
+			-D _TWN_SINGLE_SCREEN_PROBE_=$(TWN_SINGLE_SCREEN_PROBE) \
+			-D _JP_SINGLE_SCREEN_PROBE_=$(JP_SINGLE_SCREEN_PROBE) \
+			-D _DISABLE_BEFORE_GLOBAL_HOOK_=$(DISABLE_BEFORE_GLOBAL_HOOK) \
+			-D _DISABLE_AFTER_GLOBAL_HOOK_=$(DISABLE_AFTER_GLOBAL_HOOK) \
+			-D _DISABLE_NATIVE_HUD_PATCHES_=$(DISABLE_NATIVE_HUD_PATCHES) \
+			-D _DISABLE_CAMERA_PATCH_=$(DISABLE_CAMERA_PATCH) \
+			-D _DISABLE_SELECT_PATCH_=$(DISABLE_SELECT_PATCH)
+LDFLAGS	=	-g $(ARCH) -Wl,-Map,$(notdir $*.map) -T $(TOPDIR)/$(LINK_SCRIPT) -nostdlib $(VERFLAGS) -lgcc
+
+LIBS	:=	-lgcc
+
+HOST_CC ?= cc
+
+# Define version for the C code
+ifeq ($(REGION), $(USA))
+CFLAGS += -g -DVersion_USA
+endif
+ifeq ($(REGION), $(JP))
+CFLAGS += -g -DVersion_JP
+endif
+ifeq ($(REGION), $(EUR))
+CFLAGS += -g -DVersion_EUR
+endif
+ifeq ($(REGION), $(TWN))
+CFLAGS += -g -DVersion_TWN
+endif
+ifeq ($(REGION), $(KOR))
+CFLAGS += -g -DVersion_KOR
+endif
+
+citra ?= 0
+ifneq ($(citra), 0)
+CFLAGS += -g -DCITRA
+endif
+
+#---------------------------------------------------------------------------------
+# list of directories containing libraries, this must be the top level containing
+# include and lib
+#---------------------------------------------------------------------------------
+LIBDIRS	:= $(DEVKITARM) include/citro3d
+
+
+#---------------------------------------------------------------------------------
+# no real need to edit anything past this point unless you need to add additional
+# rules for different file extensions
+#---------------------------------------------------------------------------------
+ifneq ($(BUILD),$(notdir $(CURDIR)))
+#---------------------------------------------------------------------------------
+
+export OUTPUT	:=	$(CURDIR)/$(TARGET)
+export TOPDIR	:=	$(CURDIR)
+
+export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
+			$(foreach dir,$(DATA),$(CURDIR)/$(dir))
+
+export DEPSDIR	:=	$(CURDIR)/$(BUILD)
+
+CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
+ifeq ($(CONTROLLER_OPTIONS),0)
+CFILES          :=      $(filter-out controller_settings.c,$(CFILES))
+endif
+CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
+SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
+PICAFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.v.pica)))
+SHLISTFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.shlist)))
+BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+
+#---------------------------------------------------------------------------------
+# use CXX for linking C++ projects, CC for standard C
+#---------------------------------------------------------------------------------
+ifeq ($(strip $(CPPFILES)),)
+#---------------------------------------------------------------------------------
+	export LD	:=	$(CC)
+#---------------------------------------------------------------------------------
+else
+#---------------------------------------------------------------------------------
+	export LD	:=	$(CXX)
+#---------------------------------------------------------------------------------
+endif
+#---------------------------------------------------------------------------------
+
+.PHONY: host-test
+host-test:
+	@mkdir -p build/host
+	@$(HOST_CC) -std=c11 -Wall -Wextra -Werror -Iinclude \
+		tests/controls_test.c src/controls.c src/controller_settings.c \
+		tests/controller_settings_draw_stubs.c -o build/host/controls_test
+	@build/host/controls_test
+
+export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
+			$(PICAFILES:.v.pica=.shbin.o) $(SHLISTFILES:.shlist=.shbin.o) \
+			$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+
+export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
+			$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
+			-I$(CURDIR)/$(BUILD)
+
+export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
+
+ifeq ($(strip $(ICON)),)
+	icons := $(wildcard *.png)
+	ifneq (,$(findstring $(TARGET).png,$(icons)))
+		export APP_ICON := $(TOPDIR)/$(TARGET).png
+	else
+		ifneq (,$(findstring icon.png,$(icons)))
+			export APP_ICON := $(TOPDIR)/icon.png
+		endif
+	endif
+else
+	export APP_ICON := $(TOPDIR)/$(ICON)
+endif
+
+
+.PHONY: $(BUILD) clean all
+
+#---------------------------------------------------------------------------------
+all: $(BUILD)
+
+$(BUILD):
+	@[ -d $@ ] || mkdir -p $@
+	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@if ! python3 patch.py $(OUTPUT).elf; then \
+		python patch.py $(OUTPUT).elf; \
+	fi
+
+#---------------------------------------------------------------------------------
+clean:
+	@echo clean ...
+	@rm -fr $(BUILD)  $(TARGET).elf
+
+
+#---------------------------------------------------------------------------------
+else
+
+DEPENDS	:=	$(OFILES:.o=.d)
+
+#---------------------------------------------------------------------------------
+# main targets
+#---------------------------------------------------------------------------------
+
+$(OUTPUT).elf	:	$(OFILES) $(TOPDIR)/$(LINK_SCRIPT)
+
+#---------------------------------------------------------------------------------
+# you need a rule like this for each extension you use as binary data
+#---------------------------------------------------------------------------------
+%.bin.o	:	%.bin
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@$(bin2o)
+
+#---------------------------------------------------------------------------------
+# rules for assembling GPU shaders
+#---------------------------------------------------------------------------------
+define shader-as
+	$(eval CURBIN := $(patsubst %.shbin.o,%.shbin,$(notdir $@)))
+	picasso -o $(CURBIN) $1
+	bin2s $(CURBIN) | $(AS) -o $@
+	echo "extern const u8" `(echo $(CURBIN) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end[];" > `(echo $(CURBIN) | tr . _)`.h
+	echo "extern const u8" `(echo $(CURBIN) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"[];" >> `(echo $(CURBIN) | tr . _)`.h
+	echo "extern const u32" `(echo $(CURBIN) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size";" >> `(echo $(CURBIN) | tr . _)`.h
+endef
+
+%.shbin.o : %.v.pica %.g.pica
+	@echo $(notdir $^)
+	@$(call shader-as,$^)
+
+%.shbin.o : %.v.pica
+	@echo $(notdir $<)
+	@$(call shader-as,$<)
+
+%.shbin.o : %.shlist
+	@echo $(notdir $<)
+	@$(call shader-as,$(foreach file,$(shell cat $<),$(dir $<)/$(file)))
+
+-include $(DEPENDS)
+
+#---------------------------------------------------------------------------------------
+endif
+#---------------------------------------------------------------------------------------

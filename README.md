@@ -1,61 +1,45 @@
-# Ocarina Reframed 1.1
+# Ocarina Reframed 2.0
 
-Two ways to experience Ocarina of Time 3D:
+A controller-friendly upgrade for Ocarina of Time 3D, available in Single Screen
+and Dual Screen editions. Native assets are included; no texture pack is required.
 
-- **Single Screen:** redesigned file selection, Items, Gear, Map, and Songs on the main screen, with item previews, descriptions, and live controller assignments.
-- **Dual Screen:** the original two-screen experience with the modern HUD and free camera.
-
-Both include a controller-neutral diamond.
-
-Four downloads: Single Screen or Dual Screen, each available as **Mod** or **ROM Patch**, with all five regional folders inside.
+- **Single Screen:** a unified pause menu with Items, Gear, Map, Save, and Options.
+- **Dual Screen:** the traditional two-screen layout with the new upper-screen
+  Options menu and updated title/file-selection presentation.
+- **Options:** adjust HUD size, free-camera distance/direction, movement speed,
+  roll speed, and roll recovery.
 
 ## Download
 
-[Ocarina Reframed 1.1 release](https://github.com/OTPR26/OOT3DHud/releases/tag/v1.1)
+[Ocarina Reframed 2.0 release](https://github.com/OTPR26/OOT3DHud/releases/tag/v2.0)
 
-Choose one ZIP, then the folder for North America, Europe, Japan, Taiwan, or Korea:
+Choose Single Screen or Dual Screen, then Mods or ROM Patches. A separate
+experimental Dual Screen Luma3DS download is also available. Each archive
+contains North America Rev 1, Europe Rev 1 English, and Japan Rev 1.
+Taiwan and Korea support is coming soon; previous releases remain available.
 
-- `Ocarina-Reframed-1.1-Single-Screen-Mods.zip`
-- `Ocarina-Reframed-1.1-Single-Screen-ROM-Patches.zip`
-- `Ocarina-Reframed-1.1-Dual-Screen-Mods.zip`
-- `Ocarina-Reframed-1.1-Dual-Screen-ROM-Patches.zip`
+Use one installation method and keep your saves. See [installation directions](INSTALL.md),
+[release notes and verification scope](docs/releases/2.0.md),
+[ROM checksums](docs/releases/2.0-checksums.md), and
+[download checksums](docs/releases/2.0-download-checksums.txt).
 
-No game ROMs or saves are included. 
-
-A 4K texture pack is not required but these patches and mods are compatible with Henriko's 4K texture packs.
-
-## Mod installation
-
-1. Extract the ZIP and choose your game's region.
-2. Find the user-data folder for your emulator.
-3. Move any existing regional mod contents out of `load/mods`.
-4. Merge the included regional `load` contents into the user-data folder.
-5. Launch the supported ROM normally.
-
-Keep backups outside `load/mods`. Use the directory belonging to the emulator you run; standalone Azahar and RetroArch may use different directories.
-
-## ROM-patch installation
-
-1. Choose your region and check the required source-ROM checksum on GitHub.
-2. Apply `patch.xdelta` using an xdelta3-compatible patcher.
-3. Verify the patched ROM's output checksum.
-4. Disable or remove any existing HUD-related mod, then launch the patched ROM.
-
-Preserve your original ROM and write to a new output file. Do not force checksum mismatches or combine competing code patches. Other code mods need explicit compatibility validation even when they are not HUD-related.
-
-See [installation details](INSTALL.md) and [release notes](docs/releases/1.1.md).
-
+Single Screen uses the accepted regional candidates. The new Dual Screen
+presentation has build, host-input and package checks, but no new gameplay test.
+Luma3DS compatibility remains experimental and unconfirmed on physical consoles.
+Optional texture packs and arbitrary Randomizer outputs are not validated for 2.0.
 
 ## Corresponding source
 
-The exact [1.1 regional source](release-source/1.1/README.md), build instructions,
-licenses and [checksums](docs/releases/1.1-checksums.md) are hosted in this repository.
-The download ZIPs contain only the mod or patch files and one simple README.
+The exact [2.0 regional sources](release-source/2.0/README.md), build instructions
+and notices are included in this repository. No ROM images or saves are included
+in the release archives.
 
 ## Credits and licensing
 
 - Roberto-Nessy / OoT3D_Standalone_Free_Cam — free-camera and loader foundation.
 - Project Restoration — HUD inspiration and artwork attribution.
 - gamestabled / OoT3D_Randomizer — OoT3D structures and hook references.
+- Noto Sans CJK JP contributors — Japanese Options font, under SIL OFL 1.1.
 
-Preserve included file-level licenses and notices. See [license scope](LICENSE_SCOPE.md) and [notices](NOTICE.md); source-code licensing does not relicense third-party artwork or game data.
+Preserve included file-level licenses and notices. See [license scope](LICENSE_SCOPE.md)
+and [notices](NOTICE.md); source-code licensing does not relicense artwork or game data.

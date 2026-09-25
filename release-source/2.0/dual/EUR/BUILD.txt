@@ -1,0 +1,5 @@
+Ocarina Reframed 2.0 — Dual Screen — EUR
+Requires devkitARM/devkitPro and Python 3. Run from this directory:
+REGION=EUR CITRA=0 EUR_SINGLE_SCREEN_PROBE=1 HUD_SCALE=100 CONTROLLER_OPTIONS=0 UNIFIED_MENU_PROTOTYPE=1 AB_SWAP=0 sh tools/build.sh
+Expected code.ips SHA-256: 50e56a262856c0793bcc3dc5ec32b5b967dcc676135e6128cdf1944d62aec540
+Dual Screen code also supplies the experimental Luma build, with a hardware-specific exheader.

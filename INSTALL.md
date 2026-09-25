@@ -1,48 +1,59 @@
-# Installing Ocarina Reframed 1.1
+# Installing Ocarina Reframed 2.0
 
-Choose Single Screen or Dual Screen, then Mod or ROM Patch. Each main ZIP has
-folders for North America, Europe, Japan, Taiwan, and Korea. Use one edition
-and one delivery method. A texture pack is not required.
+Choose Single Screen or Dual Screen, then Mods or ROM Patches. Each archive
+contains North America Rev 1, Europe Rev 1 English, and Japan Rev 1. Use one
+edition and one installation method. No texture pack is required.
 
-## Mod
+## Emulator Mods
 
 1. Extract the ZIP and choose your game's region.
-2. Close the game and find the user-data folder for your emulator.
-3. Move the existing mod folder for this game out of load/mods; keep a backup.
-4. Merge the included regional load contents into the user-data folder.
-5. Launch the supported original ROM normally.
+2. Close the game and locate your emulator's user-data folder.
+3. Back up the existing regional title folder outside `load/mods`.
+4. Copy the included regional `load` contents into the user-data folder.
+5. Start the clean original game; do not resume an older emulator save state.
 
-The expected path is load/mods/<title-id>/code.ips alongside exheader.bin and
-romfs. Standalone Azahar and RetroArch may use different user-data folders.
-Do not move or delete saves. Do not resume an old emulator save state.
+The path is `load/mods/<title-id>/code.ips` alongside `exheader.bin` and `romfs`.
+Standalone Azahar and RetroArch can use different user-data folders. Keep saves.
 
-## ROM Patch
+## ROM Patches
 
-1. Choose your region and [verify the source-ROM checksum](docs/releases/1.1-checksums.md).
-2. Apply patch.xdelta using an xdelta3-compatible patcher.
-3. Save to a new ROM file; retain your original. Verify the output checksum.
-4. Disable or remove existing HUD-related mods, then launch the patched ROM.
+1. Choose your region and verify the [clean-ROM checksum](docs/releases/2.0-checksums.md).
+2. Apply `patch.xdelta` with an xdelta3-compatible patcher.
+3. Write a new output ROM and verify its checksum. Preserve the original.
+4. Disable external mod overrides, then launch the patched ROM.
 
-North America, Europe and Japan patches use the tested Rev 1 sources. Taiwan
-and Korea use the exact source hashes listed above. Matching a filename or
-region alone is not enough. Do not force checksum mismatches. The legacy
-North America download now contains Single Screen 1.1 and requires the same
-Rev 1 input; the older patch accepted a different source ROM.
+Do not force checksum mismatches or patch an already patched ROM. These ROM
+patches are emulator downloads; physical consoles should use the separate Luma
+package. Do not combine competing code mods or arbitrary randomized ROMs.
 
-## Controls
+## Experimental Luma3DS
+
+1. Use a clean, working game with the matching region and Rev 1 executable.
+2. Back up your saves and the existing matching `luma/titles/<title-id>` folder.
+3. Copy the matching region's `luma` folder from the experimental archive to the
+   SD card root. Enable game patching in Luma3DS.
+4. Start without other code mods, plugins, or a previously patched ROM.
+
+The whole-ROM hash need not match for an external Luma mod; executable revision,
+region and installed updates still matter. Hardware compatibility is unconfirmed.
+During the first test, check title/load, Options, touch, shortcuts, free camera,
+and Rosalina before saving. Restore the previous title folder to undo.
+Report results in [issue #12](https://github.com/OTPR26/OOT3DHud/issues/12).
+
+## Controls and settings
 
 Right stick/C-stick: free camera. Select: Items. D-pad Left/Down: assigned
 touchscreen items. Up: Navi/View. Right: Ocarina. ZL: minimap visibility.
-Blank HUD circles are intentional and do not remap your physical controller.
 
-## Compatibility and additional information
+The Dual Screen Options menu appears on the upper screen and uses controller
+navigation: Up/Down selects, Left/Right adjusts, L/R changes columns, and the
+Cancel/OK actions discard/apply changes. Native Save provides entry to Options.
+Settings use separate SDMC sidecar files; recreated slots with the same name may
+inherit them. Game save files remain separate.
 
-Do not combine competing code.ips files or apply the external mod over its
-patched ROM. Other code mods need explicit compatibility checks even when not
-HUD-related. These patches are not validated for arbitrary Randomizer outputs.
-Use only a texture pack's textures, not its bundled code mod.
+To switch editions or delivery methods, close the game, back up the previous mod
+folder, and install only the new selection. For ROM patches, always start from
+the clean original. Keep your saves and avoid old emulator save states.
 
-See [release notes](docs/releases/1.1.md), [ROM checksums](docs/releases/1.1-checksums.md),
-[download checksums](docs/releases/1.1-download-checksums.txt),
-[corresponding source](release-source/1.1/README.md), [license scope](LICENSE_SCOPE.md)
-and [notices](NOTICE.md). The ZIPs contain only installable files and one README.
+See [release notes](docs/releases/2.0.md), [corresponding source](release-source/2.0/README.md),
+and the licenses and notices included with each download.
