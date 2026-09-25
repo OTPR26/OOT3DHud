@@ -1,6 +1,6 @@
 # Ocarina Reframed 2.0
 
-A controller-friendly upgrade for Ocarina of Time 3D, available in Single Screen
+A controller hud friendly mod or rom patch for Ocarina of Time 3D, available in Single Screen
 and Dual Screen editions. Native assets are included; no texture pack is required.
 
 - **Single Screen:** a unified pause menu with Items, Gear, Map, Save, and Options.
