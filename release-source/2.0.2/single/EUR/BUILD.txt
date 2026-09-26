@@ -1,0 +1,4 @@
+Ocarina Reframed 2.0.2 — Single Screen — EUR
+Requires devkitARM/devkitPro and Python 3. Run from this directory:
+REGION=EUR CITRA=1 EUR_SINGLE_SCREEN_PROBE=1 HUD_SCALE=100 CONTROLLER_OPTIONS=0 UNIFIED_MENU_PROTOTYPE=1 AB_SWAP=0 sh tools/build.sh
+Expected code.ips SHA-256: 3ece1ed22d32e01352a5d76ba5c7127744e2dfed7580d8c414daff7d9a31c656

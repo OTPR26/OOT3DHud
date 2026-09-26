@@ -1,0 +1,5 @@
+a89a16bf653f148447823df65b2b32e75e425cb1f7fdb0ac2412a77e10f6c4bd  Ocarina-Reframed-2.0.2-Single-Screen-Mods.zip
+cd3dfa467ff61891965d97cc66c05b03339e8f65ab17a84243b202906816c120  Ocarina-Reframed-2.0.2-Single-Screen-ROM-Patches.zip
+f3fa55e71dde0a06cfcb75e174808ff44fbc31e58786d1943e77088f5f0711da  Ocarina-Reframed-2.0.2-Dual-Screen-Mods.zip
+61fdbf0403113ebf8916cd6c925f301beb176f9e44b505393f6a07a474babb20  Ocarina-Reframed-2.0.2-Dual-Screen-ROM-Patches.zip
+70393299237ea9182d7eac8c81339da30aafcc1eb5e1576ba9738be16c3f03e2  Ocarina-Reframed-2.0.2-Luma-Mods-Experimental.zip
