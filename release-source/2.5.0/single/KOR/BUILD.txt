@@ -1,0 +1,4 @@
+Ocarina ReFramed 2.5.0 — Single Screen — KOR
+Requires devkitPro/devkitARM and Python 3. Run from this directory:
+REGION=KOR CITRA=1 KOR_SINGLE_SCREEN_PROBE=1 HUD_SCALE=100 CONTROLLER_OPTIONS=0 UNIFIED_MENU_PROTOTYPE=1 AB_SWAP=0 sh tools/build.sh
+Expected code.ips SHA-256: c6e2bdf7235a3e59ffb919a92e1afb61541770d9809dcf75a1458a20955f9b47

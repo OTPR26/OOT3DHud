@@ -1,0 +1,5 @@
+Ocarina ReFramed 2.5.0 — Dual Screen — KOR
+Requires devkitPro/devkitARM and Python 3.
+Run from this directory:
+REGION=KOR HUD_SCALE=100 CITRA=0 UNIFIED_MENU_PROTOTYPE=1 sh tools/build.sh
+Expected code.ips SHA-256: 5fdd6f5a6b94396377f210c2654213f4284b2427d2ab7f8f486f4c4341af288d

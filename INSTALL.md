@@ -1,7 +1,7 @@
-# Installing Ocarina Reframed 2.0
+# Installing Ocarina ReFramed 2.5.0
 
 Choose Single Screen or Dual Screen, then Mods or ROM Patches. Each archive
-contains North America Rev 1, Europe Rev 1 English, and Japan Rev 1. Use one
+contains North America Rev 1, Europe Rev 1 English, Japan Rev 1, Taiwan, and Korea. Use one
 edition and one installation method. No texture pack is required.
 
 ## Emulator Mods
@@ -17,7 +17,7 @@ Standalone Azahar and RetroArch can use different user-data folders. Keep saves.
 
 ## ROM Patches
 
-1. Choose your region and verify the [clean-ROM checksum](docs/releases/2.0-checksums.md).
+1. Choose your region and verify the [clean-ROM checksum](docs/releases/2.5.0-checksums.md).
 2. Apply `patch.xdelta` with an xdelta3-compatible patcher.
 3. Write a new output ROM and verify its checksum. Preserve the original.
 4. Disable external mod overrides, then launch the patched ROM.
@@ -48,6 +48,7 @@ touchscreen items. Up: Navi/View. Right: Ocarina. ZL: minimap visibility.
 The Dual Screen Options menu appears on the upper screen and uses controller
 navigation: Up/Down selects, Left/Right adjusts, L/R changes columns, and the
 Cancel/OK actions discard/apply changes. Native Save provides entry to Options.
+Manual jump is Off by default. Choose ZR or X in Options; X moves the former X item to ZR.
 Settings use separate SDMC sidecar files; recreated slots with the same name may
 inherit them. Game save files remain separate.
 
@@ -55,5 +56,5 @@ To switch editions or delivery methods, close the game, back up the previous mod
 folder, and install only the new selection. For ROM patches, always start from
 the clean original. Keep your saves and avoid old emulator save states.
 
-See [release notes](docs/releases/2.0.md), [corresponding source](release-source/2.0/README.md),
+See [release notes](docs/releases/2.5.0.md), [corresponding source](release-source/2.5.0/README.md),
 and the licenses and notices included with each download.
