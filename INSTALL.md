@@ -1,4 +1,4 @@
-# Installing Ocarina ReFramed 2.5.0
+# Installing Ocarina ReFramed 2.5.1
 
 Choose Single Screen or Dual Screen, then Mods or ROM Patches. Each archive
 contains North America Rev 1, Europe Rev 1 English, Japan Rev 1, Taiwan, and Korea. Use one
@@ -17,7 +17,7 @@ Standalone Azahar and RetroArch can use different user-data folders. Keep saves.
 
 ## ROM Patches
 
-1. Choose your region and verify the [clean-ROM checksum](docs/releases/2.5.0-checksums.md).
+1. Choose your region and verify the [clean-ROM checksum](docs/releases/2.5.1-checksums.md).
 2. Apply `patch.xdelta` with an xdelta3-compatible patcher.
 3. Write a new output ROM and verify its checksum. Preserve the original.
 4. Disable external mod overrides, then launch the patched ROM.
@@ -56,5 +56,5 @@ To switch editions or delivery methods, close the game, back up the previous mod
 folder, and install only the new selection. For ROM patches, always start from
 the clean original. Keep your saves and avoid old emulator save states.
 
-See [release notes](docs/releases/2.5.0.md), [corresponding source](release-source/2.5.0/README.md),
+See [release notes](docs/releases/2.5.1.md), [corresponding source](release-source/2.5.1/README.md),
 and the licenses and notices included with each download.

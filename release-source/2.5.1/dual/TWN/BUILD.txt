@@ -1,0 +1,5 @@
+Ocarina ReFramed 2.5.1 — Dual Screen — TWN
+Requires devkitPro/devkitARM and Python 3.
+Run from this directory:
+REGION=TWN HUD_SCALE=100 CITRA=0 UNIFIED_MENU_PROTOTYPE=1 sh tools/build.sh
+Expected code.ips SHA-256: 5fa0928db9f7db90abe27eae2b7f6081f1bba3005a3967e17dd2bf9ebc62a338

@@ -1,0 +1,4 @@
+Ocarina ReFramed 2.5.1 — Single Screen — TWN
+Requires devkitPro/devkitARM and Python 3. Run from this directory:
+REGION=TWN CITRA=1 TWN_SINGLE_SCREEN_PROBE=1 HUD_SCALE=100 CONTROLLER_OPTIONS=0 UNIFIED_MENU_PROTOTYPE=1 AB_SWAP=0 sh tools/build.sh
+Expected code.ips SHA-256: e640dc7b729bc7ae1894e56bbae83a15f8243c2e9facdc73586111a53947f8fa

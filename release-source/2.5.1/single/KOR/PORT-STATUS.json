@@ -1,0 +1,57 @@
+{
+  "region": "KOR",
+  "status": "ENABLED REVIEW BUILD COMPILES/LINKS; STATIC PATCH AUDIT PASS; NOT RELEASE READY",
+  "conflicts": [],
+  "new_modules": [
+    "src/gear_preview.c",
+    "src/movement_options.c",
+    "src/memory_probe.c",
+    "src/movement_hooks.s",
+    "src/menu_preferences.c",
+    "src/unified_menu.c",
+    "src/unified_menu_layout.c",
+    "src/menu_options.c",
+    "src/manual_jump.c",
+    "include/manual_jump_hud.h",
+    "include/unified_menu_navigation.h",
+    "include/menu_preferences.h",
+    "include/movement_options_model.h",
+    "include/unified_menu.h",
+    "include/unified_menu_layout.h",
+    "include/gear_preview_rotation.h",
+    "include/manual_jump.h",
+    "include/menu_options.h",
+    "include/menu_options_model.h",
+    "include/ocarina_presentation.h",
+    "include/gear_preview.h",
+    "include/menu_touch.h",
+    "include/manual_jump_policy.h",
+    "include/movement_options.h",
+    "include/manual_jump_bindings.h",
+    "include/memory_probe.h",
+    "include/menu_preferences_format.h"
+  ],
+  "required_validation": [
+    "native function and ABI bindings",
+    "global pointer owners and field layouts",
+    "linker hook sites",
+    "text and font ABI",
+    "Options lifecycle and persistence",
+    "manual-jump bindings and safety"
+  ],
+  "merge_resolution": "All 17 combined text conflicts resolved; not runtime certification",
+  "remaining_blockers": [
+    "native enabled menu and font runtime validation",
+    "remaining file-board/Visions visual refinements",
+    "Single/Dual runtime and package validation"
+  ],
+  "evidence": [
+    "asian-enabled-core-compile.json",
+    "asian-enabled-menu-builds.json",
+    "asian-enabled-menu-patch-audit.json",
+    "asian-lifecycle-footer-floor-bindings.json",
+    "asian-movement-binding-staging.json",
+    "asian-movement-assembly-check.json",
+    "asian-presentation-binding-staging.json"
+  ]
+}

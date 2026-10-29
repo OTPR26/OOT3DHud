@@ -1,4 +1,4 @@
-# Ocarina ReFramed 2.5.0
+# Ocarina ReFramed 2.5.1
 
 A controller hud friendly mod or rom patch for Ocarina of Time 3D, available in Single Screen
 and Dual Screen editions. Native assets are included; no texture pack is required.
@@ -11,17 +11,17 @@ and Dual Screen editions. Native assets are included; no texture pack is require
 
 ## Download
 
-[Download Ocarina ReFramed 2.5.0](https://github.com/OTPR26/OOT3DHud/releases/tag/v2.5.0)
+[Download Ocarina ReFramed 2.5.1](https://github.com/OTPR26/OOT3DHud/releases/tag/v2.5.1)
 
 Choose Single Screen or Dual Screen, then Mods or ROM Patches. Separate experimental Luma3DS packages are available for both editions. All packages include North America Rev 1, Europe Rev 1 English, Japan Rev 1, Taiwan, and Korea.
 
-Use one installation method and keep your saves. See [installation directions](INSTALL.md), [release notes and validation scope](docs/releases/2.5.0.md), [ROM checksums](docs/releases/2.5.0-checksums.md), and [download checksums](docs/releases/2.5.0-download-checksums.txt).
+Use one installation method and keep your saves. See [installation directions](INSTALL.md), [release notes and validation scope](docs/releases/2.5.1.md), [ROM checksums](docs/releases/2.5.1-checksums.md), and [download checksums](docs/releases/2.5.1-download-checksums.txt).
 
 The latest Taiwan/Korea Visions changes have compile/static validation only. Individual Dual-screen gameplay tests were not repeated. Luma3DS compatibility remains experimental and unconfirmed on physical consoles. Optional texture packs and arbitrary Randomizer outputs are not validated.
 
 ## Corresponding source
 
-The exact [2.5.0 regional sources](release-source/2.5.0/README.md), build instructions, and notices are included in this repository. No ROM images or saves are included in the release archives.
+The exact [2.5.1 regional sources](release-source/2.5.1/README.md), build instructions, and notices are included in this repository. No ROM images or saves are included in the release archives.
 
 ## Credits and licensing
 

@@ -1,0 +1,13 @@
+#pragma once
+void UnifiedMenu_TintShelves(void);
+void UnifiedMenu_DrawBackdrop(void);
+void UnifiedMenu_DrawDollBackdrop(void);
+void UnifiedMenu_RestoreItemsBoard(void);
+void UnifiedMenu_DrawDungeonFooterMask(void);
+void UnifiedMenu_PrepareDungeonMaterials(void);
+void UnifiedMenu_DrawHeader(void);
+unsigned UnifiedMenu_GetFooterFocus(void);
+unsigned UnifiedMenu_GetDialogPage(void);
+unsigned UnifiedMenu_IsOptionsDialog(void);
+unsigned UnifiedMenu_IsClosing(void);
+unsigned UnifiedMenu_IsOpening(void);
